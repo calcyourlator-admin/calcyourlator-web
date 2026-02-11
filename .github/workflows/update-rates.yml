@@ -1,4 +1,5 @@
 name: Update Mortgage Rates
+
 on:
   schedule:
     - cron: '0 0 * * *' # Runs daily at midnight
@@ -13,7 +14,7 @@ jobs:
 
       - name: Fetch FRED Data
         run: |
-          curl "https://api.stlouisfed.org/fred/series/observations?series_id=MORTGAGE30US&api_key=${{ secrets.FRED_API_KEY }}&file_type=json&limit=1&sort_order=desc" > public/rates.json
+          curl "https://api.stlouisfed.org/fred/series/observations?series_id=MORTGAGE30US&api_key=${{ secrets.FRED_API_KEY }}&file_type=json&limit=1&sort_order=desc" > rates.json
 
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
@@ -21,3 +22,4 @@ jobs:
           args: deploy --only hosting
         env:
           GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CALCYOURLATOR_SITE }}
+Technical Verification of Changes
