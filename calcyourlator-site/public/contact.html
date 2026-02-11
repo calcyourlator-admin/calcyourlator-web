@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | General Inquiries - Calcyourlator</title>
+    <meta name="description" content="Contact Calcyourlator for technical support, feedback, or general inquiries. We value user feedback to improve our financial tools.">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 'bk-blue': '#0056b3', 'bk-text': '#212529', 'bk-sidebar': '#f8f9fa', 'bk-white': '#ffffff' },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { color: #212529; background-color: #ffffff; }
+    </style>
+</head>
+<body class="font-sans flex flex-col min-h-screen">
+    <!-- HEADER -->
+    <nav class="bg-white border-b border-gray-200">
+        <div class="max-w-[1280px] mx-auto px-5 h-[80px] flex items-center justify-between">
+            <a href="index.html" class="flex items-center" style="text-decoration: none;">
+                <div class="bg-bk-blue text-white font-black text-xl px-2 py-1 rounded mr-2">C</div>
+                <span class="font-extrabold text-xl tracking-tight text-bk-blue">Calcyour<span class="text-green-600">lator</span></span>
+            </a>
+            <div class="flex items-center space-x-6 overflow-x-auto">
+                <a href="index.html" class="text-sm font-bold text-gray-600 hover:text-bk-blue whitespace-nowrap">Mortgage</a>
+                <a href="index.html" class="text-sm font-bold text-gray-600 hover:text-bk-blue whitespace-nowrap">Auto Loan</a>
+                <a href="index.html" class="text-sm font-bold text-gray-600 hover:text-bk-blue whitespace-nowrap">Rent vs. Buy</a>
+            </div>
+        </div>
+    </nav>
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow max-w-[1280px] mx-auto px-5 py-12 w-full">
+        <div class="max-w-[800px] mx-auto text-center">
+            <h1 class="text-3xl md:text-4xl font-black text-bk-blue mb-8">Contact Calcyourlator</h1>
+            <div class="prose prose-lg mx-auto" style="font-size: 16px; line-height: 1.7; color: #374151;">
+                <p class="mb-6">
+                    Have a question or a technical bug to report? We value user feedback to help keep our tools accurate and free.
+                </p>
+                <div class="bg-gray-50 rounded-lg p-8 border border-gray-100 mb-8">
+                    <h3 class="text-xl font-bold text-bk-blue mb-4">General Inquiries</h3>
+                    <p class="text-gray-700 font-medium">
+                        <a href="mailto:admin@calcyourlator.com" class="text-blue-600 hover:underline break-all">admin@calcyourlator.com</a>
+                    </p>
+                </div>
+                <p class="text-sm text-gray-500 italic">
+                    Please note: We are a software provider, not a financial institution. We cannot offer personal financial advice or assist with individual loan applications.
+                </p>
+            </div>
+        </div>
+    </main>
+    <!-- GLOBAL FOOTER -->
+    <footer class="mt-auto" style="background-color: #F9FAFB; padding: 20px 0;">
+        <div class="max-w-[1280px] mx-auto px-5 text-center">
+            <nav class="flex flex-wrap justify-center items-center gap-6 mb-3" style="min-height: 44px;">
+                <a href="index.html" class="text-xs hover:underline" style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">Home</a>
+                <a href="about.html" class="text-xs hover:underline" style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">About Us</a>
+                <a href="privacy.html" class="text-xs hover:underline" style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">Privacy Policy</a>
+                <a href="terms.html" class="text-xs hover:underline" style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">Terms of Use</a>
+                <a href="cookies.html" class="text-xs hover:underline" style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">Cookie Settings</a>
+                <a href="contact.html" class="text-xs hover:underline" style="color: #0056b3; font-weight: 700; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">Contact Us</a>
+            </nav>
+            <p class="text-[11px] text-gray-400 mt-3">
+                By using this site, you agree to our Terms of Use and Privacy Policy, including our use of cookies.
+            </p>
+        </div>
+    </footer>
+</body>
+</html>
