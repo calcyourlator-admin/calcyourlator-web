@@ -1357,17 +1357,28 @@
 
         async function fetchFred() {
             try {
+                // 1. Fetch from the local static bridge
                 const response = await fetch('./rates.json');
-                if (!response.ok) throw new Error("File not found");
+                if (!response.ok) throw new Error("Rates file not found");
                 const data = await response.json();
 
-                FRED_DATA = data;
-                el('rateSource').innerText = "Live FRED Rate";
+                // 2. Map raw FRED observations to the local FRED_DATA object
+                // Note: FRED returns an array in 'observations', we take the first item
+                if (data.observations && data.observations[0]) {
+                    const liveRate = parseFloat(data.observations[0].value);
+                    const liveDate = data.observations[0].date;
+
+                    // Update local state so setTerm() can find the values
+                    FRED_DATA["MORTGAGE30US"] = { val: liveRate, date: liveDate };
+
+                    // Trigger UI Label Update
+                    updateRateLabel(FRED_DATA["MORTGAGE30US"]);
+                }
             } catch (e) {
-                console.log("Using Market Average Fallback");
+                console.log("Using Market Average Fallback", e);
                 el('rateSource').innerText = "Market Average Rate";
             } finally {
-                // Ensure the UI updates with whatever data we have
+                // 3. Ensure the UI updates with current term selection (30yr or 15yr)
                 setTerm(S.mterm);
             }
         }
