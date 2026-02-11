@@ -22,4 +22,3 @@ jobs:
           args: deploy --only hosting
         env:
           GCP_SA_KEY: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_CALCYOURLATOR_SITE }}
-Technical Verification of Changes
