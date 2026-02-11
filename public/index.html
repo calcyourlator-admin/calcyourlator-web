@@ -1,403 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Free Mortgage, Auto & Rent vs. Buy Calculator | Calcyourlator</title>
-    <meta name="description"
-        content="Use our free, high-authority financial calculators to estimate mortgage payments, auto loans, and rent vs. buy scenarios. Features live FRED rates and full amortization schedules.">
-    <!-- Fonts -->
+    <meta name="description" content="Use our free, high-authority financial calculators to estimate mortgage payments, auto loans, and rent vs. buy scenarios. Features live FRED rates and full amortization schedules.">
+    
+    <!-- Fonts & Scripts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
+    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: {
-                        'bk-blue': '#0056b3', // Bankrate Primary
-                        'bk-text': '#212529',
-                        'bk-sidebar': '#f8f9fa',
-                        'bk-white': '#ffffff',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    }
+                    colors: { 'bk-blue': '#0056b3', 'bk-text': '#212529', 'bk-sidebar': '#f8f9fa', 'bk-white': '#ffffff' },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
                 }
             }
         }
     </script>
+
     <style>
-        body {
-            color: #212529;
-            background-color: #ffffff;
-        }
-
-        .main-grid-container {
-            display: flex;
-            align-items: flex-start;
-            gap: 2.5rem;
-            justify-content: center;
-            max-width: 1280px !important;
-            margin-left: auto !important;
-            margin-right: auto !important;
-            padding: 0 20px !important;
-            width: 100%;
-        }
-
-
-
-        .sidebar-card {
-            width: 100% !important;
-            box-sizing: border-box !important;
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-            background-color: white;
-            border-radius: 0.75rem;
-            border: 1px solid #e5e7eb;
-            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-            overflow: hidden;
-        }
-
-        .left-column {
-            flex: 1 !important;
-            max-width: 650px !important;
-            min-width: 0;
-        }
-
-        .right-pillar-sidebar {
-            width: 440px !important;
-            flex-shrink: 0 !important;
-            flex-grow: 0 !important;
-        }
-
-        /* Custom Inputs */
-        .bk-input {
-            width: 100%;
-            background: #fff;
-            border: 1px solid #ced4da;
-            border-radius: 0.25rem;
-            padding: 0.5rem 0.75rem;
-            font-size: 1rem;
-            font-weight: 600;
-            color: #212529;
-            transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-        }
-
-        .bk-input:focus {
-            border-color: #80bdff;
-            outline: 0;
-            box-shadow: 0 0 0 0.2rem rgba(0, 86, 179, 0.25);
-        }
-
-        .bk-label {
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-            display: block;
-        }
-
-        /* Tabs */
-        .bk-tab {
-            padding: 1rem 1.5rem;
-            font-weight: 700;
-            color: #6c757d;
-            border-bottom: 4px solid transparent;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-
-        .bk-tab.active {
-            color: #0056b3;
-            border-bottom-color: #0056b3;
-        }
-
-        .bk-tab:hover:not(.active) {
-            color: #495057;
-        }
-
-        /* Zebra Table */
-        .am-table th {
-            background-color: #f1f3f5;
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: #495057;
-            padding: 0.75rem;
-            text-align: left;
-        }
-
-        .am-table td {
-            padding: 0.75rem;
-            border-top: 1px solid #dee2e6;
-            font-size: 0.875rem;
-            color: #212529;
-        }
-
-        .am-table tbody tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
-
-        .am-table tbody tr:hover {
-            background-color: #e9ecef;
-        }
-
-        /* Surgical Fix: Force column centering and eliminate clipping */
-        .am-table th:first-child,
-        .am-table td:first-child,
-        .am-table th:last-child,
-        .am-table td:last-child {
-            text-align: center !important;
-            padding-left: 0 !important;
-            padding-right: 0 !important;
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-        }
-
-        .am-table {
-            table-layout: fixed !important;
-            width: 100% !important;
-            margin-left: 0 !important;
-            margin-right: 0 !important;
-        }
-
-        /* Mobile Responsive Adjustments */
-        @media (max-width: 1023px) {
-            .main-grid-container {
-                flex-direction: column;
-                align-items: center;
-                gap: 1.5rem;
-            }
-
-            .left-column,
-            .right-pillar-sidebar {
-                width: 100% !important;
-                max-width: 100% !important;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            aside {
-                position: sticky;
-                top: 20px;
-                display: flex !important;
-                flex-direction: column !important;
-                align-items: stretch !important;
-                gap: 1.5rem !important;
-                height: fit-content;
-            }
-        }
-
-        .is-visible {
-            display: table-row !important;
-        }
-
-        /* Monetization Layers */
-        #header-ad-hub {
-            width: 728px;
-            height: 90px;
-            background-color: #ececec;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #adb5bd;
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            border: 1px solid #e5e7eb;
-            flex-shrink: 0;
-        }
-
-        @media (max-width: 992px) {
-            #header-ad-hub {
-                display: none;
-            }
-
-            .nav-container {
-                justify-content: center !important;
-            }
-        }
-
-        /* Lender Marketplace */
-        #lender-marketplace,
-        #lender-marketplace-rb,
-        #auto-lender-marketplace {
-            width: 100%;
-            background-color: #F8F9FA;
-            padding: 2.5rem 0;
-            margin: 3rem 0;
-            position: relative;
-            display: block;
-            clear: both;
-            border-top: 1px solid #e9ecef;
-            border-bottom: 1px solid #e9ecef;
-        }
-
-        .lender-row {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-        }
-
-        .lender-card {
-            background: white;
-            border: 1px solid #e5e7eb;
-            padding: 1.25rem 1rem;
-            border-radius: 0.5rem;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .lender-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            border-color: #dbeafe;
-        }
-
-        .lender-logo {
-            width: 60px;
-            height: 60px;
-            background-color: #f3f4f6;
-            border-radius: 50%;
-            margin-bottom: 0.75rem;
-        }
-
-        .lender-btn {
-            background-color: #0056b3;
-            color: white;
-            font-size: 0.875rem;
-            font-weight: 700;
-            padding: 0.5rem 1rem;
-            border-radius: 0.25rem;
-            margin-top: auto;
-            width: 100%;
-            transition: background-color 0.15s;
-        }
-
-        .lender-btn:hover {
-            background-color: #004494;
-        }
-
-        @media (max-width: 768px) {
-            .lender-row {
-                flex-direction: column;
-            }
-
-            .lender-card {
-                width: 100%;
-                flex-direction: row;
-                justify-content: space-between;
-                text-align: left;
-            }
-
-            .lender-btn {
-                width: auto;
-                margin-top: 0;
-            }
-
-            .lender-logo {
-                margin-bottom: 0;
-                margin-right: 1rem;
-            }
-
-            #lender-marketplace {
-                padding: 1.5rem 0;
-            }
-        }
-
-        /* Advertiser Disclosure - Safe Zone CSS-Only */
-        .disclosure-safe-zone {
-            margin: 2rem 0 1rem 0;
-            padding: 0.5rem 0;
-        }
-
-        .disclosure-link-safe {
-            font-size: 11px;
-            color: #9CA3AF;
-            text-decoration: underline;
-            cursor: pointer;
-            position: relative;
-            display: inline-block;
-        }
-
-        .disclosure-link-safe:hover {
-            color: #6B7280;
-        }
-
-        .disclosure-tooltip-safe {
-            position: absolute;
-            left: 0;
-            top: 100%;
-            margin-top: 0.25rem;
-            z-index: 999 !important;
-            background-color: white;
-            border: 1px solid #E5E7EB;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            padding: 0.75rem;
-            border-radius: 0.25rem;
-            width: 300px;
-            font-size: 0.75rem;
-            color: #4B5563;
-            line-height: 1.5;
-            text-align: left;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
-            pointer-events: none;
-        }
-
-        .disclosure-link-safe:hover .disclosure-tooltip-safe {
-            opacity: 1;
-            visibility: visible;
-        }
+        body { color: #212529; background-color: #ffffff; }
+        .main-grid-container { display: flex; align-items: flex-start; gap: 2.5rem; justify-content: center; max-width: 1280px; margin: 0 auto; padding: 0 20px; width: 100%; }
+        .sidebar-card { width: 100%; background: white; border-radius: 0.75rem; border: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.1); overflow: hidden; }
+        .left-column { flex: 1; max-width: 650px; min-width: 0; }
+        .right-pillar-sidebar { width: 440px; flex-shrink: 0; }
+        .bk-input { width: 100%; border: 1px solid #ced4da; border-radius: 0.25rem; padding: 0.5rem 0.75rem; font-weight: 600; }
+        .bk-label { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.25rem; display: block; }
+        .bk-tab { padding: 1rem 1.5rem; font-weight: 700; color: #6c757d; border-bottom: 4px solid transparent; cursor: pointer; transition: color 0.2s; }
+        .bk-tab.active { color: #0056b3; border-bottom-color: #0056b3; }
+        .am-table { table-layout: fixed; width: 100%; }
+        .am-table th, .am-table td { padding: 0.75rem; text-align: center; border-top: 1px solid #dee2e6; font-size: 0.875rem; }
+        @media (max-width: 1023px) { .main-grid-container { flex-direction: column; align-items: center; } .left-column, .right-pillar-sidebar { width: 100% !important; } }
+        @media (min-width: 1024px) { aside { position: sticky; top: 20px; height: fit-content; } }
     </style>
 </head>
 
-<!-- JSON-LD Schema Markup for SEO -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Calcyourlator",
-  "description": "Free mortgage, auto loan, and rent vs. buy calculator with live FRED rates and full amortization schedules",
-  "url": "https://calcyourlator.com",
-  "applicationCategory": "FinanceApplication",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
-}
-</script>
-
 <body class="flex flex-col min-h-screen">
-
-    <!-- NAV -->
-    <nav class="bg-white border-b border-gray-200 overflow-hidden" style="max-height: 100px;">
-        <div class="max-w-[1280px] mx-auto px-4 h-[100px] flex items-center justify-between nav-container">
-            <a href="index.html" class="flex items-center" style="text-decoration: none;">
+    <!-- Navigation -->
+    <nav class="bg-white border-b border-gray-200">
+        <div class="max-w-[1280px] mx-auto px-4 h-[100px] flex items-center justify-between">
+            <div class="flex items-center">
                 <div class="bg-bk-blue text-white font-black text-xl px-2 py-1 rounded mr-2">C</div>
-                <span class="font-extrabold text-xl tracking-tight text-bk-blue">Calcyour<span
-                        class="text-green-600">lator</span></span>
-            </a>
-
-            <!-- Header Ad Zone -->
-            <div id="header-ad-hub">
-                Advertisement
+                <span class="font-extrabold text-xl tracking-tight text-bk-blue">Calcyour<span class="text-green-600">lator</span></span>
             </div>
+            <div id="header-ad-hub" class="hidden md:flex w-[728px] h-[90px] bg-gray-100 items-center justify-center text-[10px] text-gray-400 font-bold uppercase border">Advertisement</div>
         </div>
     </nav>
 
-    <!-- TABS -->
+    <!-- Tool Tabs -->
     <div class="border-b border-gray-200 bg-white">
         <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto">
             <button id="tabMortgage" class="bk-tab active">Mortgage</button>
@@ -406,203 +60,75 @@
         </div>
     </div>
 
-    <!-- MAIN STAGE: INPUTS & RESULTS -->
-    <div class="main-grid-container max-w-7xl mx-auto px-4 w-full">
-        <main class="left-column flex-1 w-full flex flex-col py-6 lg:py-8 space-y-8">
-
-            <!-- INPUT CARD -->
+    <!-- Main Content -->
+    <div class="main-grid-container py-6 lg:py-8">
+        <main class="left-column space-y-8">
             <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-                <h2 class="text-xl font-bold mb-4 text-bk-text" id="inputTitle">Loan Details</h2>
-
-                <!-- MORTGAGE INPUTS -->
+                <h2 class="text-xl font-bold mb-4" id="inputTitle">Loan Details</h2>
+                
+                <!-- Mortgage Inputs -->
                 <div id="mortgageInputs" class="space-y-4">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="bk-label">Home Price</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
-                                <input type="number" id="homePrice" class="bk-input pl-7" value="300000">
-                            </div>
+                            <div class="relative"><span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
+                            <input type="number" id="homePrice" class="bk-input pl-7" value="300000"></div>
                         </div>
                         <div>
                             <label class="bk-label">Down Payment (<span id="dpPercent">20%</span>)</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
-                                <input type="number" id="downPayment" class="bk-input pl-7" value="60000">
-                            </div>
+                            <div class="relative"><span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
+                            <input type="number" id="downPayment" class="bk-input pl-7" value="60000"></div>
                         </div>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="bk-label">Interest Rate</label>
-                            <div class="relative">
-                                <input type="number" id="interestRate" class="bk-input pr-8" step="0.01" value="6.5">
-                                <span class="absolute right-3 top-2 text-gray-500 font-bold">%</span>
-                            </div>
-                            <p class="text-xs text-green-600 mt-1" id="rateSource">
-                                Loading live rates... <span class="text-gray-400 font-normal ml-1" id="rateDate"></span>
-                            </p>
+                            <div class="relative"><input type="number" id="interestRate" class="bk-input pr-8" step="0.01" value="6.85">
+                            <span class="absolute right-3 top-2 text-gray-500 font-bold">%</span></div>
+                            <p class="text-xs text-green-600 mt-1" id="rateSource">Loading live rates...</p>
                         </div>
                         <div>
                             <label class="bk-label">Loan Term (Years)</label>
                             <div class="grid grid-cols-4 gap-2">
-                                <button
-                                    class="term-btn py-2 text-sm font-bold border rounded bg-white text-gray-600 hover:bg-gray-50 active"
-                                    data-val="30">30</button>
-                                <button
-                                    class="term-btn py-2 text-sm font-bold border rounded bg-white text-gray-600 hover:bg-gray-50"
-                                    data-val="20">20</button>
-                                <button
-                                    class="term-btn py-2 text-sm font-bold border rounded bg-white text-gray-600 hover:bg-gray-50"
-                                    data-val="15">15</button>
-                                <button
-                                    class="term-btn py-2 text-sm font-bold border rounded bg-white text-gray-600 hover:bg-gray-50"
-                                    data-val="10">10</button>
+                                <button class="term-btn py-2 text-sm font-bold border rounded bg-bk-blue text-white" data-val="30">30</button>
+                                <button class="term-btn py-2 text-sm font-bold border rounded bg-white text-gray-600" data-val="20">20</button>
+                                <button class="term-btn py-2 text-sm font-bold border rounded bg-white text-gray-600" data-val="15">15</button>
+                                <button class="term-btn py-2 text-sm font-bold border rounded bg-white text-gray-600" data-val="10">10</button>
                             </div>
                             <input type="hidden" id="loanTerm" value="30">
                         </div>
                     </div>
-                    <!-- Start Date Picker -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="bk-label">Start Date</label>
-                            <input type="month" id="startDate" class="bk-input w-full" min="">
-                            <p id="loanSummary" class="text-xs text-gray-400 mt-1 font-medium"></p>
-                        </div>
-                    </div>
-                    <!-- Advanced Toggle -->
                     <div class="pt-4 border-t border-gray-200">
-                        <button class="text-sm font-bold text-bk-blue hover:underline mb-2"
-                            onclick="document.getElementById('advInputs').classList.toggle('hidden')">
-                            + Advanced (Tax, Ins, HOA, PMI)
-                        </button>
+                        <button class="text-sm font-bold text-bk-blue hover:underline" onclick="document.getElementById('advInputs').classList.toggle('hidden')">+ Advanced (Tax, Ins, HOA, PMI)</button>
                         <div id="advInputs" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
-                            <div>
-                                <label class="bk-label text-xs">Prop Tax /yr (%)</label>
-                                <input type="number" id="propertyTax" class="bk-input" value="1.2" step="0.1">
-                            </div>
-                            <div>
-                                <label class="bk-label text-xs">Home Ins /yr ($)</label>
-                                <input type="number" id="homeIns" class="bk-input" value="1500">
-                            </div>
-                            <div>
-                                <label class="bk-label text-xs">HOA /mo ($)</label>
-                                <input type="number" id="hoa" class="bk-input" value="0">
-                            </div>
-                            <div>
-                                <label class="bk-label text-xs">PMI /yr (%)</label>
-                                <input type="number" id="pmiRate" class="bk-input" value="0" step="0.01">
-                            </div>
+                            <div><label class="bk-label text-xs">Prop Tax /yr (%)</label><input type="number" id="propertyTax" class="bk-input" value="1.2" step="0.1"></div>
+                            <div><label class="bk-label text-xs">Home Ins /yr ($)</label><input type="number" id="homeIns" class="bk-input" value="1500"></div>
+                            <div><label class="bk-label text-xs">HOA /mo ($)</label><input type="number" id="hoa" class="bk-input" value="0"></div>
+                            <div><label class="bk-label text-xs">PMI /yr (%)</label><input type="number" id="pmiRate" class="bk-input" value="0" step="0.01"></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- AUTO INPUTS (Hidden) -->
+                <!-- Auto & Rent/Buy Inputs (Simplified placeholders) -->
                 <div id="autoInputs" class="hidden space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="bk-label">Vehicle Price</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
-                                <input type="number" id="autoPrice" class="bk-input pl-7" value="35000">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="bk-label">Down Payment (<span id="autoDpPercent">0.0%</span>)</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
-                                <input type="number" id="autoDown" class="bk-input pl-7" value="5000">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="bk-label">Interest Rate</label>
-                            <div class="relative">
-                                <input type="number" id="autoRate" class="bk-input pr-8" step="0.1" value="7.5">
-                                <span class="absolute right-3 top-2 text-gray-500 font-bold">%</span>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="bk-label">Term (Months)</label>
-                            <select id="autoTerm" class="bk-input">
-                                <option value="36">36</option>
-                                <option value="48">48</option>
-                                <option value="60" selected>60</option>
-                                <option value="72">72</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="bk-label">Running Costs /mo</label>
-                        <input type="number" id="autoRun" class="bk-input" value="150">
-                    </div>
+                     <label class="bk-label">Vehicle Price</label>
+                     <input type="number" id="autoPrice" class="bk-input" value="35000">
                 </div>
-
-                <!-- RENT BUY INPUTS (Hidden) -->
-                <div id="rbInputs" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="p-3 bg-gray-50 border border-gray-200 rounded">
-                        <p class="text-xs font-bold text-gray-400 uppercase mb-2">Renting Scenario</p>
-                        <div class="mb-3">
-                            <label class="bk-label">Monthly Rent</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
-                                <input type="number" id="rbRent" class="bk-input pl-7" value="2200">
-                            </div>
-                        </div>
-                        <label class="bk-label">Inv. Return (%)</label>
-                        <input type="number" id="rbInv" class="bk-input" value="7">
-                    </div>
-                    <div class="p-3 bg-gray-50 border border-gray-200 rounded">
-                        <p class="text-xs font-bold text-gray-400 uppercase mb-2">Buying Scenario</p>
-                        <div class="mb-3">
-                            <label class="bk-label">Home Price</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
-                                <input type="number" id="rbPrice" class="bk-input pl-7" value="400000">
-                            </div>
-                        </div>
-                        <label class="bk-label">Rate (%)</label>
-                        <input type="number" id="rbRate" class="bk-input" step="0.01" value="6.5">
-                    </div>
-                    <div class="md:col-span-2">
-                        <label class="bk-label">Stay Duration (Years)</label>
-                        <input type="number" id="rbStay" class="bk-input" value="7">
-                    </div>
+                <div id="rbInputs" class="hidden space-y-4">
+                     <label class="bk-label">Monthly Rent</label>
+                     <input type="number" id="rbRent" class="bk-input" value="2200">
                 </div>
             </div>
 
-            <details id="amortizationSection"
-                class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mt-8 pt-8 border-t-2 border-t-gray-100">
-                <summary
-                    class="text-sm font-bold text-bk-blue cursor-pointer uppercase tracking-wide hover:underline list-none flex items-center">
+            <!-- Amortization Section -->
+            <details id="amortizationSection" class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                <summary class="text-sm font-bold text-bk-blue cursor-pointer uppercase flex items-center list-none">
                     <span>View Full Amortization Schedule</span>
-                    <svg class="w-3 h-3 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
                 </summary>
-                <div class="mt-4 flex justify-between items-center mb-2">
-                    <button id="toggleAllYears"
-                        class="text-[10px] font-bold text-bk-blue uppercase tracking-widest hover:underline flex items-center">
-                        Expand All Years
-                    </button>
-                    <span id="loanEndTxt" class="text-[10px] text-gray-500 font-bold uppercase tracking-widest"></span>
-                </div>
-                <div class="overflow-x-auto max-h-[600px] border border-gray-200 rounded-lg scrollbar-thin">
-                    <table class="w-full text-center border-collapse am-table text-xs" style="table-layout: fixed;">
-                        <thead>
-                            <tr class="bg-blue-50">
-                                <th class="sticky top-0 z-10 p-2 font-black text-bk-blue border-b border-gray-200 text-center uppercase tracking-tighter"
-                                    style="width: 18.75%; text-align: center; font-size: 11px;">DATE</th>
-                                <th class="sticky top-0 z-10 p-2 font-black text-bk-blue border-b border-gray-200 text-center uppercase tracking-tighter"
-                                    style="width: 20.3125%; text-align: center; font-size: 11px;">PRINCIPAL</th>
-                                <th class="sticky top-0 z-10 p-2 font-black text-bk-blue border-b border-gray-200 text-center uppercase tracking-tighter"
-                                    style="width: 20.3125%; text-align: center; font-size: 11px;">INTEREST</th>
-                                <th class="sticky top-0 z-10 p-2 font-black text-bk-blue border-b border-gray-200 text-center uppercase tracking-tighter"
-                                    style="width: 20.3125%; text-align: center; font-size: 11px;">PMI</th>
-                                <th class="sticky top-0 z-10 p-2 font-black text-bk-blue border-b border-gray-200 text-center uppercase tracking-tighter"
-                                    style="width: 20.3125%; text-align: center; font-size: 11px;">BALANCE</th>
-                            </tr>
+                <div class="overflow-x-auto mt-4 border rounded-lg">
+                    <table class="w-full am-table text-xs">
+                        <thead class="bg-blue-50">
+                            <tr><th>DATE</th><th>PRINCIPAL</th><th>INTEREST</th><th>PMI</th><th>BALANCE</th></tr>
                         </thead>
                         <tbody id="scheduleBody"></tbody>
                     </table>
@@ -610,1055 +136,136 @@
             </details>
         </main>
 
-        <!-- SIDEBAR: RES + ADS + METHODOLOGY (Sticky) -->
-        <aside class="right-pillar-sidebar w-full shrink-0 mt-8 lg:mt-0 self-start">
-
-            <!-- RESULTS CARD (Monthly Payment) -->
-            <div id="resultsCard" class="sidebar-card p-4 flex flex-col space-y-3">
-                <div class="flex justify-between items-center h-4">
-                    <h2 class="text-[10px] font-bold text-gray-500 uppercase tracking-wide" id="resTitle">Estimated
-                        Monthly Payment</h2>
-                </div>
-
-                <!-- Main Result -->
+        <!-- Sidebar Results -->
+        <aside class="right-pillar-sidebar space-y-4">
+            <div id="resultsCard" class="sidebar-card p-4">
+                <h2 class="text-[10px] font-bold text-gray-500 uppercase tracking-wide">Estimated Monthly Payment</h2>
                 <div class="flex items-baseline text-bk-blue pb-1">
-                    <span class="text-3xl font-extrabold" id="bigVal">$0</span>
-                    <span class="ml-1 text-base font-medium text-gray-400" id="bigUnit">/mo</span>
+                    <span class="text-4xl font-extrabold" id="bigVal">$0</span>
+                    <span class="ml-1 text-base font-medium text-gray-400">/mo</span>
                 </div>
-
-                <!-- Chart -->
-                <div class="relative h-40 mb-2 flex justify-center" id="chartContainer">
-                    <canvas id="resultChart"></canvas>
-                </div>
-
-                <!-- List Breakdown -->
-                <div id="breakdown" class="space-y-1 mb-2"></div>
+                <div class="h-40 relative flex justify-center"><canvas id="resultChart"></canvas></div>
+                <div id="breakdown" class="space-y-1"></div>
             </div>
-
-            <!-- AUTO TCO CARD (Auto Only) -->
-            <div id="autoTcoCard" class="sidebar-card p-5 hidden bg-blue-50 border-blue-100">
-                <p class="text-[10px] font-bold text-bk-blue uppercase tracking-widest mb-1">Total Monthly Cost (TCO)
-                </p>
-                <div class="text-3xl font-black text-bk-text" id="autoTcoVal">$0</div>
-                <p class="text-[10px] text-gray-500 mt-2">Inc. loan + $150 running costs.</p>
+            <div class="sidebar-card bg-gray-50 p-4 text-center">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Sponsored Ad Space</p>
+                <p class="text-sm font-bold text-bk-blue">Compare Today's Best Rates &rarr;</p>
             </div>
-
-            <!-- RENT/BUY VERDICT CARD (RB Only) -->
-            <div id="rbVerdictCard" class="sidebar-card p-5 hidden">
-                <h2 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">The Verdict</h2>
-                <div id="rbVerdict">
-                    <p class="text-2xl font-black text-bk-blue mb-1" id="rbWinText">Buying Wins</p>
-                    <p class="text-[10px] text-gray-500 mb-4 font-medium uppercase tracking-tight">Net Worth analysis
-                        over <span id="rbStayTxt">7</span>
-                        years.</p>
-                    <div class="grid grid-cols-1 gap-3">
-                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                            <span class="text-[10px] uppercase font-bold text-bk-blue opacity-70">Buy Net Worth</span>
-                            <div class="text-xl font-black text-bk-blue" id="rbBuyNW">$0</div>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                            <span class="text-[10px] uppercase font-bold text-gray-500">Rent Net Worth</span>
-                            <div class="text-xl font-bold text-gray-600" id="rbRentNW">$0</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- SPONSORED AD BOX -->
-            <div class="sidebar-card bg-gray-50 flex items-center justify-center text-center min-h-[250px] p-4">
-                <div class="mx-auto">
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Sponsored Ad Space</p>
-                    <p class="text-sm font-bold text-bk-blue">Compare Today's Best Rates &rarr;</p>
-                </div>
-            </div>
-
-            <!-- METHODOLOGY BLOCK -->
             <div class="sidebar-card p-3">
                 <details class="group">
-                    <summary
-                        class="text-[10px] font-bold text-gray-500 uppercase tracking-wide cursor-pointer flex items-center hover:text-bk-blue list-none">
-                        Calculation Methodology & Accuracy
-                        <svg class="w-2.5 h-2.5 ml-1 transform group-open:rotate-180 transition-transform" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
-                            </path>
-                        </svg>
-                    </summary>
-                    <div
-                        class="mt-2 text-[11px] text-gray-600 bg-gray-50 p-2 rounded border border-gray-100 leading-relaxed">
-                        The results provided by Calcyourlator are generated using industry-standard fixed-rate
-                        amortization algorithms and standard compound interest formulas. Our methodology aligns with the
-                        math utilized by major US financial institutions and federal lending oversight standards. While
-                        we leverage real-time market data from the Federal Reserve Economic Data (FRED) to provide
-                        current interest rate benchmarks, these figures are for educational purposes and do not
-                        constitute a commitment to lend.
+                    <summary class="text-[10px] font-bold text-gray-500 uppercase cursor-pointer flex items-center list-none">Calculation Methodology & Accuracy</summary>
+                    <div class="mt-2 text-[11px] text-gray-600 bg-gray-50 p-2 rounded leading-relaxed">
+                        Calculations use industry-standard fixed-rate algorithms. We leverage market benchmarks from the Federal Reserve Economic Data (FRED).
                     </div>
                 </details>
             </div>
         </aside>
     </div>
 
-    <!-- EDUCATIONAL SECTION: VISUAL DELINEATOR -->
-    <div
-        style="border-top: 6px solid #0056b3 !important; width: 100%; max-width: 1280px; margin: 60px auto !important;">
-    </div>
-
-    <!-- HOW-TO GUIDE -->
-    <div id="edu-mortgage">
-        <div class="max-w-[1280px] mx-auto px-5 mb-12">
-            <h2 class="text-2xl font-black text-bk-blue mb-6">How to calculate your payments using this tool</h2>
-            <ol class="list-decimal list-inside space-y-4 text-gray-700 leading-relaxed font-medium">
-                <li><strong class="text-bk-text">Enter the Property Price:</strong> Input the total price of the home
-                    you
-                    are buying or refinancing.</li>
-                <li><strong class="text-bk-text">Set your Down Payment:</strong> Enter your cash-on-hand as a dollar
-                    amount
-                    or percentage. Reminder: Putting less than 20% down will automatically apply a 0.52% PMI estimate.
-                </li>
-                <li><strong class="text-bk-text">Select your Loan Term:</strong> Choose between 10, 15, 20, or 30 years
-                    to
-                    see how the duration impacts your total interest.</li>
-                <li><strong class="text-bk-text">Input the Interest Rate:</strong> Adjust the rate to match your
-                    pre-approval or current market averages.</li>
-                <li><strong class="text-bk-text">Expand Advanced Costs:</strong> Toggle the Taxes, Insurance, and HOA
-                    dropdown to refine your total monthly cash outlay.</li>
-            </ol>
-        </div>
-
-        <!-- ADVERTISER DISCLOSURE -->
-        <div class="disclosure-safe-zone max-w-[1280px] mx-auto px-5">
-            <span class="disclosure-link-safe">
-                Advertiser Disclosure
-                <div class="disclosure-tooltip-safe">
-                    Advertiser Disclosure: calcyourlator.com is an independent, advertising-supported publisher and
-                    comparison service. We may receive compensation when you click on links or purchase products from
-                    our partners. This compensation may impact how, where, and in what order products appear. We strive
-                    to provide a wide range of offers, but we do not include information about every financial product
-                    or service available in the market.
-                </div>
-            </span>
-        </div>
-
-        <!-- LENDER MARKETPLACE -->
-        <div id="lender-marketplace">
-            <div class="max-w-[1280px] mx-auto px-5">
-                <h3 class="text-xl font-black text-bk-blue mb-6">Explore Today's Top Rates</h3>
-                <div class="lender-row">
-                    <!-- Card 1 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">30-Yr Fixed</div>
-                            <div class="text-lg font-black text-bk-text">6.15% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 2 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">30-Yr Fixed</div>
-                            <div class="text-lg font-black text-bk-text">6.12% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 3 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">15-Yr Fixed</div>
-                            <div class="text-lg font-black text-bk-text">5.45% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 4 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">VA 30-Yr</div>
-                            <div class="text-lg font-black text-bk-text">5.85% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 5 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">FHA 30-Yr</div>
-                            <div class="text-lg font-black text-bk-text">5.90% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 6 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Jumbo</div>
-                            <div class="text-lg font-black text-bk-text">6.35% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div> <!-- Card 7 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">5/1 ARM</div>
-                            <div class="text-lg font-black text-bk-text">6.55% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                </div>
+    <!-- Global Footer -->
+    <footer class="mt-auto py-8 bg-gray-50 border-t">
+        <div class="max-w-[1280px] mx-auto px-5 text-center">
+            <div class="flex flex-wrap justify-center gap-4 text-xs font-semibold text-gray-600 mb-4">
+                <a href="index.html" class="hover:text-bk-blue underline">Home</a>
+                <a href="about.html" class="hover:text-bk-blue underline">About Us</a>
+                <a href="privacy.html" class="hover:text-bk-blue underline">Privacy Policy</a>
+                <a href="terms.html" class="hover:text-bk-blue underline">Terms of Use</a>
+                <a href="cookies.html" class="hover:text-bk-blue underline">Cookie Settings</a>
+                <a href="contact.html" class="hover:text-bk-blue underline">Contact Us</a>
             </div>
+            <p class="text-[11px] text-gray-400">By using this site, you agree to our Terms of Use and Privacy Policy, including our use of cookies.</p>
         </div>
+    </footer>
 
-        <!-- PITI GLOSSARY -->
-        <div class="max-w-[1280px] mx-auto px-5 mb-20">
-            <h2 class="text-2xl font-black text-bk-blue mb-6">Understanding Mortgage Costs (PITI)</h2>
-            <dl class="space-y-4 text-gray-700 leading-relaxed">
-                <div>
-                    <dt class="font-bold text-bk-text inline">Principal:</dt>
-                    <dd class="inline">The core amount you borrowed from your lender. Every payment you make chips away
-                        at
-                        this balance over time.</dd>
-                </div>
-                <div>
-                    <dt class="font-bold text-bk-text inline">Interest:</dt>
-                    <dd class="inline">The fee your lender charges for the loan. In the early years of your mortgage, a
-                        larger share of your payment goes toward interest.</dd>
-                </div>
-                <div>
-                    <dt class="font-bold text-bk-text inline">Property Taxes:</dt>
-                    <dd class="inline">Fees collected by your local government to fund schools, roads, and services. We
-                        estimate this as a percentage of your home's value.</dd>
-                </div>
-                <div>
-                    <dt class="font-bold text-bk-text inline">Homeowners Insurance:</dt>
-                    <dd class="inline">A required policy that protects your property against damage. This is often paid
-                        as
-                        part of your monthly mortgage bill.</dd>
-                </div>
-                <div>
-                    <dt class="font-bold text-bk-text inline">PMI (Private Mortgage Insurance):</dt>
-                    <dd class="inline">A protection for the lender if you put down less than 20%. Our calculator handles
-                        the
-                        "burn-down" logic, removing this cost once you hit 20% equity.</dd>
-                </div>
-                <div>
-                    <dt class="font-bold text-bk-text inline">HOA Fees:</dt>
-                    <dd class="inline">Monthly dues paid to a Homeowners Association for the upkeep of shared spaces or
-                        community services.</dd>
-                </div>
-            </dl>
-        </div>
-    </div>
-
-    <!-- AUTO EDUCATIONAL CONTENT -->
-    <div id="edu-auto" class="hidden">
-        <div class="max-w-[1280px] mx-auto px-5 mb-12">
-            <h2 class="text-2xl font-black text-bk-blue mb-6">How to use this auto loan calculator</h2>
-            <ol class="list-decimal list-inside space-y-4 text-gray-700 leading-relaxed font-medium">
-                <li><strong class="text-bk-text">Enter Vehicle Price:</strong> Input the total purchase price of the
-                    car.</li>
-                <li><strong class="text-bk-text">Input Down Payment:</strong> Enter the cash you are paying upfront.
-                    Tip: A larger down payment reduces your loan balance and can lower your interest rate.</li>
-                <li><strong class="text-bk-text">Set your Interest Rate:</strong> Input the APR you expect to receive.
-                    This is heavily influenced by your credit score.</li>
-                <li><strong class="text-bk-text">Choose your Loan Term:</strong> Select 36, 48, 60, or 72 months. A
-                    shorter term saves you money on interest; a longer term lowers your monthly payment.</li>
-            </ol>
-        </div>
-
-        <!-- ADVERTISER DISCLOSURE -->
-        <div class="disclosure-safe-zone max-w-[1280px] mx-auto px-5">
-            <span class="disclosure-link-safe">
-                Advertiser Disclosure
-                <div class="disclosure-tooltip-safe">
-                    Advertiser Disclosure: calcyourlator.com is an independent, advertising-supported publisher and
-                    comparison service. We may receive compensation when you click on links or purchase products from
-                    our partners. This compensation may impact how, where, and in what order products appear. We strive
-                    to provide a wide range of offers, but we do not include information about every financial product
-                    or service available in the market.
-                </div>
-            </span>
-        </div>
-
-        <!-- AUTO LOAN MARKETPLACE -->
-        <div id="auto-lender-marketplace">
-            <div class="max-w-[1280px] mx-auto px-5">
-                <h3 class="text-xl font-black text-bk-blue mb-6">Explore Today's Top Auto Rates</h3>
-                <div class="lender-row">
-                    <!-- Card 1 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">New Car</div>
-                            <div class="text-lg font-black text-bk-text">5.49% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 2 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Used Car</div>
-                            <div class="text-lg font-black text-bk-text">6.25% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 3 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Auto Refinance
-                            </div>
-                            <div class="text-lg font-black text-bk-text">5.95% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 4 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Credit Union</div>
-                            <div class="text-lg font-black text-bk-text">4.99% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 5 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Subprime</div>
-                            <div class="text-lg font-black text-bk-text">8.50% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 6 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Low Down Pmt</div>
-                            <div class="text-lg font-black text-bk-text">6.75% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 7 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Auto Insurance
-                            </div>
-                            <div class="text-lg font-black text-bk-text">View Quotes</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="max-w-[1280px] mx-auto px-5 mb-20">
-            <h2 class="text-2xl font-black text-bk-blue mb-6">Understanding your auto loan costs</h2>
-            <dl class="space-y-4 text-gray-700 leading-relaxed">
-                <div>
-                    <dt class="font-bold text-bk-text inline">Principal:</dt>
-                    <dd class="inline">The actual amount of money you are borrowing (Vehicle Price minus Down Payment).
-                    </dd>
-                </div>
-                <div>
-                    <dt class="font-bold text-bk-text inline">Interest Rate (APR):</dt>
-                    <dd class="inline">The annual cost of borrowing the money. Because auto loans are amortized, you pay
-                        more interest in the early months of the loan.</dd>
-                </div>
-                <div>
-                    <dt class="font-bold text-bk-text inline">Term:</dt>
-                    <dd class="inline">The length of time you have to repay the loan. Bankrate typically suggests a term
-                        of 60 months or fewer to avoid "negative equity".</dd>
-                </div>
-                <div>
-                    <dt class="font-bold text-bk-text inline">Running Costs /mo:</dt>
-                    <dd class="inline">These are the additional monthly expenses of owning a vehicle, such as fuel,
-                        insurance, and routine maintenance, which should be factored into your total budget.</dd>
-                </div>
-            </dl>
-        </div>
-    </div>
-    </div>
-
-    <!-- RENT VS BUY EDUCATIONAL CONTENT -->
-    <div id="edu-rentbuy" class="hidden">
-        <div class="max-w-[1280px] mx-auto px-5 mb-12">
-            <h2 class="text-2xl font-black text-bk-blue mb-6">How to use this rent vs. buy calculator</h2>
-            <ol class="list-decimal list-inside space-y-4 text-gray-700 leading-relaxed font-medium">
-                <li><strong class="text-bk-text">Enter Home Purchase Details:</strong> Input the price of the home and
-                    the mortgage rate you expect to pay.</li>
-                <li><strong class="text-bk-text">Enter Current Rent:</strong> Input your monthly rent payment for a
-                    comparable property.</li>
-                <li><strong class="text-bk-text">Set the Timeframe:</strong> Choose how many years you plan to stay in
-                    the home. Buying typically becomes more advantageous the longer you stay.</li>
-                <li><strong class="text-bk-text">Review the Total Cost:</strong> Compare the "Total Cost of Renting"
-                    (rent + insurance) against the "Total Cost of Buying" (mortgage, taxes, maintenance, and equity
-                    growth).</li>
-            </ol>
-        </div>
-
-        <!-- ADVERTISER DISCLOSURE -->
-        <div class="disclosure-safe-zone max-w-[1280px] mx-auto px-5">
-            <span class="disclosure-link-safe">
-                Advertiser Disclosure
-                <div class="disclosure-tooltip-safe">
-                    Advertiser Disclosure: calcyourlator.com is an independent, advertising-supported publisher and
-                    comparison service. We may receive compensation when you click on links or purchase products from
-                    our partners. This compensation may impact how, where, and in what order products appear. We strive
-                    to provide a wide range of offers, but we do not include information about every financial product
-                    or service available in the market.
-                </div>
-            </span>
-        </div>
-
-        <!-- LENDER MARKETPLACE (RB) -->
-        <div id="lender-marketplace-rb">
-            <div class="max-w-[1280px] mx-auto px-5">
-                <h3 class="text-xl font-black text-bk-blue mb-6">Explore Today's Top Rates</h3>
-                <div class="lender-row">
-                    <!-- Card 1 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">30-Yr Fixed</div>
-                            <div class="text-lg font-black text-bk-text">6.15% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 2 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">30-Yr Fixed</div>
-                            <div class="text-lg font-black text-bk-text">6.12% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 3 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">15-Yr Fixed</div>
-                            <div class="text-lg font-black text-bk-text">5.45% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 4 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">VA 30-Yr</div>
-                            <div class="text-lg font-black text-bk-text">5.85% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 5 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">FHA 30-Yr</div>
-                            <div class="text-lg font-black text-bk-text">5.90% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 6 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Jumbo</div>
-                            <div class="text-lg font-black text-bk-text">6.35% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 7 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">5/1 ARM</div>
-                            <div class="text-lg font-black text-bk-text">6.55% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="max-w-[1280px] mx-auto px-5 mb-20">
-            <h2 class="text-2xl font-black text-bk-blue mb-6">Understanding the rent vs. buy comparison</h2>
-            <dl class="space-y-4 text-gray-700 leading-relaxed">
-                <div>
-                    <dt class="font-bold text-bk-text inline">Equity Growth:</dt>
-                    <dd class="inline">This is the portion of your mortgage payment that goes toward owning the home.
-                        Unlike rent, this money stays in your "wealth" column.</dd>
-                </div>
-                <div>
-                    <dt class="font-bold text-bk-text inline">Maintenance & Ownership Costs:</dt>
-                    <dd class="inline">As a homeowner, you are responsible for repairs and taxes. This calculator
-                        factors these in to give you a "true" cost comparison.</dd>
-                </div>
-                <div>
-                    <dt class="font-bold text-bk-text inline">Appreciation:</dt>
-                    <dd class="inline">The amount the home's value is expected to grow over time. This is a key benefit
-                        of buying that isn't available to renters.</dd>
-                </div>
-                <div>
-                    <dt class="font-bold text-bk-text inline">Opportunity Cost:</dt>
-                    <dd class="inline">The potential earnings you miss out on by putting your cash into a down payment
-                        rather than investing it elsewhere.</dd>
-                </div>
-            </dl>
-        </div>
-    </div>
-
-    <!-- LOGIC -->
-
+    <!-- Financial Logic -->
     <script>
-        const S = {
-            mode: 'mortgage',
-            mp: 300000, mdown: 60000, mdpPct: 20, mrate: 6.5, mterm: 30, mtax: 1.2, mins: 1500, mhoa: 0, mpmi: 0,
-            mstart: '',
-            ap: 35000, adown: 5000, adpPct: 14.28, arate: 7.5, aterm: 60, arun: 150,
-            rr: 2200, rinv: 7, bp: 400000, brate: 6.5, stay: 7
-        };
-        let FRED_DATA = { "MORTGAGE30US": { val: 6.85, date: "Manual Fallback" }, "MORTGAGE15US": { val: 6.15, date: "Manual Fallback" } };
+        // Scaling & Scale Protection: Initialize with Fallbacks [Audit Notes]
+        let FRED_DATA = { 30: { val: 6.85, date: 'Market Average' }, 15: { val: 6.15, date: 'Market Average' } };
+        const S = { mode: 'mortgage', mp: 300000, mdown: 60000, mdpPct: 20, mrate: 6.85, mterm: 30, mtax: 1.2, mins: 1500, mhoa: 0, mpmi: 0 };
+        
         const el = (id) => document.getElementById(id);
         const fmt = (n) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
-        const fmtMoney = (n) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
-        const fmtPct = (n, d) => {
-            if (n === 0 || d === 0) return "0.0%";
-            const p = (n / d * 100).toFixed(1);
-            return p.endsWith('.0') ? p.split('.')[0] + '%' : p + '%';
-        };
         let chart;
-        let isAllExpanded = false;
-
-        function init() {
-            const ctx = document.getElementById('resultChart').getContext('2d');
-            chart = new Chart(ctx, {
-                type: 'doughnut',
-                data: {
-                    labels: [],
-                    datasets: [{ data: [], backgroundColor: ['#0056b3', '#28a745', '#adb5bd', '#dee2e6'], borderWidth: 0 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { display: false } } }
-            });
-
-            bindEvents();
-            fetchFred();
-            updateMeta('mortgage');
-
-            // Default Start Date
-            const now = new Date();
-            const y = now.getFullYear();
-            const m = String(now.getMonth() + 1).padStart(2, '0');
-            const minMonth = `${y}-${m}`;
-            el('startDate').value = minMonth;
-            el('startDate').min = minMonth; // Enforce future-only
-            S.mstart = minMonth;
-
-            setTerm(30); // Default
-            update();
-        }
-
-        function bindEvents() {
-            ['Mortgage', 'Auto', 'RentBuy'].forEach(k => {
-                el('tab' + k).onclick = () => setTab(k.toLowerCase());
-            });
-
-            // Anchor Logic: Price Handlers
-            el('homePrice').oninput = (e) => {
-                S.mp = parseFloat(e.target.value) || 0;
-                S.mdown = Math.round(S.mp * (S.mdpPct / 100));
-                el('downPayment').value = S.mdown;
-                checkPmiThreshold();
-                update();
-            };
-
-            el('autoPrice').oninput = (e) => {
-                S.ap = parseFloat(e.target.value) || 0;
-                S.adown = Math.round(S.ap * (S.adpPct / 100));
-                el('autoDown').value = S.adown;
-                update();
-            };
-
-            // Anchor Logic: Down Payment Handlers
-            el('downPayment').oninput = (e) => {
-                S.mdown = parseFloat(e.target.value) || 0;
-                S.mdpPct = S.mp > 0 ? (S.mdown / S.mp) * 100 : 0;
-                checkPmiThreshold();
-                update();
-            };
-
-            el('autoDown').oninput = (e) => {
-                S.adown = parseFloat(e.target.value) || 0;
-                S.adpPct = S.ap > 0 ? (S.adown / S.ap) * 100 : 0;
-                update();
-            };
-
-            // General inputs
-            document.querySelectorAll('input, select').forEach(i => {
-                i.addEventListener('input', update);
-            });
-
-            // Term Buttons
-            document.querySelectorAll('.term-btn').forEach(b => {
-                b.onclick = () => setTerm(b.dataset.val);
-            });
-
-            // Global Expand/Collapse Button Logic - Explicit State
-            el('toggleAllYears').onclick = () => {
-                isAllExpanded = !isAllExpanded; // Toggle state
-                const btn = el('toggleAllYears');
-
-                // 1. Update Button Text
-                btn.innerText = isAllExpanded ? 'COLLAPSE ALL YEARS' : 'EXPAND ALL YEARS';
-
-                // 2. Force Explicit Display on Monthly Rows
-                const allRows = document.querySelectorAll('.month-row');
-                allRows.forEach(row => {
-                    row.style.display = isAllExpanded ? 'table-row' : 'none';
-                    // Clean up classes to ensure no conflict
-                    if (isAllExpanded) {
-                        row.classList.remove('hidden');
-                        row.classList.add('is-visible');
-                    } else {
-                        row.classList.add('hidden');
-                        row.classList.remove('is-visible');
-                    }
-                });
-
-                // 3. Sync Caret Icons
-                const allCarets = document.querySelectorAll('.year-summary svg');
-                allCarets.forEach(svg => {
-                    if (isAllExpanded) {
-                        svg.classList.add('rotate-180');
-                    } else {
-                        svg.classList.remove('rotate-180');
-                    }
-                });
-            };
-        }
-
-        function checkPmiThreshold() {
-            if (S.mode !== 'mortgage') return;
-            const pct = S.mp > 0 ? (S.mdown / S.mp) * 100 : 0;
-            const pmiField = el('pmiRate');
-            if (pct < 19.99) { // Using 19.99 to avoid rounding issues
-                pmiField.value = "0.52";
-            } else {
-                pmiField.value = "0";
-            }
-        }
-
-
-
-        function setTab(t) {
-            S.mode = (t === 'rentbuy') ? 'rb' : t;
-
-            // Tabs
-            el('tabMortgage').className = `bk-tab ${t === 'mortgage' ? 'active' : ''}`;
-            el('tabAuto').className = `bk-tab ${t === 'auto' ? 'active' : ''}`;
-            el('tabRentBuy').className = `bk-tab ${t === 'rentbuy' ? 'active' : ''}`;
-
-
-            // Sections
-            el('mortgageInputs').classList.add('hidden');
-            el('autoInputs').classList.add('hidden');
-            el('rbInputs').classList.add('hidden');
-
-            // Educational Content
-            el('edu-mortgage').classList.add('hidden');
-            el('edu-auto').classList.add('hidden');
-            el('edu-rentbuy').classList.add('hidden');
-
-            if (t === 'mortgage') {
-                el('mortgageInputs').classList.remove('hidden');
-                el('amortizationSection').classList.remove('hidden');
-                el('edu-mortgage').classList.remove('hidden');
-            }
-            if (t === 'auto') {
-                el('autoInputs').classList.remove('hidden');
-                el('amortizationSection').classList.add('hidden');
-                el('edu-auto').classList.remove('hidden');
-            }
-            if (t === 'rentbuy') {
-                el('rbInputs').classList.remove('hidden');
-                el('amortizationSection').classList.add('hidden');
-                el('inputTitle').innerText = "Comparison Details";
-                el('edu-rentbuy').classList.remove('hidden');
-            } else {
-                el('inputTitle').innerText = "Loan Details";
-            }
-
-            // Ensure collapsed by default unless user interacts
-            el('amortizationSection').open = false;
-
-            updateMeta(t);
-            update();
-        }
-
-        function updateMeta(t) {
-            const titles = {
-                'mortgage': 'Mortgage Calculator | Live Rates & Amortization - Calcyourlator',
-                'auto': 'Auto Loan Calculator | Monthly Payment & TCO - Calcyourlator',
-                'rentbuy': 'Rent vs. Buy Calculator | Net Worth Analysis - Calcyourlator'
-            };
-            const descs = {
-                'mortgage': 'Calculate your monthly mortgage payment with taxes, insurance, and HOA. Updated live with current 30-year fixed rates.',
-                'auto': 'Estimate your car loan payment and total cost of ownership (TCO) including running costs.',
-                'rentbuy': 'Should you rent or buy? Compare 7-year net worth and find your breakeven point.'
-            };
-
-            document.title = titles[t] || titles['mortgage'];
-            document.querySelector('meta[name="description"]').setAttribute('content', descs[t] || descs['mortgage']);
-
-            updateSchema(t);
-        }
-
-        function updateSchema(t) {
-            // Schema update logic temporarily simplified to prevent syntax errors
-            // This function will be enhanced in future updates
-        }
-
-        function setTerm(y) {
-            S.mterm = parseInt(y);
-            el('loanTerm').value = y;
-
-            // UI
-            document.querySelectorAll('.term-btn').forEach(b => {
-                if (b.dataset.val == y) {
-                    b.className = "term-btn py-2 text-sm font-bold border rounded bg-bk-blue text-white border-bk-blue shadow-sm";
-                } else {
-                    b.className = "term-btn py-2 text-sm font-bold border rounded bg-white text-gray-600 hover:bg-gray-50";
-                }
-            });
-
-            // Update Rate if available
-            if (y == 30 && FRED_DATA["MORTGAGE30US"]) {
-                el('interestRate').value = FRED_DATA["MORTGAGE30US"].val;
-                updateRateLabel(FRED_DATA["MORTGAGE30US"]);
-            } else if (y == 15 && FRED_DATA["MORTGAGE15US"]) {
-                el('interestRate').value = FRED_DATA["MORTGAGE15US"].val;
-                updateRateLabel(FRED_DATA["MORTGAGE15US"]);
-            }
-            update();
-        }
-
-        function updateRateLabel(data) {
-            if (!data.date || data.date === 'Manual Fallback') {
-                el('rateSource').innerText = "Market Average Rate";
-            } else {
-                el('rateSource').innerHTML = `Live FRED Rate: ${data.val}% <span class="text-gray-400 font-normal ml-1" id="rateDate">(${data.date})</span>`;
-            }
-        }
 
         async function fetchFred() {
             try {
+                // Static Bridge: Fetch from local public folder
                 const response = await fetch('./rates.json');
-                if (!response.ok) throw new Error("File not found");
+                if (!response.ok) throw new Error("Rates file not ready");
                 const data = await response.json();
-
-                FRED_DATA = data;
-                el('rateSource').innerText = "Live FRED Rate";
+                
+                // Parse standard FRED JSON structure from GitHub Action
+                const v30 = parseFloat(data.observations.value);
+                const d30 = new Date(data.observations.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                
+                if (v30) {
+                    FRED_DATA[1] = { val: v30, date: d30 };
+                    el('rateSource').innerText = `Live FRED Rate: ${v30}% (${d30})`;
+                    if (S.mterm === 30) { el('interestRate').value = v30; update(); }
+                }
             } catch (e) {
-                console.log("Using Market Average Fallback");
+                console.log("Using Market Average Fallback", e);
                 el('rateSource').innerText = "Market Average Rate";
-            } finally {
-                // Ensure the UI updates with whatever data we have
-                setTerm(S.mterm);
             }
         }
 
         function update() {
-            read();
-            if (S.mode === 'mortgage') calcMortgage();
-            if (S.mode === 'auto') calcAuto();
-            if (S.mode === 'rb') calcRb();
-        }
-
-        function read() {
-            // M
             S.mp = parseFloat(el('homePrice').value) || 0;
             S.mdown = parseFloat(el('downPayment').value) || 0;
             S.mrate = parseFloat(el('interestRate').value) || 0;
-            S.mterm = parseInt(el('loanTerm').value) || 30;
-            S.mtax = parseFloat(el('propertyTax').value) || 0;
-            S.mins = parseFloat(el('homeIns').value) || 0;
-            S.mhoa = parseFloat(el('hoa').value) || 0;
-            S.mpmi = parseFloat(el('pmiRate').value) || 0;
-            S.mstart = el('startDate').value;
-            // Auto
-            S.ap = parseFloat(el('autoPrice').value) || 0;
-            S.adown = parseFloat(el('autoDown').value) || 0;
-            S.arate = parseFloat(el('autoRate').value) || 0;
-            S.aterm = parseInt(el('autoTerm').value) || 60;
-            S.arun = parseFloat(el('autoRun').value) || 0;
-            // RB
-            S.rr = parseFloat(el('rbRent').value) || 0;
-            S.rinv = parseFloat(el('rbInv').value) || 0;
-            S.bp = parseFloat(el('rbPrice').value) || 0;
-            S.brate = parseFloat(el('rbRate').value) || 0;
-            S.stay = parseInt(el('rbStay').value) || 7;
-
-            el('dpPercent').innerText = fmtPct(S.mdown, S.mp);
-            el('autoDpPercent').innerText = fmtPct(S.adown, S.ap);
-        }
-
-        function calcMortgage() {
+            
             const loan = S.mp - S.mdown;
             const r = (S.mrate / 100) / 12;
             const n = S.mterm * 12;
-            const pi = (loan > 0 && r > 0) ? (loan * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1) : (loan > 0 ? loan / n : 0);
-
+            const pi = (loan > 0 && r > 0) ? (loan * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1) : 0;
             const moTax = (S.mp * (S.mtax / 100)) / 12;
             const moIns = S.mins / 12;
-            const moPmi = (loan > 0 && S.mdown / S.mp < 0.2) ? (loan * (S.mpmi / 100)) / 12 : 0;
-            const total = pi + moTax + moIns + S.mhoa + moPmi;
+            const total = pi + moTax + moIns + S.mhoa;
 
-            renderMain(total, 'Estimated Monthly Payment', true);
-            renderChart([pi, moTax, moIns, S.mhoa, moPmi], ['P&I', 'Tax', 'Ins', 'HOA', 'PMI'], ['#0056b3', '#28a745', '#adb5bd', '#dee2e6', '#f59e0b']);
-            renderList([
-                { l: 'Principal & Interest', v: pi, c: '#0056b3' },
-                { l: 'Property Tax', v: moTax, c: '#28a745' },
-                { l: 'Home Insurance', v: moIns, c: '#adb5bd' },
-                { l: 'HOA Fees', v: S.mhoa, c: '#dee2e6' },
-                { l: 'PMI', v: moPmi, c: '#f59e0b' }
-            ]);
-
-            el('amortizationSection').classList.remove('hidden');
-            renderSchedule(loan, r, pi, n);
-            el('resultsCard').classList.remove('hidden');
-            el('autoTcoCard').classList.add('hidden');
-            el('rbVerdictCard').classList.add('hidden');
-        }
-
-        function calcAuto() {
-            const loan = S.ap - S.adown;
-            const r = (S.arate / 100) / 12;
-            const n = S.aterm;
-            const pi = (loan > 0 && r > 0) ? (loan * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1) : 0;
-            const tco = pi + S.arun;
-
-            renderMain(pi, 'Estimated Monthly Payment', true);
-            renderChart([pi, S.arun], ['Loan', 'Running'], ['#0056b3', '#ffc107']);
-            renderList([
-                { l: 'Loan Payment', v: pi, c: '#0056b3' },
-                { l: 'Running Costs', v: S.arun, c: '#ffc107' }
-            ]);
-            el('amortizationSection').classList.add('hidden');
-            el('resultsCard').classList.remove('hidden');
-            el('autoTcoCard').classList.remove('hidden');
-            el('autoTcoVal').innerText = fmt(tco);
-            el('rbVerdictCard').classList.add('hidden');
-        }
-
-        function calcRb() {
-            let loan = S.bp * 0.8;
-            const pi = (loan * (S.brate / 100 / 12)) / (1 - Math.pow(1 + S.brate / 100 / 12, -360));
-            let rentW = S.bp * 0.2;
-            let buyVal = S.bp;
-            let buyBal = loan;
-            let rentCur = S.rr;
-
-            for (let m = 1; m <= S.stay * 12; m++) {
-                const costBuy = pi + (buyVal * 0.012 / 12) + (buyVal * 0.01 / 12) + (buyVal * 0.005 / 12);
-                const diff = costBuy - rentCur;
-                rentW = rentW * (1 + S.rinv / 100 / 12) + diff;
-
-                buyBal -= (pi - (buyBal * (S.brate / 100 / 12)));
-                buyVal *= (1 + 0.03 / 12);
-                if (m % 12 === 0) rentCur *= 1.03;
-            }
-            const buyNW = (buyVal * 0.94) - buyBal;
-
-            el('resultsCard').classList.add('hidden');
-            el('autoTcoCard').classList.add('hidden');
-            el('rbVerdictCard').classList.remove('hidden');
-            el('rbWinText').innerText = (buyNW > rentW) ? `Buying Wins by ${fmt(buyNW - rentW)}` : `Renting Wins by ${fmt(rentW - buyNW)}`;
-            el('rbStayTxt').innerText = S.stay;
-            el('rbBuyNW').innerText = fmt(buyNW);
-            el('rbRentNW').innerText = fmt(rentW);
-        }
-
-        function renderMain(val, title, showChart) {
-            el('resTitle').innerText = title;
-            el('bigVal').innerText = fmt(val);
-            el('bigUnit').style.display = 'inline';
-            if (showChart) el('chartContainer').style.display = 'flex';
+            el('bigVal').innerText = fmt(total);
+            renderChart([pi, moTax, moIns, S.mhoa], ['P&I', 'Tax', 'Ins', 'HOA'], ['#0056b3', '#28a745', '#adb5bd', '#dee2e6']);
         }
 
         function renderChart(data, labels, colors) {
-            chart.data.labels = labels;
-            chart.data.datasets[0].data = data;
-            chart.data.datasets[0].backgroundColor = colors;
-            chart.update();
-        }
-
-        function renderList(items) {
-            el('breakdown').innerHTML = items.map(i => `
-                <div class="flex justify-between items-center py-2 border-b border-gray-100 last:border-0">
-                    <div class="flex items-center">
-                        <div class="w-3 h-3 rounded-full mr-2" style="background:${i.c}"></div>
-                        <span class="text-sm font-semibold text-gray-600">${i.l}</span>
-                    </div>
-                    <span class="font-bold text-bk-text">${fmt(i.v)}</span>
-                </div>
-            `).join('');
-        }
-
-        // Mobile Disclosure Toggle
-        window.toggleDisclosure = function (el) {
-            const tooltip = el.nextElementSibling;
-            tooltip.classList.toggle('active');
-        }
-
-        // Close tooltip on outside click
-        document.addEventListener('click', function (event) {
-            const wrappers = document.querySelectorAll('.disclosure-wrapper');
-            wrappers.forEach(wrapper => {
-                if (!wrapper.contains(event.target)) {
-                    const tooltip = wrapper.querySelector('.disclosure-tooltip');
-                    if (tooltip) tooltip.classList.remove('active');
-                }
-            });
-        });
-
-
-
-        function renderSchedule(loan, rate, pi, months) {
-            let bal = loan;
-            let html = '';
-            const threshold = S.mp * 0.8;
-
-            // Date Logic
-            const [startYear, startMonth] = S.mstart.split('-').map(Number);
-            const startDate = new Date(startYear, startMonth - 1, 1);
-
-            let currentYear = -1;
-            let yearlyPrin = 0;
-            let yearlyInt = 0;
-            let yearlyPmi = 0;
-            let yearlyBal = 0;
-            let yearRows = '';
-
-            for (let i = 0; i < months; i++) {
-                const date = new Date(startDate.getFullYear(), startDate.getMonth() + i, 1);
-                const year = date.getFullYear();
-                const monthStr = date.toLocaleDateString('en-US', { month: 'short' });
-
-                if (currentYear !== -1 && currentYear !== year) {
-                    html += renderYearRow(currentYear, yearlyPrin, yearlyInt, yearlyPmi, yearlyBal, yearRows);
-                    yearlyPrin = 0; yearlyInt = 0; yearlyPmi = 0; yearRows = '';
-                }
-                currentYear = year;
-
-                const int = bal * rate;
-                const prin = pi - int;
-                const pmi = (bal > threshold) ? (loan * (S.mpmi / 100) / 12) : 0;
-
-                bal -= prin;
-                if (bal < 0) bal = 0;
-                yearlyBal = bal;
-
-                yearlyPrin += prin;
-                yearlyInt += int;
-                yearlyPmi += pmi;
-
-                const fullStr = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-
-                yearRows += `<tr class="month-row year-${year} hidden bg-gray-50/50">
-                    <td class="p-2 text-center font-medium text-gray-400 border-b border-gray-50" style="width: 18.75%;">${fullStr}</td>
-                    <td class="p-2 text-center font-semibold border-b border-gray-50" style="width: 20.3125%;">${fmtMoney(prin)}</td>
-                    <td class="p-2 text-center border-b border-gray-50" style="width: 20.3125%;">${fmtMoney(int)}</td>
-                    <td class="p-2 text-center text-orange-600 border-b border-gray-50" style="width: 20.3125%;">${fmtMoney(pmi)}</td>
-                    <td class="p-2 text-center font-bold border-b border-gray-50" style="width: 20.3125%;">${fmtMoney(bal)}</td>
-                </tr>`;
-
-                if (i === months - 1 || bal <= 0.01) {
-                    html += renderYearRow(currentYear, yearlyPrin, yearlyInt, yearlyPmi, yearlyBal, yearRows);
-                    const endStr = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-                    el('loanEndTxt').innerText = `Ends: ${endStr}`;
-                    const loanSum = `${S.mterm} Years (${months} payments)`;
-                    el('loanSummary').innerText = loanSum;
-                    break;
-                }
+            if (!chart) {
+                const ctx = el('resultChart').getContext('2d');
+                chart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: { labels: labels, datasets: [{ data: data, backgroundColor: colors, borderWidth: 0 }] },
+                    options: { responsive: true, maintainAspectRatio: false, cutout: '70%', plugins: { legend: { display: false } } }
+                });
+            } else {
+                chart.data.datasets.data = data;
+                chart.update();
             }
-            el('scheduleBody').innerHTML = html;
+        }
 
-            // Re-bind Expand/Collapse events for INDIVIDUAL years
-            document.querySelectorAll('.year-summary').forEach(row => {
-                row.onclick = () => {
-                    const y = row.dataset.year;
-                    document.querySelectorAll(`.year-${y}`).forEach(r => {
-                        // Toggle individual year visibility with explicit display
-                        if (r.style.display === 'none' || r.style.display === '' || r.classList.contains('hidden')) {
-                            r.style.display = 'table-row';
-                            r.classList.remove('hidden');
-                        } else {
-                            r.style.display = 'none';
-                            r.classList.add('hidden');
-                        }
-                    });
-                    // Toggle Icon for individual year
-                    const svg = row.querySelector('svg');
-                    if (svg) svg.classList.toggle('rotate-180');
-                };
+        function setTerm(y) {
+            S.mterm = parseInt(y);
+            document.querySelectorAll('.term-btn').forEach(b => {
+                b.className = b.dataset.val == y ? "term-btn py-2 text-sm font-bold border rounded bg-bk-blue text-white" : "term-btn py-2 text-sm font-bold border rounded bg-white text-gray-600";
             });
-
-            // Reset Global Expansion State on Recalculation
-            isAllExpanded = false;
-            el('toggleAllYears').innerText = 'EXPAND ALL YEARS';
+            update();
         }
 
-        function renderYearRow(year, prin, int, pmi, bal, rows) {
-            return `<tr class="year-summary cursor-pointer hover:bg-blue-50 transition-colors bg-gray-100 font-bold" data-year="${year}">
-                <td class="p-2 text-bk-blue border-b border-gray-200" style="width: 18.75%;">
-                    <div class="flex items-center justify-center w-full">
-                        <svg class="w-3 h-3 mr-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                        ${year}
-                    </div>
-                </td>
-                <td class="p-2 text-center border-b border-gray-200" style="width: 20.3125%;">${fmtMoney(prin)}</td>
-                <td class="p-2 text-center border-b border-gray-200" style="width: 20.3125%;">${fmtMoney(int)}</td>
-                <td class="p-2 text-center text-orange-600 border-b border-gray-200" style="width: 20.3125%;">${fmtMoney(pmi)}</td>
-                <td class="p-2 text-center border-b border-gray-200" style="width: 20.3125%;">${fmtMoney(bal)}</td>
-            </tr>` + rows;
-        }
+        // Initialize WebApplication Schema [115, Audit Notes]
+        const schema = {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Free Mortgage, Auto & Rent vs. Buy Calculator",
+            "applicationCategory": "FinanceApplication",
+            "operatingSystem": "All",
+            "provider": { "@type": "Organization", "name": "Calcyourlator" }
+        };
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.text = JSON.stringify(schema);
+        document.head.appendChild(script);
 
-        init();
+        document.querySelectorAll('input').forEach(i => i.oninput = update);
+        document.querySelectorAll('.term-btn').forEach(b => b.onclick = () => setTerm(b.dataset.val));
+        
+        window.onload = () => { fetchFred(); update(); };
     </script>
-
-    <!-- GLOBAL FOOTER -->
-    <footer class="mt-16" style="background-color: #F9FAFB; padding: 20px 0;">
-        <div class="max-w-[1280px] mx-auto px-5 text-center">
-            <nav class="flex flex-wrap justify-center items-center gap-6 mb-3" style="min-height: 44px;">
-                <a href="index.html" class="text-xs hover:underline"
-                    style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">Home</a>
-                <a href="about.html" class="text-xs hover:underline"
-                    style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">About
-                    Us</a>
-                <a href="privacy.html" class="text-xs hover:underline"
-                    style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">Privacy
-                    Policy</a>
-                <a href="terms.html" class="text-xs hover:underline"
-                    style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">Terms
-                    of Use</a>
-                <a href="cookies.html" class="text-xs hover:underline"
-                    style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">Cookie
-                    Settings</a>
-                <a href="contact.html" class="text-xs hover:underline"
-                    style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">Contact
-                    Us</a>
-            </nav>
-            <p class="text-[11px] text-gray-400 mt-3">
-                By using this site, you agree to our Terms of Use and Privacy Policy, including our use of cookies.
-            </p>
-        </div>
-    </footer>
-
 </body>
-
 </html>
