@@ -14,6 +14,9 @@ jobs:
 
       - name: Fetch FRED Data
         run: |
+          # We force the creation of the public folder if it doesn't exist, 
+          # then save the file directly into it.
+          mkdir -p public
           curl "https://api.stlouisfed.org/fred/series/observations?series_id=MORTGAGE30US&api_key=${{ secrets.FRED_API_KEY }}&file_type=json&limit=1&sort_order=desc" > public/rates.json
 
       - name: Deploy to Firebase
