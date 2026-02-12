@@ -359,6 +359,24 @@
             opacity: 1;
             visibility: visible;
         }
+
+        /* Mobile Table Legibility Fix */
+        @media (max-width: 768px) {
+            .am-table {
+                min-width: 650px !important;
+                /* Forces legible column width */
+                table-layout: fixed !important;
+                width: auto !important;
+            }
+
+            .am-table th,
+            .am-table td {
+                padding-left: 4px !important;
+                padding-right: 4px !important;
+                font-size: 10px !important;
+                /* Optimizes for data density */
+            }
+        }
     </style>
 </head>
 
@@ -1357,28 +1375,27 @@
 
         async function fetchFred() {
             try {
-                // 1. Fetch from the local static bridge
+                // 1. Target the local static bridge
                 const response = await fetch('./rates.json');
-                if (!response.ok) throw new Error("Rates file not found");
+                if (!response.ok) throw new Error("Rates file not ready");
                 const data = await response.json();
 
-                // 2. Map raw FRED observations to the local FRED_DATA object
-                // Note: FRED returns an array in 'observations', we take the first item
-                if (data.observations && data.observations[0]) {
-                    const liveRate = parseFloat(data.observations[0].value);
-                    const liveDate = data.observations[0].date;
+                // 2. Map the raw FRED observations (Array) to the local state
+                if (data.observations && data.observations) {
+                    const liveRate = parseFloat(data.observations.value);
+                    const liveDate = data.observations.date;
 
-                    // Update local state so setTerm() can find the values
+                    // Update global state object [4]
                     FRED_DATA["MORTGAGE30US"] = { val: liveRate, date: liveDate };
 
-                    // Trigger UI Label Update
+                    // Trigger UI Label update
                     updateRateLabel(FRED_DATA["MORTGAGE30US"]);
                 }
             } catch (e) {
-                console.log("Using Market Average Fallback", e);
+                console.log("Fallback: Using Market Average");
                 el('rateSource').innerText = "Market Average Rate";
             } finally {
-                // 3. Ensure the UI updates with current term selection (30yr or 15yr)
+                // 3. Ensure the UI populates with current term selection [5]
                 setTerm(S.mterm);
             }
         }
