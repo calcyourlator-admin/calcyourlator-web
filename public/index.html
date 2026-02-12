@@ -1345,23 +1345,27 @@
             S.mterm = parseInt(y);
             el('loanTerm').value = y;
 
-            // UI
+            // UI: Toggle Active Button State
             document.querySelectorAll('.term-btn').forEach(b => {
-                if (b.dataset.val == y) {
-                    b.className = "term-btn py-2 text-sm font-bold border rounded bg-bk-blue text-white border-bk-blue shadow-sm";
-                } else {
-                    b.className = "term-btn py-2 text-sm font-bold border rounded bg-white text-gray-600 hover:bg-gray-50";
-                }
+                b.className = (b.dataset.val == y)
+                    ? "term-btn py-2 text-sm font-bold border rounded bg-bk-blue text-white border-bk-blue shadow-sm"
+                    : "term-btn py-2 text-sm font-bold border rounded bg-white text-gray-600 hover:bg-gray-50";
             });
 
-            // Update Rate if available
+            // UPDATED Rate Display Logic
             if (y == 30 && FRED_DATA["MORTGAGE30US"]) {
                 el('interestRate').value = FRED_DATA["MORTGAGE30US"].val;
                 updateRateLabel(FRED_DATA["MORTGAGE30US"]);
             } else if (y == 15 && FRED_DATA["MORTGAGE15US"]) {
+                // This remains correct as it pulls the 6.15% manual fallback
                 el('interestRate').value = FRED_DATA["MORTGAGE15US"].val;
                 updateRateLabel(FRED_DATA["MORTGAGE15US"]);
+            } else {
+                // FIX: Clear the field for 20 and 10 year terms per user requirement
+                el('interestRate').value = '';
+                el('rateSource').innerText = "Manual Entry Required";
             }
+
             update();
         }
 
@@ -1375,30 +1379,34 @@
 
         async function fetchFred() {
             try {
-                // 1. Target the local static bridge
                 const response = await fetch('./rates.json');
                 if (!response.ok) throw new Error("Rates file not ready");
                 const data = await response.json();
 
-                // 2. Map the raw FRED observations (Array) to the local state
+                // Map raw observations with "." validation
                 // CORRECTED: Accessing the first item in the observations array
                 if (data.observations && data.observations[0]) {
-                    const liveRate = parseFloat(data.observations[0].value);
+                    const rawVal = data.observations[0].value;
+                    const liveRate = parseFloat(rawVal);
                     const liveDate = data.observations[0].date;
 
-                    // Ensure we are using the consistent string key for the 30-year rate
-                    FRED_DATA["MORTGAGE30US"] = { val: liveRate, date: liveDate };
+                    // VALIDATION: Only update if liveRate is a valid number
+                    if (!isNaN(liveRate)) {
+                        FRED_DATA["MORTGAGE30US"] = { val: liveRate, date: liveDate };
 
-                    // Only update the label if we are currently looking at the 30-year term
-                    if (S.mterm === 30) {
-                        updateRateLabel(FRED_DATA["MORTGAGE30US"]);
+                        // Update label immediately if user is currently on the 30-year term
+                        if (S.mterm === 30) {
+                            updateRateLabel(FRED_DATA["MORTGAGE30US"]);
+                        }
+                    } else {
+                        console.log("FRED returned placeholder (.), keeping fallback.");
                     }
                 }
             } catch (e) {
                 console.log("Fallback: Using Market Average");
                 el('rateSource').innerText = "Market Average Rate";
             } finally {
-                // 3. Ensure the UI populates with current term selection [5]
+                // Ensure the UI populates with current term selection (10, 15, 20, or 30)
                 setTerm(S.mterm);
             }
         }
