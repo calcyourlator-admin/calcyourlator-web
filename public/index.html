@@ -318,6 +318,7 @@
         .disclosure-safe-zone {
             margin: 2rem 0 1rem 0;
             padding: 0.5rem 0;
+            clear: both;
         }
 
         .disclosure-link-safe {
@@ -557,35 +558,177 @@
                     </div>
                 </div>
 
-                <!-- RENT BUY INPUTS (Hidden) -->
+                <!-- RENT BUY INPUTS (Expanded) -->
                 <div id="rbInputs" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="p-3 bg-gray-50 border border-gray-200 rounded">
-                        <p class="text-xs font-bold text-gray-400 uppercase mb-2">Renting Scenario</p>
-                        <div class="mb-3">
-                            <label class="bk-label">Monthly Rent</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
-                                <input type="number" id="rbRent" class="bk-input pl-7" value="2200">
+                    <!-- RENTING COLUMN -->
+                    <div class="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                        <p
+                            class="text-xs font-bold text-gray-500 uppercase mb-3 tracking-wide border-b border-gray-200 pb-2">
+                            Renting Scenario</p>
+
+                        <div class="space-y-3">
+                            <div>
+                                <label class="bk-label">Monthly Rent</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
+                                    <input type="number" id="rbRent" class="bk-input pl-7" value="2200">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="bk-label">Annual Rent Increase</label>
+                                <div class="relative">
+                                    <input type="number" id="rbRentInc" class="bk-input pr-8" value="3" step="0.1">
+                                    <span class="absolute right-3 top-2 text-gray-500 font-bold">%</span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="bk-label">Renter's Insurance ($/mo)</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
+                                    <input type="number" id="rbRentIns" class="bk-input pl-7" value="20">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="bk-label">Security Deposit ($)</label>
+                                <div class="relative">
+                                    <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
+                                    <input type="number" id="rbDeposit" class="bk-input pl-7" value="2200">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="bk-label">Avg. Invest Return (AIR)</label>
+                                <div class="relative">
+                                    <input type="number" id="rbInv" class="bk-input pr-8" value="6" step="0.1">
+                                    <span class="absolute right-3 top-2 text-gray-500 font-bold">%</span>
+                                </div>
+                                <p class="text-[10px] text-gray-400 mt-1">Opportunity cost rate</p>
                             </div>
                         </div>
-                        <label class="bk-label">Inv. Return (%)</label>
-                        <input type="number" id="rbInv" class="bk-input" value="7">
                     </div>
-                    <div class="p-3 bg-gray-50 border border-gray-200 rounded">
-                        <p class="text-xs font-bold text-gray-400 uppercase mb-2">Buying Scenario</p>
-                        <div class="mb-3">
-                            <label class="bk-label">Home Price</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
-                                <input type="number" id="rbPrice" class="bk-input pl-7" value="400000">
+
+                    <!-- BUYING COLUMN -->
+                    <div class="p-4 bg-gray-50 border border-gray-200 rounded-lg">
+                        <p
+                            class="text-xs font-bold text-gray-500 uppercase mb-3 tracking-wide border-b border-gray-200 pb-2">
+                            Buying Scenario</p>
+
+                        <div class="space-y-3">
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="bk-label">Home Price</label>
+                                    <div class="relative">
+                                        <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
+                                        <input type="number" id="rbPrice" class="bk-input pl-7" value="400000">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="bk-label">Down Pmt ($)</label>
+                                    <div class="relative">
+                                        <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
+                                        <input type="number" id="rbDown" class="bk-input pl-7" value="80000">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="bk-label">Rate (%)</label>
+                                    <div class="relative">
+                                        <input type="number" id="rbRate" class="bk-input pr-8" step="0.01" value="6.5">
+                                        <span class="absolute right-3 top-2 text-gray-500 font-bold">%</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="bk-label">Term</label>
+                                    <select id="rbTerm" class="bk-input">
+                                        <option value="30" selected>30 Years</option>
+                                        <option value="15">15 Years</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="bk-label">Buy Closing Costs</label>
+                                    <div class="relative">
+                                        <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
+                                        <input type="number" id="rbBuyCc" class="bk-input pl-7" value="12000">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="bk-label">Sell Closing Costs</label>
+                                    <div class="relative">
+                                        <input type="number" id="rbSellCc" class="bk-input pr-8" value="8" step="0.5">
+                                        <span class="absolute right-3 top-2 text-gray-500 font-bold">%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="bk-label">Prop Tax ($/yr)</label>
+                                    <div class="relative">
+                                        <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
+                                        <input type="number" id="rbTaxAmt" class="bk-input pl-7" value="4800">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="bk-label">Home Ins ($/yr)</label>
+                                    <div class="relative">
+                                        <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
+                                        <input type="number" id="rbIns" class="bk-input pl-7" value="1200">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="bk-label">Maint ($/yr)</label>
+                                    <div class="relative">
+                                        <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
+                                        <input type="number" id="rbMaint" class="bk-input pl-7" value="4000">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="bk-label">HOA ($/mo)</label>
+                                    <div class="relative">
+                                        <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
+                                        <input type="number" id="rbHoa" class="bk-input pl-7" value="0">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="bk-label">Appreciation</label>
+                                    <div class="relative">
+                                        <input type="number" id="rbApprec" class="bk-input pr-8" value="3" step="0.1">
+                                        <span class="absolute right-3 top-2 text-gray-500 font-bold">%</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="bk-label">Marginal Tax</label>
+                                    <div class="relative">
+                                        <input type="number" id="rbTax" class="bk-input pr-8" value="22" step="1">
+                                        <span class="absolute right-3 top-2 text-gray-500 font-bold">%</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <label class="bk-label">Rate (%)</label>
-                        <input type="number" id="rbRate" class="bk-input" step="0.01" value="6.5">
                     </div>
-                    <div class="md:col-span-2">
-                        <label class="bk-label">Stay Duration (Years)</label>
-                        <input type="number" id="rbStay" class="bk-input" value="7">
+
+                    <div class="md:col-span-2 mt-2">
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="bk-label mb-0">Analysis Duration (Years)</label>
+                            <span class="text-xs" style="color: #000000 !important; font-weight: 700;">Comparing <span
+                                    id="rbStayVal">7</span> years</span>
+                        </div>
+                        <input type="range" id="rbStay"
+                            class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" min="1" max="30"
+                            value="7" oninput="document.getElementById('rbStayVal').innerText = this.value">
+                        <p class="text-[10px] text-gray-400 mt-2 text-center">
+                            *This tool is optimized for U.S. tax codes and financial standards.
+                        </p>
                     </div>
                 </div>
             </div>
@@ -662,23 +805,35 @@
             </div>
 
             <!-- RENT/BUY VERDICT CARD (RB Only) -->
-            <div id="rbVerdictCard" class="sidebar-card p-5 hidden">
-                <h2 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">The Verdict</h2>
-                <div id="rbVerdict">
-                    <p class="text-2xl font-black text-bk-blue mb-1" id="rbWinText">Buying Wins</p>
-                    <p class="text-[10px] text-gray-500 mb-4 font-medium uppercase tracking-tight">Net Worth analysis
-                        over <span id="rbStayTxt">7</span>
-                        years.</p>
-                    <div class="grid grid-cols-1 gap-3">
-                        <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
-                            <span class="text-[10px] uppercase font-bold text-bk-blue opacity-70">Buy Net Worth</span>
-                            <div class="text-xl font-black text-bk-blue" id="rbBuyNW">$0</div>
-                        </div>
-                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-100">
-                            <span class="text-[10px] uppercase font-bold text-gray-500">Rent Net Worth</span>
-                            <div class="text-xl font-bold text-gray-600" id="rbRentNW">$0</div>
-                        </div>
+            <!-- RENT/BUY VERDICT CARD (RB Only) -->
+            <div id="rbVerdictCard" class="sidebar-card p-5 hidden bg-white">
+                <div id="breakevenBanner"
+                    class="bg-bk-blue text-white text-xs font-bold p-3 rounded mb-4 text-center leading-normal">
+                    Buying becomes the superior financial choice if you remain in the home for <span id="beYear"
+                        class="text-yellow-300 text-lg">X</span> years or longer.
+                </div>
+
+                <h2 class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-3">Net Future Value (NFV)
+                    Analysis</h2>
+                <p class="text-[10px] text-gray-400 mb-4">Projected wealth after <span id="rbStayTxt">7</span> years.
+                </p>
+
+                <div class="grid grid-cols-1 gap-3">
+                    <div class="bg-green-50 p-4 rounded-lg border border-green-100">
+                        <span class="text-[10px] uppercase font-bold text-green-700 opacity-70">Buying Net Worth</span>
+                        <div class="text-xl font-black text-green-700" id="rbBuyNW">$0</div>
+                        <div class="text-[10px] text-green-600 mt-1 leading-tight">Equity + Appreciation - Costs</div>
                     </div>
+                    <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                        <span class="text-[10px] uppercase font-bold text-bk-blue opacity-70">Renting Net Worth</span>
+                        <div class="text-xl font-bold text-bk-blue" id="rbRentNW">$0</div>
+                        <div class="text-[10px] text-bk-blue mt-1 leading-tight opacity-70">Invested Savings @ <span
+                                id="rbAirTxt">6</span>%</div>
+                    </div>
+                </div>
+                <div class="mt-4 pt-3 border-t border-gray-100 text-center">
+                    <p class="text-2xl font-black text-bk-text mb-1" id="rbWinText">Buying Wins</p>
+                    <p class="text-[10px] text-gray-400 uppercase tracking-wide">Financial Advantage</p>
                 </div>
             </div>
 
@@ -692,7 +847,7 @@
 
             <!-- METHODOLOGY BLOCK -->
             <div class="sidebar-card p-3">
-                <details class="group">
+                <details id="methodology-dropdown" class="group">
                     <summary
                         class="text-[10px] font-bold text-gray-500 uppercase tracking-wide cursor-pointer flex items-center hover:text-bk-blue list-none">
                         Calculation Methodology & Accuracy
@@ -703,13 +858,30 @@
                         </svg>
                     </summary>
                     <div
-                        class="mt-2 text-[11px] text-gray-600 bg-gray-50 p-2 rounded border border-gray-100 leading-relaxed">
-                        The results provided by Calcyourlator are generated using industry-standard fixed-rate
-                        amortization algorithms and standard compound interest formulas. Our methodology aligns with the
-                        math utilized by major US financial institutions and federal lending oversight standards. While
-                        we leverage real-time market data from the Federal Reserve Economic Data (FRED) to provide
-                        current interest rate benchmarks, these figures are for educational purposes and do not
-                        constitute a commitment to lend.
+                        class="mt-2 text-[11px] text-gray-700 bg-gray-50 p-2 rounded border border-gray-100 leading-relaxed">
+                        <ul class="space-y-3">
+                            <li><strong class="text-bk-text">Institutional Alignment:</strong> Our computational logic
+                                is designed to align with the regulatory standards utilized by major U.S. financial
+                                institutions and the Consumer Financial Protection Bureau (CFPB). This tool serves as an
+                                unbiased, third-party baseline for consumers to verify lending estimates against current
+                                market data.</li>
+                            <li><strong class="text-bk-text">The Mathematical Framework:</strong> We utilize the
+                                standard monthly payment formula for all fixed-rate debt calculations:
+                                <code
+                                    class="block bg-gray-100 p-2 my-1 rounded text-bk-blue font-mono font-bold text-center">M = P [ i(1 + i)^n ] / [ (1 + i)^n – 1 ]</code>
+                                (Where M = Monthly Payment, P = Principal borrowed, i = Monthly Interest, and n = Number
+                                of Months)
+                            </li>
+                            <li><strong class="text-bk-text">Data Integrity:</strong> Interest rates are synchronized
+                                daily with the Federal Reserve Economic Data (FRED) series MORTGAGE30US and
+                                MORTGAGE15US. This ensures every calculation is grounded in the most current, sovereign
+                                market averages provided by the Federal Reserve Bank of St. Louis.</li>
+                            <li><strong class="text-bk-text">Disclosures & Assumptions:</strong> Estimates are provided
+                                for educational purposes only. Because our calculator cannot precisely predict the
+                                future, results are estimates based on user input values only. Calcyourlator is an
+                                independent utility and does not provide legal, tax, or financial advice. Intended for
+                                use by U.S. residents only.</li>
+                        </ul>
                     </div>
                 </details>
             </div>
@@ -1001,21 +1173,55 @@
     </div>
     </div>
 
-    <!-- RENT VS BUY EDUCATIONAL CONTENT -->
+    <!-- RENT VS BUY STRATEGIC GUIDANCE -->
     <div id="edu-rentbuy" class="hidden">
         <div class="max-w-[1280px] mx-auto px-5 mb-12">
-            <h2 class="text-2xl font-black text-bk-blue mb-6">How to use this rent vs. buy calculator</h2>
-            <ol class="list-decimal list-inside space-y-4 text-gray-700 leading-relaxed font-medium">
-                <li><strong class="text-bk-text">Enter Home Purchase Details:</strong> Input the price of the home and
-                    the mortgage rate you expect to pay.</li>
-                <li><strong class="text-bk-text">Enter Current Rent:</strong> Input your monthly rent payment for a
-                    comparable property.</li>
-                <li><strong class="text-bk-text">Set the Timeframe:</strong> Choose how many years you plan to stay in
-                    the home. Buying typically becomes more advantageous the longer you stay.</li>
-                <li><strong class="text-bk-text">Review the Total Cost:</strong> Compare the "Total Cost of Renting"
-                    (rent + insurance) against the "Total Cost of Buying" (mortgage, taxes, maintenance, and equity
-                    growth).</li>
-            </ol>
+            <h2 class="text-2xl font-black text-bk-blue mb-6">How to Use the Rent vs. Buy Calculator</h2>
+
+            <div class="space-y-6 text-gray-700 leading-relaxed font-medium">
+                <div>
+                    <h3 class="text-lg font-bold text-bk-text mb-2">Step 1: Evaluate Upfront Costs</h3>
+                    <p>Enter your <strong>Down Payment</strong> and <strong>Buying Closing Costs</strong>. This
+                        identifies the initial capital required to exit the rental market and acquire the property.</p>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold text-bk-text mb-2">Step 2: Input Homeownership Variables</h3>
+                    <p>Provide your <strong>Loan Term</strong>, <strong>Property Tax</strong>, <strong>Home
+                            Insurance</strong>, and <strong>Maintenance Costs</strong>. These combine with your Mortgage
+                        Rate to form the "PITI" (Principal, Interest, Taxes, and Insurance), representing your total
+                        recurring ownership cost.</p>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold text-bk-text mb-2">Step 3: Define Growth Assumptions</h3>
+                    <p>Set the <strong>Home Appreciation Rate</strong> and your <strong>Average Investment Return
+                            (AIR)</strong>. AIR reflects the "opportunity cost"—the return you might expect if your down
+                        payment was placed in other assets, such as the stock market, bonds, or separate investment
+                        types.</p>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold text-bk-text mb-2">Step 4: Compare with Rental Data</h3>
+                    <p>Input your <strong>Monthly Rent</strong>, expected <strong>Annual Rent Increase</strong>, and
+                        recurring <strong>Renter's Insurance</strong>. Include the Security Deposit to capture the full
+                        upfront cost of the rental path.</p>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-bold text-bk-text mb-2">Step 5: Analyze the Comparison</h3>
+                    <p>Review the <strong>"Staying Length"</strong> table to observe how the costs of buying and renting
+                        fluctuate over time. This data is designed to help you determine which path aligns best with
+                        your intended duration in the home and your personal financial goals.</p>
+                </div>
+            </div>
+
+            <!-- Critical Disclaimer -->
+            <div class="mt-8 p-4 bg-gray-50 border-l-4 border-gray-400 text-sm text-gray-600 italic">
+                "This calculator evaluates the decision from a purely financial standpoint based on user inputs. It does
+                not account for intangible human elements such as the personal value of homeownership or the mobility
+                offered by renting. Intended for use by U.S. residents only."
+            </div>
         </div>
 
         <!-- ADVERTISER DISCLOSURE -->
@@ -1139,7 +1345,11 @@
             mp: 300000, mdown: 60000, mdpPct: 20, mrate: 6.5, mterm: 30, mtax: 1.2, mins: 1500, mhoa: 0, mpmi: 0,
             mstart: '',
             ap: 35000, adown: 5000, adpPct: 14.28, arate: 7.5, aterm: 60, arun: 150,
-            rr: 2200, rinv: 7, bp: 400000, brate: 6.5, stay: 7
+            // RB New Variables
+            rr: 2200, rinv: 6, rbRentInc: 3, rbRentIns: 20, rbDeposit: 2200,
+            bp: 400000, rbDown: 80000, brate: 6.5, rbTerm: 30, rbBuyCc: 12000, rbSellCc: 8,
+            rbTaxAmt: 4800, rbIns: 1200, rbMaint: 4000, rbHoa: 0,
+            rbApprec: 3, rbTax: 22, stay: 7
         };
         let FRED_DATA = { "MORTGAGE30US": { val: 6.85, date: "Manual Fallback" }, "MORTGAGE15US": { val: 6.15, date: "Manual Fallback" } };
         const el = (id) => document.getElementById(id);
@@ -1274,6 +1484,12 @@
 
 
         function setTab(t) {
+            // Force the Methodology dropdown to close on page change
+            const methodologyDetails = el('methodology-dropdown');
+            if (methodologyDetails) {
+                methodologyDetails.open = false;
+            }
+
             S.mode = (t === 'rentbuy') ? 'rb' : t;
 
             // Tabs
@@ -1408,6 +1624,11 @@
             } finally {
                 // Ensure the UI populates with current term selection (10, 15, 20, or 30)
                 setTerm(S.mterm);
+
+                // Set RB Rate if available
+                if (FRED_DATA["MORTGAGE30US"] && FRED_DATA["MORTGAGE30US"].val > 0) {
+                    el('rbRate').value = FRED_DATA["MORTGAGE30US"].val;
+                }
             }
         }
 
@@ -1438,8 +1659,25 @@
             // RB
             S.rr = parseFloat(el('rbRent').value) || 0;
             S.rinv = parseFloat(el('rbInv').value) || 0;
+            S.rbRentInc = parseFloat(el('rbRentInc').value) || 0;
+            S.rbRentIns = parseFloat(el('rbRentIns').value) || 0;
+            S.rbDeposit = parseFloat(el('rbDeposit').value) || 0;
+
             S.bp = parseFloat(el('rbPrice').value) || 0;
+            S.rbDown = parseFloat(el('rbDown').value) || 0;
             S.brate = parseFloat(el('rbRate').value) || 0;
+            S.rbTerm = parseInt(el('rbTerm').value) || 30;
+
+            S.rbBuyCc = parseFloat(el('rbBuyCc').value) || 0;
+            S.rbSellCc = parseFloat(el('rbSellCc').value) || 0;
+
+            S.rbTaxAmt = parseFloat(el('rbTaxAmt').value) || 0;
+            S.rbIns = parseFloat(el('rbIns').value) || 0;
+            S.rbMaint = parseFloat(el('rbMaint').value) || 0;
+            S.rbHoa = parseFloat(el('rbHoa').value) || 0;
+
+            S.rbApprec = parseFloat(el('rbApprec').value) || 0;
+            S.rbTax = parseFloat(el('rbTax').value) || 0;
             S.stay = parseInt(el('rbStay').value) || 7;
 
             el('dpPercent').innerText = fmtPct(S.mdown, S.mp);
@@ -1475,51 +1713,163 @@
         }
 
         function calcAuto() {
-            const loan = S.ap - S.adown;
-            const r = (S.arate / 100) / 12;
-            const n = S.aterm;
-            const pi = (loan > 0 && r > 0) ? (loan * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1) : 0;
-            const tco = pi + S.arun;
+            // 1. Capture Inputs
+            // Re-reading for safety and to match snippet structure, but using correct IDs
+            const price = parseFloat(el('autoPrice').value) || 0;
+            const down = parseFloat(el('autoDown').value) || 0;
+            const rate = parseFloat(el('autoRate').value) || 0;
+            const months = parseInt(el('autoTerm').value) || 1; // Prevent div by 0 for term
+            const running = parseFloat(el('autoRun').value) || 0;
 
-            renderMain(pi, 'Estimated Monthly Payment', true);
-            renderChart([pi, S.arun], ['Loan', 'Running'], ['#0056b3', '#ffc107']);
+            const principal = price - down;
+            let monthlyLoanPayment = 0;
+
+            // 2. Interest Rate Logic Branching
+            if (rate > 0) {
+                // Standard Amortization Formula 
+                const i = (rate / 100) / 12;
+                monthlyLoanPayment = principal * (i * Math.pow(1 + i, months)) / (Math.pow(1 + i, months) - 1);
+            } else {
+                // 0% Interest Case: Simple Principal Division
+                monthlyLoanPayment = principal / months;
+            }
+
+            // 3. UI Update & TCO Calculation
+            const totalMonthly = monthlyLoanPayment + running;
+
+            // Map to existing UI functions
+            // "Estimated Monthly Payment" typically refers to the Loan Payment in this context
+            renderMain(monthlyLoanPayment, 'Estimated Monthly Payment', true);
+
+            renderChart([monthlyLoanPayment, running], ['Loan', 'Running'], ['#0056b3', '#ffc107']);
+
             renderList([
-                { l: 'Loan Payment', v: pi, c: '#0056b3' },
-                { l: 'Running Costs', v: S.arun, c: '#ffc107' }
+                { l: 'Loan Payment', v: monthlyLoanPayment, c: '#0056b3' },
+                { l: 'Running Costs', v: running, c: '#ffc107' }
             ]);
+
             el('amortizationSection').classList.add('hidden');
             el('resultsCard').classList.remove('hidden');
             el('autoTcoCard').classList.remove('hidden');
-            el('autoTcoVal').innerText = fmt(tco);
+
+            // Update TCO Display
+            el('autoTcoVal').innerText = fmt(totalMonthly);
+
             el('rbVerdictCard').classList.add('hidden');
         }
 
         function calcRb() {
-            let loan = S.bp * 0.8;
-            const pi = (loan * (S.brate / 100 / 12)) / (1 - Math.pow(1 + S.brate / 100 / 12, -360));
-            let rentW = S.bp * 0.2;
+            // CONSTANTS & VARIABLES FROM INPUTS
+            const sellCostPct = S.rbSellCc / 100;
+
+            // WEALTH ACCUMULATION STRATEGY (Differential Cash Flow)
+            // 1. Comparison assumes both parties start with the same cash (upFrontBuy).
+            //    Starting Cash = S.rbDown + S.rbBuyCc
+            // 2. Buyer spends it all on DownPmt + Closing.
+            // 3. Renter pays Security Deposit. 
+            //    (Rent is paid monthly in the loop, just like Mortgage is paid monthly).
+            //    Renter Invests the rest: (StartingCash - Deposit).
+
+            const startingCash = S.rbDown + S.rbBuyCc;
+            let rentWealth = startingCash - S.rbDeposit; // Initial Investment Pot
+
+            // INITIALIZE BUYER STATE
             let buyVal = S.bp;
-            let buyBal = loan;
-            let rentCur = S.rr;
+            let loan = S.bp - S.rbDown;
+            if (loan < 0) loan = 0;
 
-            for (let m = 1; m <= S.stay * 12; m++) {
-                const costBuy = pi + (buyVal * 0.012 / 12) + (buyVal * 0.01 / 12) + (buyVal * 0.005 / 12);
-                const diff = costBuy - rentCur;
-                rentW = rentW * (1 + S.rinv / 100 / 12) + diff;
+            // MORTGAGE CALC
+            const r = S.brate / 100 / 12;
+            const n = S.rbTerm * 12;
+            const pi = (loan > 0 && r > 0) ? (loan * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1) : (loan > 0 ? loan / n : 0);
 
-                buyBal -= (pi - (buyBal * (S.brate / 100 / 12)));
-                buyVal *= (1 + 0.03 / 12);
-                if (m % 12 === 0) rentCur *= 1.03;
+            let currentRent = S.rr;
+            let currentMoRent = S.rr;
+            let breakevenYear = 31; // Default > 30
+
+            // 30 YEAR SIMULATION LOOP
+            for (let year = 1; year <= 30; year++) {
+                let yearlyBuyCost = 0;
+                let yearlyRentCost = 0;
+
+                // Monthly Processing
+                for (let k = 0; k < 12; k++) {
+                    // --- BUYER COSTS ---
+                    let int = 0;
+                    let prin = 0;
+                    if (loan > 0) {
+                        int = loan * r;
+                        prin = pi - int;
+                        if (loan < prin) { prin = loan; int = 0; }
+                        loan -= prin;
+                    }
+
+                    // Monthly Layout: PITI + Maint + HOA - TaxShield
+                    const moTax = S.rbTaxAmt / 12;
+                    const moIns = S.rbIns / 12;
+                    const moMaint = S.rbMaint / 12;
+                    const moHoa = S.rbHoa;
+                    const taxSave = (int + moTax) * (S.rbTax / 100);
+
+                    const buyOutlay = (loan > 0 ? pi : 0) + moTax + moIns + moMaint + moHoa - taxSave;
+                    yearlyBuyCost += buyOutlay;
+
+                    // --- RENTER COSTS ---
+                    // Rent + Insurance
+                    const rentOutlay = currentMoRent + S.rbRentIns;
+                    yearlyRentCost += rentOutlay;
+
+                    // --- WEALTH POT CALCULATION (Monthly Compounding) ---
+                    // 1. Grow the pot by AIR (monthly rate)
+                    rentWealth *= (1 + (S.rinv / 100 / 12));
+
+                    // 2. Add the difference (Savings or Loss)
+                    // If Renting is cheaper (Buy 3000, Rent 2000), Diff = 1000. Renter adds 1000 to pot.
+                    // If Buying is cheaper (Buy 2000, Rent 3000), Diff = -1000. Renter removes 1000 from pot (opp cost).
+                    rentWealth += (buyOutlay - rentOutlay);
+                }
+
+                // EOY Adjustments
+                buyVal *= (1 + S.rbApprec / 100);
+                currentMoRent *= (1 + S.rbRentInc / 100); // Inflate monthly rent for next year
+
+                // CHECK NET WORTH
+                const equity = buyVal - loan;
+                const buyNetWorth = equity - (buyVal * sellCostPct);
+
+                // RECORD BREAKEVEN
+                if (breakevenYear === 31 && buyNetWorth > rentWealth) {
+                    breakevenYear = year;
+                }
+
+                // SNAPSHOT FOR SELECTED YEAR
+                if (year === S.stay) {
+                    el('resultsCard').classList.add('hidden');
+                    el('autoTcoCard').classList.add('hidden');
+                    el('rbVerdictCard').classList.remove('hidden');
+
+                    el('rbBuyNW').innerText = fmt(buyNetWorth);
+                    el('rbRentNW').innerText = fmt(rentWealth);
+
+                    if (buyNetWorth > rentWealth) {
+                        el('rbWinText').innerText = "Buying Wins";
+                        el('rbWinText').className = "text-2xl font-black text-green-700 mb-1";
+                    } else {
+                        el('rbWinText').innerText = "Renting Wins";
+                        el('rbWinText').className = "text-2xl font-black text-bk-blue mb-1";
+                    }
+
+                    el('rbAirTxt').innerText = S.rinv;
+                    el('rbStayTxt').innerText = S.stay;
+                }
             }
-            const buyNW = (buyVal * 0.94) - buyBal;
 
-            el('resultsCard').classList.add('hidden');
-            el('autoTcoCard').classList.add('hidden');
-            el('rbVerdictCard').classList.remove('hidden');
-            el('rbWinText').innerText = (buyNW > rentW) ? `Buying Wins by ${fmt(buyNW - rentW)}` : `Renting Wins by ${fmt(rentW - buyNW)}`;
-            el('rbStayTxt').innerText = S.stay;
-            el('rbBuyNW').innerText = fmt(buyNW);
-            el('rbRentNW').innerText = fmt(rentW);
+            // HEADER UPDATE
+            if (breakevenYear > 30) {
+                el('breakevenBanner').innerHTML = "Renting appears to be the superior choice for the next 30+ years based on these inputs.";
+            } else {
+                el('breakevenBanner').innerHTML = `Buying becomes the superior financial choice if you remain in the home for <span class="text-yellow-300 text-lg">${breakevenYear}</span> years or longer.`;
+            }
         }
 
         function renderMain(val, title, showChart) {
