@@ -1381,15 +1381,18 @@
                 const data = await response.json();
 
                 // 2. Map the raw FRED observations (Array) to the local state
-                if (data.observations && data.observations) {
-                    const liveRate = parseFloat(data.observations.value);
-                    const liveDate = data.observations.date;
+                // CORRECTED: Accessing the first item in the observations array
+                if (data.observations && data.observations[0]) {
+                    const liveRate = parseFloat(data.observations[0].value);
+                    const liveDate = data.observations[0].date;
 
-                    // Update global state object [4]
+                    // Ensure we are using the consistent string key for the 30-year rate
                     FRED_DATA["MORTGAGE30US"] = { val: liveRate, date: liveDate };
 
-                    // Trigger UI Label update
-                    updateRateLabel(FRED_DATA["MORTGAGE30US"]);
+                    // Only update the label if we are currently looking at the 30-year term
+                    if (S.mterm === 30) {
+                        updateRateLabel(FRED_DATA["MORTGAGE30US"]);
+                    }
                 }
             } catch (e) {
                 console.log("Fallback: Using Market Average");
