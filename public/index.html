@@ -932,6 +932,14 @@
                     pre-approval or current market averages.</li>
                 <li><strong class="text-bk-text">Expand Advanced Costs:</strong> Toggle the Taxes, Insurance, and HOA
                     dropdown to refine your total monthly cash outlay.</li>
+                <li><strong class="text-bk-text">Review the Amortization Schedule:</strong> Expand the <strong
+                        class="text-bk-text">"View Full Amortization Schedule"</strong> section to see a year-by-year
+                    and month-by-month breakdown of your equity growth. Use this data to visualize exactly how much of
+                    your payment goes toward principal versus interest and to identify the specific date you will reach
+                    20% equity to eliminate monthly PMI costs.</li>
+                <li><strong class="text-bk-text">Explore Today's Top Rates:</strong> Compare institutional market
+                    averages against live lender offers to ensure you are securing the most competitive financing for
+                    your property.</li>
             </ol>
         </div>
 
@@ -1054,43 +1062,28 @@
         <div class="max-w-[1280px] mx-auto px-5 mb-12">
             <h2 class="text-2xl font-black text-bk-blue mb-6">How to Use the Rent vs. Buy Calculator</h2>
 
-            <div class="space-y-6 text-gray-700 leading-relaxed font-medium">
-                <div>
-                    <h3 class="text-lg font-bold text-bk-text mb-2">Step 1: Evaluate Upfront Costs</h3>
-                    <p>Enter your <strong>Down Payment</strong> and <strong>Buying Closing Costs</strong>. This
-                        identifies the initial capital required to exit the rental market and acquire the property.</p>
-                </div>
-
-                <div>
-                    <h3 class="text-lg font-bold text-bk-text mb-2">Step 2: Input Homeownership Variables</h3>
-                    <p>Provide your <strong>Loan Term</strong>, <strong>Property Tax</strong>, <strong>Home
-                            Insurance</strong>, and <strong>Maintenance Costs</strong>. These combine with your Mortgage
-                        Rate to form the "PITI" (Principal, Interest, Taxes, and Insurance), representing your total
-                        recurring ownership cost.</p>
-                </div>
-
-                <div>
-                    <h3 class="text-lg font-bold text-bk-text mb-2">Step 3: Define Growth Assumptions</h3>
-                    <p>Set the <strong>Home Appreciation Rate</strong> and your <strong>Average Investment Return
-                            (AIR)</strong>. AIR reflects the "opportunity cost"—the return you might expect if your down
-                        payment was placed in other assets, such as the stock market, bonds, or separate investment
-                        types.</p>
-                </div>
-
-                <div>
-                    <h3 class="text-lg font-bold text-bk-text mb-2">Step 4: Compare with Rental Data</h3>
-                    <p>Input your <strong>Monthly Rent</strong>, expected <strong>Annual Rent Increase</strong>, and
-                        recurring <strong>Renter's Insurance</strong>. Include the Security Deposit to capture the full
-                        upfront cost of the rental path.</p>
-                </div>
-
-                <div>
-                    <h3 class="text-lg font-bold text-bk-text mb-2">Step 5: Analyze the Comparison</h3>
-                    <p>Review the <strong>"Staying Length"</strong> table to observe how the costs of buying and renting
-                        fluctuate over time. This data is designed to help you determine which path aligns best with
-                        your intended duration in the home and your personal financial goals.</p>
-                </div>
-            </div>
+            <ol class="list-decimal list-inside space-y-4 text-gray-700 leading-relaxed font-medium">
+                <li><strong class="text-bk-text">Step 1: Evaluate Total Transaction Costs:</strong> Enter your Down
+                    Payment, Buying Closing Costs, and Selling Closing Costs. This identifies the initial capital
+                    required to enter the market and the projected exit fees (which can reach 10% or more of home
+                    value), both of which are essential for determining your true "Breakeven Point".</li>
+                <li><strong class="text-bk-text">Step 2: Input Homeownership & Tax Variables:</strong> Provide your Loan
+                    Term, Property Tax, Home Insurance, and Maintenance Costs. Combine these with your Marginal Tax
+                    Rate—this is your federal tax bracket (e.g., 22%)—which the tool uses to calculate the
+                    tax-deductibility of your mortgage interest and property taxes, effectively "discounting" your
+                    ownership costs compared to renting.</li>
+                <li><strong class="text-bk-text">Step 3: Define Growth & Opportunity Assumptions:</strong> Set the Home
+                    Appreciation Rate and your Average Investment Return (AIR). AIR represents your "Opportunity
+                    Cost"—the potential wealth you miss out on by putting cash into a down payment instead of the stock
+                    market or other high-yield assets.</li>
+                <li><strong class="text-bk-text">Step 4: Compare with Rental Data:</strong> Input your Monthly Rent,
+                    Annual Rent Increase, and Renter's Insurance. Include the Security Deposit to capture the full
+                    upfront capital required for the rental path.</li>
+                <li><strong class="text-bk-text">Step 5: Analyze the Financial Verdict:</strong> Review the "Staying
+                    Length" table and the Net Worth Analysis. Observe the specific year where the growth in home equity
+                    and tax savings finally outweighs the costs of renting and the missed investment returns of your
+                    down payment.</li>
+            </ol>
 
             <!-- Critical Disclaimer -->
             <div class="mt-8 p-4 bg-gray-50 border-l-4 border-gray-400 text-sm text-gray-600 italic">
@@ -1214,6 +1207,11 @@
                     This is heavily influenced by your credit score.</li>
                 <li><strong class="text-bk-text">Choose your Loan Term:</strong> Select 36, 48, 60, or 72 months. A
                     shorter term saves you money on interest; a longer term lowers your monthly payment.</li>
+                <li><strong class="text-bk-text">Estimate Monthly Running Costs:</strong> Input your projected monthly
+                    expenses for fuel, insurance, and routine maintenance. This allows the tool to calculate your
+                    <strong class="text-bk-text">Total Cost of Ownership (TCO)</strong>, providing a more realistic
+                    picture of your monthly automotive budget beyond just the loan payment.
+                </li>
             </ol>
         </div>
 
@@ -1554,13 +1552,19 @@
                     : "term-btn py-2 text-sm font-bold border rounded bg-white text-gray-600 hover:bg-gray-50";
             });
 
-            // Dual-Rate Synchronization Logic
+            // Dual-Rate & Market Average Population Logic
             if (y == 30 && FRED_DATA["MORTGAGE30US"]) {
                 el('interestRate').value = FRED_DATA["MORTGAGE30US"].val;
                 updateRateLabel(FRED_DATA["MORTGAGE30US"]);
+            } else if (y == 20) {
+                el('interestRate').value = 6.55;
+                updateRateLabel({ date: 'Manual Fallback' });
             } else if (y == 15 && FRED_DATA["MORTGAGE15US"]) {
                 el('interestRate').value = FRED_DATA["MORTGAGE15US"].val;
                 updateRateLabel(FRED_DATA["MORTGAGE15US"]);
+            } else if (y == 10) {
+                el('interestRate').value = 5.95;
+                updateRateLabel({ date: 'Manual Fallback' });
             } else {
                 el('interestRate').value = '';
                 el('rateSource').innerText = "Manual Entry Required";
