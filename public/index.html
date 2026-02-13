@@ -1325,16 +1325,19 @@
     <script>
         const S = {
             mode: 'mortgage',
-            mp: 300000, mdown: 60000, mdpPct: 20, mrate: 6.5, mterm: 30, mtax: 1.2, mins: 1500, mhoa: 0, mpmi: 0,
+            mp: 300000, mdown: 60000, mdpPct: 20, mrate: 6.85, mterm: 30, mtax: 1.2, mins: 1500, mhoa: 0, mpmi: 0,
             mstart: '',
             ap: 35000, adown: 5000, adpPct: 14.28, arate: 7.5, aterm: 60, arun: 150,
             // RB New Variables
             rr: 2200, rinv: 6, rbRentInc: 3, rbRentIns: 20, rbDeposit: 2200,
-            bp: 400000, rbDown: 80000, brate: 6.5, rbTerm: 30, rbBuyCc: 12000, rbSellCc: 8,
+            bp: 400000, rbDown: 80000, brate: 6.85, rbTerm: 30, rbBuyCc: 12000, rbSellCc: 8,
             rbTaxAmt: 4800, rbIns: 1200, rbMaint: 4000, rbHoa: 0,
             rbApprec: 3, rbTax: 22, stay: 7
         };
-        let FRED_DATA = { "MORTGAGE30US": { val: 6.85, date: "Manual Fallback" }, "MORTGAGE15US": { val: 6.15, date: "Manual Fallback" } };
+        let FRED_DATA = {
+            "MORTGAGE30US": { val: 6.85, date: "Market Average" },
+            "MORTGAGE15US": { val: 6.15, date: "Market Average" }
+        };
         const el = (id) => document.getElementById(id);
         const fmt = (n) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
         const fmtMoney = (n) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
@@ -1569,7 +1572,7 @@
         }
 
         function updateRateLabel(data) {
-            if (!data.date || data.date === 'Manual Fallback') {
+            if (!data.date || data.date === 'Market Average' || data.date === 'Manual Fallback') {
                 el('rateSource').innerText = "Market Average Rate";
             } else {
                 el('rateSource').innerHTML = `Live FRED Rate: ${data.val}% <span class="text-gray-400 font-normal ml-1" id="rateDate">(${data.date})</span>`;
@@ -1578,37 +1581,26 @@
 
         async function fetchFred() {
             try {
+                // Silent Bridge: Only attempt local rates.json
                 const response = await fetch('./rates.json');
-                if (!response.ok) throw new Error("Rates file not ready");
+                if (!response.ok) throw new Error("Silent: rates.json not present");
                 const data = await response.json();
 
-                // Map raw observations with "." validation
-                // CORRECTED: Accessing the first item in the observations array
                 if (data.observations && data.observations[0]) {
                     const rawVal = data.observations[0].value;
                     const liveRate = parseFloat(rawVal);
                     const liveDate = data.observations[0].date;
 
-                    // VALIDATION: Only update if liveRate is a valid number
                     if (!isNaN(liveRate)) {
                         FRED_DATA["MORTGAGE30US"] = { val: liveRate, date: liveDate };
-
-                        // Update label immediately if user is currently on the 30-year term
-                        if (S.mterm === 30) {
-                            updateRateLabel(FRED_DATA["MORTGAGE30US"]);
-                        }
-                    } else {
-                        console.log("FRED returned placeholder (.), keeping fallback.");
+                        if (S.mterm === 30) updateRateLabel(FRED_DATA["MORTGAGE30US"]);
                     }
                 }
             } catch (e) {
-                console.log("Fallback: Using Market Average");
+                // Fail Silently - Fallback to Market Averages already in FRED_DATA
                 el('rateSource').innerText = "Market Average Rate";
             } finally {
-                // Ensure the UI populates with current term selection (10, 15, 20, or 30)
                 setTerm(S.mterm);
-
-                // Set RB Rate if available
                 if (FRED_DATA["MORTGAGE30US"] && FRED_DATA["MORTGAGE30US"].val > 0) {
                     el('rbRate').value = FRED_DATA["MORTGAGE30US"].val;
                 }
