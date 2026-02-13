@@ -1335,8 +1335,8 @@
             rbApprec: 3, rbTax: 22, stay: 7
         };
         let FRED_DATA = {
-            "MORTGAGE30US": { val: 6.85, date: "Market Average" },
-            "MORTGAGE15US": { val: 6.15, date: "Market Average" }
+            "MORTGAGE30US": { val: 6.85, date: "Manual Fallback" },
+            "MORTGAGE15US": { val: 6.15, date: "Manual Fallback" }
         };
         const el = (id) => document.getElementById(id);
         const fmt = (n) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
@@ -1554,16 +1554,14 @@
                     : "term-btn py-2 text-sm font-bold border rounded bg-white text-gray-600 hover:bg-gray-50";
             });
 
-            // UPDATED Rate Display Logic
+            // Dual-Rate Synchronization Logic
             if (y == 30 && FRED_DATA["MORTGAGE30US"]) {
                 el('interestRate').value = FRED_DATA["MORTGAGE30US"].val;
                 updateRateLabel(FRED_DATA["MORTGAGE30US"]);
             } else if (y == 15 && FRED_DATA["MORTGAGE15US"]) {
-                // This remains correct as it pulls the 6.15% manual fallback
                 el('interestRate').value = FRED_DATA["MORTGAGE15US"].val;
                 updateRateLabel(FRED_DATA["MORTGAGE15US"]);
             } else {
-                // FIX: Clear the field for 20 and 10 year terms per user requirement
                 el('interestRate').value = '';
                 el('rateSource').innerText = "Manual Entry Required";
             }
@@ -1572,7 +1570,7 @@
         }
 
         function updateRateLabel(data) {
-            if (!data.date || data.date === 'Market Average' || data.date === 'Manual Fallback') {
+            if (!data.date || data.date === 'Manual Fallback') {
                 el('rateSource').innerText = "Market Average Rate";
             } else {
                 el('rateSource').innerHTML = `Live FRED Rate: ${data.val}% <span class="text-gray-400 font-normal ml-1" id="rateDate">(${data.date})</span>`;
@@ -1581,29 +1579,31 @@
 
         async function fetchFred() {
             try {
-                // Silent Bridge: Only attempt local rates.json
+                // Static Bridge: Fetch nested observations for 30yr and 15yr rates
                 const response = await fetch('./rates.json');
-                if (!response.ok) throw new Error("Silent: rates.json not present");
+                if (!response.ok) throw new Error("Static bridge unavailable");
                 const data = await response.json();
 
-                if (data.observations && data.observations[0]) {
-                    const rawVal = data.observations[0].value;
-                    const liveRate = parseFloat(rawVal);
-                    const liveDate = data.observations[0].date;
+                // Parse 30-Year Data
+                if (data.MORTGAGE30US && data.MORTGAGE30US.observations && data.MORTGAGE30US.observations[0]) {
+                    const obs = data.MORTGAGE30US.observations[0];
+                    const val = parseFloat(obs.value);
+                    if (!isNaN(val)) FRED_DATA["MORTGAGE30US"] = { val: val, date: obs.date };
+                }
 
-                    if (!isNaN(liveRate)) {
-                        FRED_DATA["MORTGAGE30US"] = { val: liveRate, date: liveDate };
-                        if (S.mterm === 30) updateRateLabel(FRED_DATA["MORTGAGE30US"]);
-                    }
+                // Parse 15-Year Data
+                if (data.MORTGAGE15US && data.MORTGAGE15US.observations && data.MORTGAGE15US.observations[0]) {
+                    const obs = data.MORTGAGE15US.observations[0];
+                    const val = parseFloat(obs.value);
+                    if (!isNaN(val)) FRED_DATA["MORTGAGE15US"] = { val: val, date: obs.date };
                 }
             } catch (e) {
-                // Fail Silently - Fallback to Market Averages already in FRED_DATA
-                el('rateSource').innerText = "Market Average Rate";
+                console.log("Using High-Authority Market Averages as Fallback");
             } finally {
+                // Refresh UI with current term selection
                 setTerm(S.mterm);
-                if (FRED_DATA["MORTGAGE30US"] && FRED_DATA["MORTGAGE30US"].val > 0) {
-                    el('rbRate').value = FRED_DATA["MORTGAGE30US"].val;
-                }
+                // Sync Rent vs Buy Rate with 30-Year Anchor
+                if (FRED_DATA["MORTGAGE30US"]) el('rbRate').value = FRED_DATA["MORTGAGE30US"].val;
             }
         }
 
