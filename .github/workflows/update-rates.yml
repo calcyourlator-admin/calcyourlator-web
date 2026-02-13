@@ -12,12 +12,16 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v3
 
-      - name: Fetch FRED Data
+      - name: Fetch Dual FRED Data
         run: |
-          # We force the creation of the public folder if it doesn't exist, 
-          # then save the file directly into it.
           mkdir -p public
-          curl "https://api.stlouisfed.org/fred/series/observations?series_id=MORTGAGE30US&api_key=${{ secrets.FRED_API_KEY }}&file_type=json&limit=1&sort_order=desc" > public/rates.json
+          # Fetch 30-year rate
+          curl -s "https://api.stlouisfed.org/fred/series/observations?series_id=MORTGAGE30US&api_key=${{ secrets.FRED_API_KEY }}&file_type=json&limit=1&sort_order=desc" > 30yr.json
+          # Fetch 15-year rate
+          curl -s "https://api.stlouisfed.org/fred/series/observations?series_id=MORTGAGE15US&api_key=${{ secrets.FRED_API_KEY }}&file_type=json&limit=1&sort_order=desc" > 15yr.json
+          
+          # Merge both into the public rates.json file
+          echo "{\"MORTGAGE30US\": $(cat 30yr.json), \"MORTGAGE15US\": $(cat 15yr.json)}" > public/rates.json
 
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
