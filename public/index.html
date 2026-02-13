@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Mortgage, Auto & Rent vs. Buy Calculator | Calcyourlator</title>
+    <title>Mortgage Calculator: Estimate Monthly Payments with Live 2026 FRED Rates</title>
     <meta name="description"
-        content="Use our free, high-authority financial calculators to estimate mortgage payments, auto loans, and rent vs. buy scenarios. Features live FRED rates and full amortization schedules.">
+        content="Professional financial calculators for 2026. Estimate mortgage PITI, rent vs. buy breakeven, and auto loan TCO with live FRED data handshake and institutional transparency.">
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <!-- Tailwind CSS -->
@@ -381,20 +381,40 @@
     </style>
 </head>
 
-<!-- JSON-LD Schema Markup for SEO -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Calcyourlator",
-  "description": "Free mortgage, auto loan, and rent vs. buy calculator with live FRED rates and full amortization schedules",
-  "url": "https://calcyourlator.com",
-  "applicationCategory": "FinanceApplication",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  }
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Calcyourlator",
+      "url": "https://calcyourlator.com",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "All",
+      "abstract": "Institutional-grade financial calculators featuring live FRED data integration for mortgage, rent vs. buy, and auto loan analysis.",
+      "browserRequirements": "Requires JavaScript",
+      "author": {
+        "@type": "Organization",
+        "name": "Calcyourlator"
+      }
+    },
+    {
+      "@type": "FinancialProduct",
+      "name": "Mortgage Calculator",
+      "description": "Calculate monthly PITI payments using live Federal Reserve (FRED) interest rates and institutional amortization logic.",
+      "feesAndCommissionsSpecification": "https://calcyourlator.com/disclosure"
+    },
+    {
+      "@type": "FinancialProduct",
+      "name": "Rent vs. Buy Comparison",
+      "description": "Comprehensive 30-year wealth projection comparing homeownership costs against rental opportunity costs with live FRED benchmarks."
+    },
+    {
+      "@type": "FinancialProduct",
+      "name": "Auto Loan Calculator",
+      "description": "Vehicle loan and Total Cost of Ownership (TCO) calculator featuring fixed-rate amortization and 0% interest logic."
+    }
+  ]
 }
 </script>
 
@@ -420,8 +440,8 @@
     <div class="border-b border-gray-200 bg-white">
         <div class="max-w-7xl mx-auto px-4 flex overflow-x-auto">
             <button id="tabMortgage" class="bk-tab active">Mortgage</button>
-            <button id="tabAuto" class="bk-tab">Auto Loan</button>
             <button id="tabRentBuy" class="bk-tab">Rent versus Buy Comparison</button>
+            <button id="tabAuto" class="bk-tab">Auto Loan</button>
         </div>
     </div>
 
@@ -513,48 +533,6 @@
                                 <input type="number" id="pmiRate" class="bk-input" value="0" step="0.01">
                             </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- AUTO INPUTS (Hidden) -->
-                <div id="autoInputs" class="hidden space-y-4">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="bk-label">Vehicle Price</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
-                                <input type="number" id="autoPrice" class="bk-input pl-7" value="35000">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="bk-label">Down Payment (<span id="autoDpPercent">0.0%</span>)</label>
-                            <div class="relative">
-                                <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
-                                <input type="number" id="autoDown" class="bk-input pl-7" value="5000">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label class="bk-label">Interest Rate</label>
-                            <div class="relative">
-                                <input type="number" id="autoRate" class="bk-input pr-8" step="0.1" value="7.5">
-                                <span class="absolute right-3 top-2 text-gray-500 font-bold">%</span>
-                            </div>
-                        </div>
-                        <div>
-                            <label class="bk-label">Term (Months)</label>
-                            <select id="autoTerm" class="bk-input">
-                                <option value="36">36</option>
-                                <option value="48">48</option>
-                                <option value="60" selected>60</option>
-                                <option value="72">72</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="bk-label">Running Costs /mo</label>
-                        <input type="number" id="autoRun" class="bk-input" value="150">
                     </div>
                 </div>
 
@@ -731,6 +709,48 @@
                         </p>
                     </div>
                 </div>
+
+                <!-- AUTO INPUTS (Hidden) -->
+                <div id="autoInputs" class="hidden space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="bk-label">Vehicle Price</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
+                                <input type="number" id="autoPrice" class="bk-input pl-7" value="35000">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="bk-label">Down Payment (<span id="autoDpPercent">0.0%</span>)</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
+                                <input type="number" id="autoDown" class="bk-input pl-7" value="5000">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="bk-label">Interest Rate</label>
+                            <div class="relative">
+                                <input type="number" id="autoRate" class="bk-input pr-8" step="0.1" value="7.5">
+                                <span class="absolute right-3 top-2 text-gray-500 font-bold">%</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="bk-label">Term (Months)</label>
+                            <select id="autoTerm" class="bk-input">
+                                <option value="36">36</option>
+                                <option value="48">48</option>
+                                <option value="60" selected>60</option>
+                                <option value="72">72</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="bk-label">Ins and Running Costs /mo</label>
+                        <input type="number" id="autoRun" class="bk-input" value="150">
+                    </div>
+                </div>
             </div>
 
             <details id="amortizationSection"
@@ -801,7 +821,7 @@
                 <p class="text-[10px] font-bold text-bk-blue uppercase tracking-widest mb-1">Total Monthly Cost (TCO)
                 </p>
                 <div class="text-3xl font-black text-bk-text" id="autoTcoVal">$0</div>
-                <p class="text-[10px] text-gray-500 mt-2">Inc. loan + $150 running costs.</p>
+                <p class="text-[10px] text-gray-500 mt-2">Inc. loan + $150 insurance & running costs.</p>
             </div>
 
             <!-- RENT/BUY VERDICT CARD (RB Only) -->
@@ -915,19 +935,7 @@
             </ol>
         </div>
 
-        <!-- ADVERTISER DISCLOSURE -->
-        <div class="disclosure-safe-zone max-w-[1280px] mx-auto px-5">
-            <span class="disclosure-link-safe">
-                Advertiser Disclosure
-                <div class="disclosure-tooltip-safe">
-                    Advertiser Disclosure: calcyourlator.com is an independent, advertising-supported publisher and
-                    comparison service. We may receive compensation when you click on links or purchase products from
-                    our partners. This compensation may impact how, where, and in what order products appear. We strive
-                    to provide a wide range of offers, but we do not include information about every financial product
-                    or service available in the market.
-                </div>
-            </span>
-        </div>
+
 
         <!-- LENDER MARKETPLACE -->
         <div id="lender-marketplace">
@@ -1041,138 +1049,6 @@
         </div>
     </div>
 
-    <!-- AUTO EDUCATIONAL CONTENT -->
-    <div id="edu-auto" class="hidden">
-        <div class="max-w-[1280px] mx-auto px-5 mb-12">
-            <h2 class="text-2xl font-black text-bk-blue mb-6">How to use this auto loan calculator</h2>
-            <ol class="list-decimal list-inside space-y-4 text-gray-700 leading-relaxed font-medium">
-                <li><strong class="text-bk-text">Enter Vehicle Price:</strong> Input the total purchase price of the
-                    car.</li>
-                <li><strong class="text-bk-text">Input Down Payment:</strong> Enter the cash you are paying upfront.
-                    Tip: A larger down payment reduces your loan balance and can lower your interest rate.</li>
-                <li><strong class="text-bk-text">Set your Interest Rate:</strong> Input the APR you expect to receive.
-                    This is heavily influenced by your credit score.</li>
-                <li><strong class="text-bk-text">Choose your Loan Term:</strong> Select 36, 48, 60, or 72 months. A
-                    shorter term saves you money on interest; a longer term lowers your monthly payment.</li>
-            </ol>
-        </div>
-
-        <!-- ADVERTISER DISCLOSURE -->
-        <div class="disclosure-safe-zone max-w-[1280px] mx-auto px-5">
-            <span class="disclosure-link-safe">
-                Advertiser Disclosure
-                <div class="disclosure-tooltip-safe">
-                    Advertiser Disclosure: calcyourlator.com is an independent, advertising-supported publisher and
-                    comparison service. We may receive compensation when you click on links or purchase products from
-                    our partners. This compensation may impact how, where, and in what order products appear. We strive
-                    to provide a wide range of offers, but we do not include information about every financial product
-                    or service available in the market.
-                </div>
-            </span>
-        </div>
-
-        <!-- AUTO LOAN MARKETPLACE -->
-        <div id="auto-lender-marketplace">
-            <div class="max-w-[1280px] mx-auto px-5">
-                <h3 class="text-xl font-black text-bk-blue mb-6">Explore Today's Top Auto Rates</h3>
-                <div class="lender-row">
-                    <!-- Card 1 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">New Car</div>
-                            <div class="text-lg font-black text-bk-text">5.49% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 2 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Used Car</div>
-                            <div class="text-lg font-black text-bk-text">6.25% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 3 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Auto Refinance
-                            </div>
-                            <div class="text-lg font-black text-bk-text">5.95% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 4 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Credit Union</div>
-                            <div class="text-lg font-black text-bk-text">4.99% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 5 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Subprime</div>
-                            <div class="text-lg font-black text-bk-text">8.50% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 6 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Low Down Pmt</div>
-                            <div class="text-lg font-black text-bk-text">6.75% APR</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                    <!-- Card 7 -->
-                    <div class="lender-card">
-                        <div class="lender-logo"></div>
-                        <div class="mb-3">
-                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Auto Insurance
-                            </div>
-                            <div class="text-lg font-black text-bk-text">View Quotes</div>
-                        </div>
-                        <button class="lender-btn">Check Rate</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="max-w-[1280px] mx-auto px-5 mb-20">
-            <h2 class="text-2xl font-black text-bk-blue mb-6">Understanding your auto loan costs</h2>
-            <dl class="space-y-4 text-gray-700 leading-relaxed">
-                <div>
-                    <dt class="font-bold text-bk-text inline">Principal:</dt>
-                    <dd class="inline">The actual amount of money you are borrowing (Vehicle Price minus Down Payment).
-                    </dd>
-                </div>
-                <div>
-                    <dt class="font-bold text-bk-text inline">Interest Rate (APR):</dt>
-                    <dd class="inline">The annual cost of borrowing the money. Because auto loans are amortized, you pay
-                        more interest in the early months of the loan.</dd>
-                </div>
-                <div>
-                    <dt class="font-bold text-bk-text inline">Term:</dt>
-                    <dd class="inline">The length of time you have to repay the loan. Bankrate typically suggests a term
-                        of 60 months or fewer to avoid "negative equity".</dd>
-                </div>
-                <div>
-                    <dt class="font-bold text-bk-text inline">Running Costs /mo:</dt>
-                    <dd class="inline">These are the additional monthly expenses of owning a vehicle, such as fuel,
-                        insurance, and routine maintenance, which should be factored into your total budget.</dd>
-                </div>
-            </dl>
-        </div>
-    </div>
-    </div>
-
     <!-- RENT VS BUY STRATEGIC GUIDANCE -->
     <div id="edu-rentbuy" class="hidden">
         <div class="max-w-[1280px] mx-auto px-5 mb-12">
@@ -1224,19 +1100,7 @@
             </div>
         </div>
 
-        <!-- ADVERTISER DISCLOSURE -->
-        <div class="disclosure-safe-zone max-w-[1280px] mx-auto px-5">
-            <span class="disclosure-link-safe">
-                Advertiser Disclosure
-                <div class="disclosure-tooltip-safe">
-                    Advertiser Disclosure: calcyourlator.com is an independent, advertising-supported publisher and
-                    comparison service. We may receive compensation when you click on links or purchase products from
-                    our partners. This compensation may impact how, where, and in what order products appear. We strive
-                    to provide a wide range of offers, but we do not include information about every financial product
-                    or service available in the market.
-                </div>
-            </span>
-        </div>
+
 
         <!-- LENDER MARKETPLACE (RB) -->
         <div id="lender-marketplace-rb">
@@ -1332,6 +1196,125 @@
                     <dt class="font-bold text-bk-text inline">Opportunity Cost:</dt>
                     <dd class="inline">The potential earnings you miss out on by putting your cash into a down payment
                         rather than investing it elsewhere.</dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+
+    <!-- AUTO EDUCATIONAL CONTENT -->
+    <div id="edu-auto" class="hidden">
+        <div class="max-w-[1280px] mx-auto px-5 mb-12">
+            <h2 class="text-2xl font-black text-bk-blue mb-6">How to use this auto loan calculator</h2>
+            <ol class="list-decimal list-inside space-y-4 text-gray-700 leading-relaxed font-medium">
+                <li><strong class="text-bk-text">Enter Vehicle Price:</strong> Input the total purchase price of the
+                    car.</li>
+                <li><strong class="text-bk-text">Input Down Payment:</strong> Enter the cash you are paying upfront.
+                    Tip: A larger down payment reduces your loan balance and can lower your interest rate.</li>
+                <li><strong class="text-bk-text">Set your Interest Rate:</strong> Input the APR you expect to receive.
+                    This is heavily influenced by your credit score.</li>
+                <li><strong class="text-bk-text">Choose your Loan Term:</strong> Select 36, 48, 60, or 72 months. A
+                    shorter term saves you money on interest; a longer term lowers your monthly payment.</li>
+            </ol>
+        </div>
+
+
+
+        <!-- AUTO LOAN MARKETPLACE -->
+        <div id="auto-lender-marketplace">
+            <div class="max-w-[1280px] mx-auto px-5">
+                <h3 class="text-xl font-black text-bk-blue mb-6">Explore Today's Top Auto Rates</h3>
+                <div class="lender-row">
+                    <!-- Card 1 -->
+                    <div class="lender-card">
+                        <div class="lender-logo"></div>
+                        <div class="mb-3">
+                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">New Car</div>
+                            <div class="text-lg font-black text-bk-text">5.49% APR</div>
+                        </div>
+                        <button class="lender-btn">Check Rate</button>
+                    </div>
+                    <!-- Card 2 -->
+                    <div class="lender-card">
+                        <div class="lender-logo"></div>
+                        <div class="mb-3">
+                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Used Car</div>
+                            <div class="text-lg font-black text-bk-text">6.25% APR</div>
+                        </div>
+                        <button class="lender-btn">Check Rate</button>
+                    </div>
+                    <!-- Card 3 -->
+                    <div class="lender-card">
+                        <div class="lender-logo"></div>
+                        <div class="mb-3">
+                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Auto Refinance
+                            </div>
+                            <div class="text-lg font-black text-bk-text">5.95% APR</div>
+                        </div>
+                        <button class="lender-btn">Check Rate</button>
+                    </div>
+                    <!-- Card 4 -->
+                    <div class="lender-card">
+                        <div class="lender-logo"></div>
+                        <div class="mb-3">
+                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Credit Union</div>
+                            <div class="text-lg font-black text-bk-text">4.99% APR</div>
+                        </div>
+                        <button class="lender-btn">Check Rate</button>
+                    </div>
+                    <!-- Card 5 -->
+                    <div class="lender-card">
+                        <div class="lender-logo"></div>
+                        <div class="mb-3">
+                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Subprime</div>
+                            <div class="text-lg font-black text-bk-text">8.50% APR</div>
+                        </div>
+                        <button class="lender-btn">Check Rate</button>
+                    </div>
+                    <!-- Card 6 -->
+                    <div class="lender-card">
+                        <div class="lender-logo"></div>
+                        <div class="mb-3">
+                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Low Down Pmt</div>
+                            <div class="text-lg font-black text-bk-text">6.75% APR</div>
+                        </div>
+                        <button class="lender-btn">Check Rate</button>
+                    </div>
+                    <!-- Card 7 -->
+                    <div class="lender-card">
+                        <div class="lender-logo"></div>
+                        <div class="mb-3">
+                            <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">Auto Insurance
+                            </div>
+                            <div class="text-lg font-black text-bk-text">View Quotes</div>
+                        </div>
+                        <button class="lender-btn">Check Rate</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-[1280px] mx-auto px-5 mb-20">
+            <h2 class="text-2xl font-black text-bk-blue mb-6">Understanding your auto loan costs</h2>
+            <dl class="space-y-4 text-gray-700 leading-relaxed">
+                <div>
+                    <dt class="font-bold text-bk-text inline">Principal:</dt>
+                    <dd class="inline">The actual amount of money you are borrowing (Vehicle Price minus Down Payment).
+                    </dd>
+                </div>
+                <div>
+                    <dt class="font-bold text-bk-text inline">Interest Rate (APR):</dt>
+                    <dd class="inline">The annual cost of borrowing the money. Because auto loans are amortized, you pay
+                        more interest in the early months of the loan.</dd>
+                </div>
+                <div>
+                    <dt class="font-bold text-bk-text inline">Term:</dt>
+                    <dd class="inline">The length of time you have to repay the loan. Bankrate typically suggests a term
+                        of 60 months or fewer to avoid "negative equity".</dd>
+                </div>
+                <div>
+                    <dt class="font-bold text-bk-text inline">Ins and Running Costs /mo:</dt>
+                    <dd class="inline">These are the additional monthly expenses of owning a vehicle, such as fuel,
+                        insurance, and routine maintenance, which should be factored into your total budget.</dd>
                 </div>
             </dl>
         </div>
@@ -1745,7 +1728,7 @@
 
             renderList([
                 { l: 'Loan Payment', v: monthlyLoanPayment, c: '#0056b3' },
-                { l: 'Running Costs', v: running, c: '#ffc107' }
+                { l: 'Ins & Running Costs', v: running, c: '#ffc107' }
             ]);
 
             el('amortizationSection').classList.add('hidden');
@@ -2035,6 +2018,10 @@
                 <a href="terms.html" class="text-xs hover:underline"
                     style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">Terms
                     of Use</a>
+                <a href="javascript:void(0)" class="text-xs hover:underline"
+                    style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;"
+                    onclick="document.getElementById('disclosure-modal').classList.remove('hidden'); document.getElementById('disclosure-modal').classList.add('flex');">Advertiser
+                    Disclosure</a>
                 <a href="cookies.html" class="text-xs hover:underline"
                     style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">Cookie
                     Settings</a>
@@ -2042,11 +2029,37 @@
                     style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">Contact
                     Us</a>
             </nav>
-            <p class="text-[11px] text-gray-400 mt-3">
+            <p class="text-[11px] text-gray-400 mt-3 text-center">
                 By using this site, you agree to our Terms of Use and Privacy Policy, including our use of cookies.
             </p>
         </div>
     </footer>
+
+    <!-- Disclosure Modal -->
+    <div id="disclosure-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/50 p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6 relative">
+            <button
+                onclick="document.getElementById('disclosure-modal').classList.add('hidden'); document.getElementById('disclosure-modal').classList.remove('flex');"
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+            <h3 class="text-xl font-bold text-bk-blue mb-4">Advertiser Disclosure</h3>
+            <p class="text-sm text-gray-700 leading-relaxed">
+                calcyourlator.com is an independent, advertising-supported publisher and comparison service. We may
+                receive compensation when you click on links or purchase products from our partners. This compensation
+                may impact how, where, and in what order products appear. We strive to provide a wide range of offers,
+                but we do not include information about every financial product or service available in the market.
+            </p>
+            <div class="mt-6 text-right">
+                <button
+                    onclick="document.getElementById('disclosure-modal').classList.add('hidden'); document.getElementById('disclosure-modal').classList.remove('flex');"
+                    class="bg-bk-blue text-white px-6 py-2 rounded font-bold hover:bg-blue-700 transition-colors">Close</button>
+            </div>
+        </div>
+    </div>
 
 </body>
 
