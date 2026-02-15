@@ -7,6 +7,8 @@
     <title>Mortgage Calculator: Estimate Monthly Payments with Live 2026 FRED Rates</title>
     <meta name="description"
         content="Professional financial calculators for 2026. Estimate mortgage PITI, rent vs. buy breakeven, and auto loan TCO with live FRED data handshake and institutional transparency.">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2949207595448686"
+        crossorigin="anonymous"></script>
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -319,53 +321,6 @@
             #lender-marketplace {
                 padding: 1.5rem 0;
             }
-        }
-
-        /* Advertiser Disclosure - Safe Zone CSS-Only */
-        .disclosure-safe-zone {
-            margin: 2rem 0 1rem 0;
-            padding: 0.5rem 0;
-            clear: both;
-        }
-
-        .disclosure-link-safe {
-            font-size: 11px;
-            color: #9CA3AF;
-            text-decoration: underline;
-            cursor: pointer;
-            position: relative;
-            display: inline-block;
-        }
-
-        .disclosure-link-safe:hover {
-            color: #6B7280;
-        }
-
-        .disclosure-tooltip-safe {
-            position: absolute;
-            left: 0;
-            top: 100%;
-            margin-top: 0.25rem;
-            z-index: 999 !important;
-            background-color: white;
-            border: 1px solid #E5E7EB;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            padding: 0.75rem;
-            border-radius: 0.25rem;
-            width: 300px;
-            font-size: 0.75rem;
-            color: #4B5563;
-            line-height: 1.5;
-            text-align: left;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
-            pointer-events: none;
-        }
-
-        .disclosure-link-safe:hover .disclosure-tooltip-safe {
-            opacity: 1;
-            visibility: visible;
         }
 
         /* Mobile Table Legibility Fix */
@@ -728,7 +683,7 @@
                             </div>
                         </div>
                         <div>
-                            <label class="bk-label">Down Payment (<span id="autoDpPercent">0.0%</span>)</label>
+                            <label class="bk-label">Down Payment (<span id="autoDpPercent">14.3%</span>)</label>
                             <div class="relative">
                                 <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
                                 <input type="number" id="autoDown" class="bk-input pl-7" value="5000">
@@ -748,17 +703,16 @@
                             <select id="autoTerm" class="bk-input">
                                 <option value="36">36</option>
                                 <option value="48">48</option>
-                                <option value="60" selected>60</option>
+                                <option value="60" selected="">60</option>
                                 <option value="72">72</option>
                             </select>
                         </div>
                     </div>
-                    <div>
-                        <label class="bk-label">Ins and Running Costs /mo</label>
-                        <input type="number" id="autoRun" class="bk-input" value="150">
+                    <div class="hidden">
+                        <input type="number" id="autoRun" class="bk-input hidden" value="150" style="display:none;">
                     </div>
-                </div>
-            </div>
+                </div> <!-- CLOSES autoInputs -->
+            </div> <!-- CLOSES MAIN CARD -->
 
             <details id="amortizationSection"
                 class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mt-8 pt-8 border-t-2 border-t-gray-100">
@@ -796,6 +750,7 @@
                     </table>
                 </div>
             </details>
+
         </main>
 
         <!-- SIDEBAR: RES + ADS + METHODOLOGY (Sticky) -->
@@ -903,11 +858,6 @@
                                 daily with the Federal Reserve Economic Data (FRED) series MORTGAGE30US and
                                 MORTGAGE15US. This ensures every calculation is grounded in the most current, sovereign
                                 market averages provided by the Federal Reserve Bank of St. Louis.</li>
-                            <li><strong class="text-bk-text">Disclosures & Assumptions:</strong> Estimates are provided
-                                for educational purposes only. Because our calculator cannot precisely predict the
-                                future, results are estimates based on user input values only. Calcyourlator is an
-                                independent utility and does not provide legal, tax, or financial advice. Intended for
-                                use by U.S. residents only.</li>
                         </ul>
                     </div>
                 </details>
@@ -2039,7 +1989,8 @@
     </footer>
 
     <!-- Disclosure Modal -->
-    <div id="disclosure-modal" class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/50 p-4">
+    <div id="disclosure-modal"
+        class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/50 p-4 font-sans">
         <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6 relative">
             <button
                 onclick="document.getElementById('disclosure-modal').classList.add('hidden'); document.getElementById('disclosure-modal').classList.remove('flex');"
