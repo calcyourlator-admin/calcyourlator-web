@@ -341,6 +341,21 @@
             }
         }
     </style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Calcyourlator Mortgage & Rent vs. Buy Engine",
+      "operatingSystem": "All",
+      "applicationCategory": "FinanceApplication",
+      "description": "Institutional-grade mortgage and rent vs. buy calculator utilizing live FRED® economic data for unbiased financial projections.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
 </head>
 
 <script type="application/ld+json">
@@ -1960,6 +1975,17 @@
         init();
     </script>
 
+    <!-- Institutional E-E-A-T Block -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="py-6 border-t border-gray-200 text-center">
+            <p class="text-[10px] uppercase tracking-widest text-gray-500 font-medium leading-relaxed">
+                Calculations are indexed and reviewed as a substitute for CSA attestation by the Calcyourlator Admin
+                Team.
+                Data sourced via <span class="font-bold">FRED® series MORTGAGE30US</span>.
+            </p>
+        </div>
+    </div>
+
     <!-- GLOBAL FOOTER -->
     <footer class="mt-16" style="background-color: #F9FAFB; padding: 20px 0;">
         <div class="max-w-[1280px] mx-auto px-5 text-center">
@@ -2019,6 +2045,16 @@
         </div>
     </div>
 
+    <script>
+        (function () {
+            const currentYear = new Date().getFullYear();
+            document.title = `Mortgage Calculator: Estimate Monthly Payments with Live ${currentYear} FRED® Rates`;
+            const metaDesc = document.querySelector('meta[name="description"]');
+            if (metaDesc) {
+                metaDesc.setAttribute('content', `Calculate mortgage PITI and Rent vs. Buy wealth gaps with live ${currentYear} Federal Reserve data. Unbiased, institutional-grade financial modeling.`);
+            }
+        })();
+    </script>
 </body>
 
 </html>
