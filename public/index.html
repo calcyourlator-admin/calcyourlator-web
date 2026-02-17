@@ -442,6 +442,11 @@
       "author": {
         "@type": "Organization",
         "name": "Calcyourlator"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://calcyourlator.com/?tab={tab}&hp={hp}&dp={dp}&r={r}&t={t}&tax={tax}&ins={ins}&rent={rent}",
+        "query-input": "required name=tab"
       }
     },
     {
@@ -506,14 +511,16 @@
                             <label class="bk-label">Home Price</label>
                             <div class="relative">
                                 <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
-                                <input type="number" id="homePrice" class="bk-input pl-7" value="300000">
+                                <input type="number" id="homePrice" class="bk-input pl-7" value="300000"
+                                    aria-label="Home Purchase Price in USD">
                             </div>
                         </div>
                         <div>
                             <label class="bk-label">Down Payment (<span id="dpPercent">20%</span>)</label>
                             <div class="relative">
                                 <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
-                                <input type="number" id="downPayment" class="bk-input pl-7" value="60000">
+                                <input type="number" id="downPayment" class="bk-input pl-7" value="60000"
+                                    aria-label="Down Payment Amount in USD">
                             </div>
                         </div>
                     </div>
@@ -521,7 +528,8 @@
                         <div>
                             <label class="bk-label">Interest Rate</label>
                             <div class="relative">
-                                <input type="number" id="interestRate" class="bk-input pr-8" step="0.01" value="6.5">
+                                <input type="number" id="interestRate" class="bk-input pr-8" step="0.01" value="6.5"
+                                    aria-label="Annual Mortgage Interest Rate Percentage">
                                 <span class="absolute right-3 top-2 text-gray-500 font-bold">%</span>
                             </div>
                             <p class="text-xs text-green-600 mt-1" id="rateSource">
@@ -564,7 +572,8 @@
                         <div id="advInputs" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
                             <div>
                                 <label class="bk-label text-xs">Prop Tax /yr (%)</label>
-                                <input type="number" id="propertyTax" class="bk-input" value="1.2" step="0.1">
+                                <input type="number" id="propertyTax" class="bk-input" value="1.2" step="0.1"
+                                    aria-label="Annual Property Tax Rate Percentage">
                             </div>
                             <div>
                                 <label class="bk-label text-xs">Home Ins /yr ($)</label>
@@ -595,7 +604,8 @@
                                 <label class="bk-label">Monthly Rent</label>
                                 <div class="relative">
                                     <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
-                                    <input type="number" id="rbRent" class="bk-input pl-7" value="2200">
+                                    <input type="number" id="rbRent" class="bk-input pl-7" value="2200"
+                                        aria-label="Current Monthly Rent Payment">
                                 </div>
                             </div>
                             <div>
@@ -622,7 +632,8 @@
                             <div>
                                 <label class="bk-label">Avg. Invest Return (AIR)</label>
                                 <div class="relative">
-                                    <input type="number" id="rbInv" class="bk-input pr-8" value="6" step="0.1">
+                                    <input type="number" id="rbInv" class="bk-input pr-8" value="6" step="0.1"
+                                        aria-label="Average Investment Return for Opportunity Cost Calculation">
                                     <span class="absolute right-3 top-2 text-gray-500 font-bold">%</span>
                                 </div>
                                 <p class="text-[10px] text-gray-400 mt-1">Opportunity cost rate</p>
@@ -642,7 +653,8 @@
                                     <label class="bk-label">Home Price</label>
                                     <div class="relative">
                                         <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
-                                        <input type="number" id="rbPrice" class="bk-input pl-7" value="400000">
+                                        <input type="number" id="rbPrice" class="bk-input pl-7" value="400000"
+                                            aria-label="Target Home Purchase Price">
                                     </div>
                                 </div>
                                 <div>
@@ -749,13 +761,15 @@
                         </div>
                         <input type="range" id="rbStay"
                             class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" min="1" max="30"
-                            value="7" oninput="document.getElementById('rbStayVal').innerText = this.value">
+                            value="7" oninput="document.getElementById('rbStayVal').innerText = this.value"
+                            aria-label="Duration of Analysis in Years">
                         <div
                             class="flex flex-col md:flex-row justify-between items-center mt-4 border-t border-gray-100 pt-2">
                             <p class="text-[10px] text-gray-400 italic">*This tool is optimized for U.S. tax codes and
                                 financial standards.</p>
                             <a href="javascript:void(0)" onclick="generateRbReport()"
-                                class="text-[11px] font-bold text-bk-blue hover:underline flex items-center">
+                                class="text-[11px] font-bold text-bk-blue hover:underline flex items-center"
+                                aria-label="Generate and print an Institutional Wealth Analysis Report">
                                 <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
@@ -765,7 +779,8 @@
                             </a>
                             <button onclick="copyResultsLink()"
                                 class="text-[11px] font-bold text-gray-500 hover:text-bk-blue flex items-center ml-4 transition-colors"
-                                id="copyLinkBtn">
+                                id="copyLinkBtn"
+                                aria-label="Copy a pre-populated deep-link of these results to the clipboard">
                                 <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1">
@@ -784,7 +799,8 @@
                             <label class="bk-label">Vehicle Price</label>
                             <div class="relative">
                                 <span class="absolute left-3 top-2 text-gray-500 font-bold">$</span>
-                                <input type="number" id="autoPrice" class="bk-input pl-7" value="35000">
+                                <input type="number" id="autoPrice" class="bk-input pl-7" value="35000"
+                                    aria-label="Vehicle Purchase Price">
                             </div>
                         </div>
                         <div>
@@ -805,7 +821,7 @@
                         </div>
                         <div>
                             <label class="bk-label">Term (Months)</label>
-                            <select id="autoTerm" class="bk-input">
+                            <select id="autoTerm" class="bk-input" aria-label="Auto Loan Term in Months">
                                 <option value="36">36</option>
                                 <option value="48">48</option>
                                 <option value="60" selected="">60</option>
@@ -1023,7 +1039,8 @@
                             <div class="text-[10px] text-gray-400 uppercase font-bold tracking-wider">30-Yr Fixed</div>
                             <div class="text-lg font-black text-bk-text">6.15% APR</div>
                         </div>
-                        <button class="lender-btn">Check Rate</button>
+                        <button class="lender-btn" aria-label="Check today's live mortgage rate for this lender">Check
+                            Rate</button>
                     </div>
                     <!-- Card 2 -->
                     <div class="lender-card">
@@ -2159,24 +2176,34 @@
                 <div class="flex justify-center space-x-1 mb-4" id="nps-buttons">
                     <!-- Hard-coded Buttons for Persistence -->
                     <button type="button" onclick="handleNPS(1, this)"
+                        aria-label="Rate this financial analysis as 1 out of 10"
                         class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">1</button>
                     <button type="button" onclick="handleNPS(2, this)"
+                        aria-label="Rate this financial analysis as 2 out of 10"
                         class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">2</button>
                     <button type="button" onclick="handleNPS(3, this)"
+                        aria-label="Rate this financial analysis as 3 out of 10"
                         class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">3</button>
                     <button type="button" onclick="handleNPS(4, this)"
+                        aria-label="Rate this financial analysis as 4 out of 10"
                         class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">4</button>
                     <button type="button" onclick="handleNPS(5, this)"
+                        aria-label="Rate this financial analysis as 5 out of 10"
                         class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">5</button>
                     <button type="button" onclick="handleNPS(6, this)"
+                        aria-label="Rate this financial analysis as 6 out of 10"
                         class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">6</button>
                     <button type="button" onclick="handleNPS(7, this)"
+                        aria-label="Rate this financial analysis as 7 out of 10"
                         class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">7</button>
                     <button type="button" onclick="handleNPS(8, this)"
+                        aria-label="Rate this financial analysis as 8 out of 10"
                         class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">8</button>
                     <button type="button" onclick="handleNPS(9, this)"
+                        aria-label="Rate this financial analysis as 9 out of 10"
                         class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">9</button>
                     <button type="button" onclick="handleNPS(10, this)"
+                        aria-label="Rate this financial analysis as 10 out of 10"
                         class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">10</button>
                 </div>
 
@@ -2336,14 +2363,14 @@
             }
         }
 
-                        function copyResultsLink() {
+        function copyResultsLink() {
             const params = new URLSearchParams();
-            
+
             // 1. Identify Mode & Map to 'tab'
-            let mode = S.mode; 
+            let mode = S.mode;
             let tabVal = mode;
             if (mode === 'rentbuy' || mode === 'rb') tabVal = 'rb';
-            
+
             params.set('tab', tabVal);
 
             // 2. Capture Inputs based on Active Mode
@@ -2357,14 +2384,14 @@
                 params.set('hoa', el('hoa').value);
                 params.set('pmi', el('pmiRate').value);
                 params.set('start', el('startDate').value);
-            } 
+            }
             else if (mode === 'auto') {
                 params.set('ap', el('autoPrice').value);
                 params.set('adp', el('autoDown').value);
                 params.set('arate', el('autoRate').value);
                 params.set('aterm', el('autoTerm').value);
                 params.set('arun', el('autoRun').value);
-            } 
+            }
             else if (mode === 'rb' || mode === 'rentbuy') {
                 // Rent vs Buy
                 params.set('hp', el('rbPrice').value);
@@ -2379,13 +2406,13 @@
                 params.set('hoa', el('rbHoa').value);
                 params.set('app', el('rbApprec').value);
                 params.set('mtax', el('rbTax').value);
-                
+
                 params.set('rent', el('rbRent').value);
                 params.set('rinc', el('rbRentInc').value);
                 params.set('rins', el('rbRentIns').value);
                 params.set('dep', el('rbDeposit').value);
                 params.set('inv', el('rbInv').value);
-                
+
                 params.set('stay', el('rbStay').value);
             }
 
@@ -2396,7 +2423,7 @@
                 const original = btnTxt.innerText;
                 btnTxt.innerText = "Copied!";
                 btnTxt.classList.add('text-green-600');
-                
+
                 setTimeout(() => {
                     btnTxt.innerText = original;
                     btnTxt.classList.remove('text-green-600');
@@ -2406,7 +2433,7 @@
 
         function parseUrlParams() { console.log('Legacy parser disabled.'); }
 
-// Add fade-in animation
+        // Add fade-in animation
         const style = document.createElement('style');
         style.innerHTML = `
             @keyframes fadeInUp {
@@ -2421,110 +2448,110 @@
     </script>
 
     <script>
-    // Fail-Safe Deep Link Parser
-    window.addEventListener('load', () => {
-        console.log("Calcyourlator: Initializing Deep Link Parser...");
-        const urlParams = new URLSearchParams(window.location.search);
-        
-        // Support 'tab' (new) and 'mode' (legacy)
-        let targetTab = urlParams.get('tab') || urlParams.get('mode');
-        
-        if (targetTab) {
-            console.log("Target Tab Detected:", targetTab);
-            
-            // Normalize alias
-            if (targetTab === 'rb') targetTab = 'rentbuy';
+        // Fail-Safe Deep Link Parser
+        window.addEventListener('load', () => {
+            console.log("Calcyourlator: Initializing Deep Link Parser...");
+            const urlParams = new URLSearchParams(window.location.search);
 
-            // 1. Force the Tab Switch
-            if (typeof setTab === "function") {
-                setTab(targetTab); 
-                console.log("Tab Switched to:", targetTab);
-            }
-            
-            // 2. Inject Values with Error Checking
-            // We define maps for each mode to ensure we target the right IDs
-            let paramMap = {};
+            // Support 'tab' (new) and 'mode' (legacy)
+            let targetTab = urlParams.get('tab') || urlParams.get('mode');
 
-            if (targetTab === 'mortgage') {
-                paramMap = {
-                    'hp': 'homePrice',
-                    'dp': 'downPayment',
-                    'r': 'interestRate',
-                    't': 'loanTerm',
-                    'tax': 'propertyTax',
-                    'ins': 'homeIns',
-                    'hoa': 'hoa',
-                    'pmi': 'pmiRate',
-                    'start': 'startDate'
-                };
-            } else if (targetTab === 'auto') {
-                paramMap = {
-                    'ap': 'autoPrice',
-                    'adp': 'autoDown',
-                    'arate': 'autoRate',
-                    'aterm': 'autoTerm',
-                    'arun': 'autoRun'
-                };
-            } else if (targetTab === 'rentbuy' || targetTab === 'rb') {
-                paramMap = {
-                    'hp': 'rbPrice',
-                    'dp': 'rbDown',
-                    'r': 'rbRate',
-                    't': 'rbTerm',
-                    'rent': 'rbRent',
-                    'rinc': 'rbRentInc',
-                    'rins': 'rbRentIns',
-                    'dep': 'rbDeposit',
-                    'inv': 'rbInv',
-                    'stay': 'rbStay',
-                    'ccbuy': 'rbBuyCc',
-                    'ccsell': 'rbSellCc',
-                    'tax': 'rbTaxAmt',
-                    'ins': 'rbIns',
-                    'maint': 'rbMaint',
-                    'hoa': 'rbHoa',
-                    'app': 'rbApprec',
-                    'mtax': 'rbTax'
-                };
-            }
+            if (targetTab) {
+                console.log("Target Tab Detected:", targetTab);
 
-            for (const [key, id] of Object.entries(paramMap)) {
-                if (urlParams.has(key)) {
-                    const inputElement = document.getElementById(id);
-                    if (inputElement) {
-                        inputElement.value = urlParams.get(key);
-                        console.log(`Injected ${key}: ${urlParams.get(key)} into ${id}`);
-                        
-                        // Handle specific UI updates like sliders/text sync
-                        if (id === 'rbStay') {
-                            const disp = document.getElementById('rbStayVal');
-                            if(disp) disp.innerText = urlParams.get(key);
+                // Normalize alias
+                if (targetTab === 'rb') targetTab = 'rentbuy';
+
+                // 1. Force the Tab Switch
+                if (typeof setTab === "function") {
+                    setTab(targetTab);
+                    console.log("Tab Switched to:", targetTab);
+                }
+
+                // 2. Inject Values with Error Checking
+                // We define maps for each mode to ensure we target the right IDs
+                let paramMap = {};
+
+                if (targetTab === 'mortgage') {
+                    paramMap = {
+                        'hp': 'homePrice',
+                        'dp': 'downPayment',
+                        'r': 'interestRate',
+                        't': 'loanTerm',
+                        'tax': 'propertyTax',
+                        'ins': 'homeIns',
+                        'hoa': 'hoa',
+                        'pmi': 'pmiRate',
+                        'start': 'startDate'
+                    };
+                } else if (targetTab === 'auto') {
+                    paramMap = {
+                        'ap': 'autoPrice',
+                        'adp': 'autoDown',
+                        'arate': 'autoRate',
+                        'aterm': 'autoTerm',
+                        'arun': 'autoRun'
+                    };
+                } else if (targetTab === 'rentbuy' || targetTab === 'rb') {
+                    paramMap = {
+                        'hp': 'rbPrice',
+                        'dp': 'rbDown',
+                        'r': 'rbRate',
+                        't': 'rbTerm',
+                        'rent': 'rbRent',
+                        'rinc': 'rbRentInc',
+                        'rins': 'rbRentIns',
+                        'dep': 'rbDeposit',
+                        'inv': 'rbInv',
+                        'stay': 'rbStay',
+                        'ccbuy': 'rbBuyCc',
+                        'ccsell': 'rbSellCc',
+                        'tax': 'rbTaxAmt',
+                        'ins': 'rbIns',
+                        'maint': 'rbMaint',
+                        'hoa': 'rbHoa',
+                        'app': 'rbApprec',
+                        'mtax': 'rbTax'
+                    };
+                }
+
+                for (const [key, id] of Object.entries(paramMap)) {
+                    if (urlParams.has(key)) {
+                        const inputElement = document.getElementById(id);
+                        if (inputElement) {
+                            inputElement.value = urlParams.get(key);
+                            console.log(`Injected ${key}: ${urlParams.get(key)} into ${id}`);
+
+                            // Handle specific UI updates like sliders/text sync
+                            if (id === 'rbStay') {
+                                const disp = document.getElementById('rbStayVal');
+                                if (disp) disp.innerText = urlParams.get(key);
+                            }
+                            if (id === 'loanTerm') {
+                                document.querySelectorAll('.term-btn').forEach(b => {
+                                    if (b.dataset.val === urlParams.get(key)) b.click(); // Click to trigger style
+                                });
+                            }
+                        } else {
+                            console.warn(`Target element ${id} not found for key ${key}`);
                         }
-                        if (id === 'loanTerm') {
-                            document.querySelectorAll('.term-btn').forEach(b => {
-                                if (b.dataset.val === urlParams.get(key)) b.click(); // Click to trigger style
-                            }); 
-                        }
-                    } else {
-                        console.warn(`Target element ${id} not found for key ${key}`);
                     }
                 }
-            }
-            
-            // Deep Link Protection Logic (from previous step)
-            // If 'r' is present, we ensure FRED logic doesn't overwrite it.
-            // (This is implicitly handled because we set value AFTER load, but FRED fetch is async.
-            // The previous fix added a check in fetchFred to respect URL params.
-            // Here we just set the value. If fetchFred comes later, the check should protect it.)
 
-            // 3. Force the Calculation Update
-            if (typeof update === "function") {
-                update();
-                console.log("Calculations Updated.");
+                // Deep Link Protection Logic (from previous step)
+                // If 'r' is present, we ensure FRED logic doesn't overwrite it.
+                // (This is implicitly handled because we set value AFTER load, but FRED fetch is async.
+                // The previous fix added a check in fetchFred to respect URL params.
+                // Here we just set the value. If fetchFred comes later, the check should protect it.)
+
+                // 3. Force the Calculation Update
+                if (typeof update === "function") {
+                    update();
+                    console.log("Calculations Updated.");
+                }
+                console.log("Deep Link Population Complete.");
             }
-            console.log("Deep Link Population Complete.");
-        }
-    });
+        });
     </script>
 
 </body>
