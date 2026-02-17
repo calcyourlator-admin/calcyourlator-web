@@ -1489,6 +1489,18 @@
                 i.addEventListener('input', update);
             });
 
+
+            // Rent vs Buy Term Toggle (FRED Sync)
+            el('rbTerm').addEventListener('change', (e) => {
+                const term = parseInt(e.target.value);
+                if (term === 30 && FRED_DATA["MORTGAGE30US"]) {
+                    el('rbRate').value = FRED_DATA["MORTGAGE30US"].val;
+                } else if (term === 15 && FRED_DATA["MORTGAGE15US"]) {
+                    el('rbRate').value = FRED_DATA["MORTGAGE15US"].val;
+                }
+                update();
+            });
+
             // Term Buttons
             document.querySelectorAll('.term-btn').forEach(b => {
                 b.onclick = () => setTerm(b.dataset.val);
@@ -1681,7 +1693,7 @@
                 // Refresh UI with current term selection
                 setTerm(S.mterm);
                 // Sync Rent vs Buy Rate with 30-Year Anchor
-                if (FRED_DATA["MORTGAGE30US"]) el('rbRate').value = FRED_DATA["MORTGAGE30US"].val;
+                if (FRED_DATA["MORTGAGE30US"] && !new URLSearchParams(window.location.search).has('r')) el('rbRate').value = FRED_DATA["MORTGAGE30US"].val;
             }
         }
 
@@ -2324,13 +2336,15 @@
             }
         }
 
-                function copyResultsLink() {
+                        function copyResultsLink() {
             const params = new URLSearchParams();
             
-            // 1. Identify Mode
+            // 1. Identify Mode & Map to 'tab'
             let mode = S.mode; 
-            // Normalize 'rentbuy' to 'rb' for URL consistency if needed
-            params.set('mode', mode);
+            let tabVal = mode;
+            if (mode === 'rentbuy' || mode === 'rb') tabVal = 'rb';
+            
+            params.set('tab', tabVal);
 
             // 2. Capture Inputs based on Active Mode
             if (mode === 'mortgage') {
@@ -2351,7 +2365,7 @@
                 params.set('aterm', el('autoTerm').value);
                 params.set('arun', el('autoRun').value);
             } 
-            else if (mode === 'rb') {
+            else if (mode === 'rb' || mode === 'rentbuy') {
                 // Rent vs Buy
                 params.set('hp', el('rbPrice').value);
                 params.set('dp', el('rbDown').value);
@@ -2392,12 +2406,13 @@
 
         function parseUrlParams() {
             const params = new URLSearchParams(window.location.search);
-            if (!params.has('mode')) return;
+            // Support 'tab' as primary, fallback to 'mode' if old link
+            let tab = params.get('tab') || params.get('mode');
+            
+            if (!tab) return;
 
-            const mode = params.get('mode');
-
-            // 1. Switch Tab
-            if (mode === 'mortgage') {
+            // 1. Switch Tab logic
+            if (tab === 'mortgage') {
                 setTab('mortgage');
                 // el('tabMortgage').click(); 
                 
@@ -2425,7 +2440,7 @@
                     el('advInputs').classList.remove('hidden');
                 }
             }
-            else if (mode === 'auto') {
+            else if (tab === 'auto') {
                 setTab('auto');
                 
                 if(params.has('ap')) el('autoPrice').value = params.get('ap');
@@ -2434,7 +2449,7 @@
                 if(params.has('aterm')) el('autoTerm').value = params.get('aterm');
                 if(params.has('arun')) el('autoRun').value = params.get('arun');
             }
-            else if (mode === 'rb') {
+            else if (tab === 'rb' || tab === 'rentbuy') {
                 setTab('rentbuy');
                 
                 if(params.has('hp')) el('rbPrice').value = params.get('hp');
