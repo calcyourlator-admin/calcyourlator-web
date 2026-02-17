@@ -1441,7 +1441,7 @@
             setTerm(30); // Default
 
             // NPS Initialization
-            initNPS();
+            // NPS Initialization (Removed - buttons are now hardcoded)
 
             // URL Parameter Parsing (Scenario Sharing)
             parseUrlParams();
@@ -2145,13 +2145,33 @@
             <div id="nps-container" class="mb-6">
                 <p class="text-[12px] font-bold text-gray-600 mb-3">How helpful was this analysis? (1-10)</p>
                 <div class="flex justify-center space-x-1 mb-4" id="nps-buttons">
-                    <!-- Buttons 1-10 populated by JS -->
+                    <!-- Hard-coded Buttons for Persistence -->
+                    <button type="button" onclick="handleNPS(1, this)"
+                        class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">1</button>
+                    <button type="button" onclick="handleNPS(2, this)"
+                        class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">2</button>
+                    <button type="button" onclick="handleNPS(3, this)"
+                        class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">3</button>
+                    <button type="button" onclick="handleNPS(4, this)"
+                        class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">4</button>
+                    <button type="button" onclick="handleNPS(5, this)"
+                        class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">5</button>
+                    <button type="button" onclick="handleNPS(6, this)"
+                        class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">6</button>
+                    <button type="button" onclick="handleNPS(7, this)"
+                        class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">7</button>
+                    <button type="button" onclick="handleNPS(8, this)"
+                        class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">8</button>
+                    <button type="button" onclick="handleNPS(9, this)"
+                        class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">9</button>
+                    <button type="button" onclick="handleNPS(10, this)"
+                        class="w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">10</button>
                 </div>
 
                 <!-- Viral Share Loop (Hidden by default) -->
                 <div id="viral-share-loop" class="hidden animate-fade-in-up">
-                    <p class="text-[12px] font-bold text-bk-blue mb-2">Thank you! Share this market baseline with your
-                        network:</p>
+                    <p class="text-[12px] font-bold text-bk-blue mb-2">We're glad we could help! Share this market
+                        baseline with your network:</p>
                     <div class="flex justify-center space-x-4">
                         <!-- X (Twitter) -->
                         <a href="https://twitter.com/intent/tweet?text=Check%20out%20this%20institutional-grade%20Rent%20vs.%20Buy%20analysis%20on%20Calcyourlator%20with%20live%20FRED%20data.&url=https://calcyourlator.com"
@@ -2266,48 +2286,94 @@
     <script>
         // --- Social Sharing & Viral Features ---
 
-        function initNPS() {
-            const container = document.getElementById('nps-buttons');
-            let html = '';
-            for (let i = 1; i <= 10; i++) {
-                html += `<button onclick="handleNPS(${i})" class="w-8 h-8 rounded border border-gray-200 text-xs font-bold text-gray-500 hover:bg-bk-blue hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">${i}</button>`;
-            }
-            container.innerHTML = html;
-        }
+        // initNPS() Removed - Buttons are hard-coded for persistence
 
-        function handleNPS(score) {
+        function handleNPS(score, btn) {
             const container = document.getElementById('nps-container');
             const loop = document.getElementById('viral-share-loop');
-            const btns = document.getElementById('nps-buttons');
+            const allBtns = document.getElementById('nps-buttons').querySelectorAll('button');
 
-            // Hide buttons to prevent multiple clicks
-            btns.classList.add('hidden');
+            // Reset all buttons
+            allBtns.forEach(b => {
+                b.className = "w-8 h-8 rounded-full border border-gray-200 text-xs font-bold text-gray-400 bg-white hover:bg-gray-100 transition-colors focus:outline-none";
+            });
 
+            // Set selected state
+            btn.className = "w-8 h-8 rounded-full border border-bk-blue text-xs font-bold text-white bg-bk-blue transition-colors focus:outline-none";
+
+            // Logic: 9-10 reveals share loop
             if (score >= 9) {
                 // Show Viral Share Loop
                 loop.classList.remove('hidden');
                 loop.classList.add('flex', 'flex-col', 'items-center', 'animate-fade-in-up');
+                // Remove any previous thank you message if it exists
+                const existingThanks = container.querySelector('.nps-thanks');
+                if (existingThanks) existingThanks.remove();
             } else {
-                // Simple Thank You
-                const thankYou = document.createElement('p');
-                thankYou.className = "text-xs font-bold text-gray-500 mt-2 animate-fade-in";
-                thankYou.innerText = "Thank you for your feedback!";
-                container.appendChild(thankYou);
+                // Hide loop if previously shown
+                loop.classList.add('hidden');
+                loop.classList.remove('flex', 'flex-col', 'items-center', 'animate-fade-in-up');
+
+                // Simple Thank You (avoid duplicates)
+                if (!container.querySelector('.nps-thanks')) {
+                    const thankYou = document.createElement('p');
+                    thankYou.className = "nps-thanks text-xs font-bold text-gray-500 mt-2 animate-fade-in";
+                    thankYou.innerText = "Thank you for your feedback!";
+                    container.appendChild(thankYou);
+                }
             }
         }
 
-        function copyResultsLink() {
-            // Serialize State
+                function copyResultsLink() {
             const params = new URLSearchParams();
-            // Core Rent vs Buy Inputs (Mapping S-keys to concise params)
-            params.set('mode', 'rb'); // Force Rent vs Buy mode
-            params.set('hp', S.bp);
-            params.set('dp', S.rbDown);
-            params.set('r', S.brate);
-            params.set('t', S.rbTerm);
-            params.set('rent', S.rr);
-            params.set('stay', S.stay);
-            // Add other critical RB params as needed
+            
+            // 1. Identify Mode
+            let mode = S.mode; 
+            // Normalize 'rentbuy' to 'rb' for URL consistency if needed
+            params.set('mode', mode);
+
+            // 2. Capture Inputs based on Active Mode
+            if (mode === 'mortgage') {
+                params.set('hp', el('homePrice').value);
+                params.set('dp', el('downPayment').value);
+                params.set('r', el('interestRate').value);
+                params.set('t', el('loanTerm').value);
+                params.set('tax', el('propertyTax').value);
+                params.set('ins', el('homeIns').value);
+                params.set('hoa', el('hoa').value);
+                params.set('pmi', el('pmiRate').value);
+                params.set('start', el('startDate').value);
+            } 
+            else if (mode === 'auto') {
+                params.set('ap', el('autoPrice').value);
+                params.set('adp', el('autoDown').value);
+                params.set('arate', el('autoRate').value);
+                params.set('aterm', el('autoTerm').value);
+                params.set('arun', el('autoRun').value);
+            } 
+            else if (mode === 'rb') {
+                // Rent vs Buy
+                params.set('hp', el('rbPrice').value);
+                params.set('dp', el('rbDown').value);
+                params.set('r', el('rbRate').value);
+                params.set('t', el('rbTerm').value);
+                params.set('ccbuy', el('rbBuyCc').value);
+                params.set('ccsell', el('rbSellCc').value);
+                params.set('tax', el('rbTaxAmt').value);
+                params.set('ins', el('rbIns').value);
+                params.set('maint', el('rbMaint').value);
+                params.set('hoa', el('rbHoa').value);
+                params.set('app', el('rbApprec').value);
+                params.set('mtax', el('rbTax').value);
+                
+                params.set('rent', el('rbRent').value);
+                params.set('rinc', el('rbRentInc').value);
+                params.set('rins', el('rbRentIns').value);
+                params.set('dep', el('rbDeposit').value);
+                params.set('inv', el('rbInv').value);
+                
+                params.set('stay', el('rbStay').value);
+            }
 
             const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
 
@@ -2316,7 +2382,7 @@
                 const original = btnTxt.innerText;
                 btnTxt.innerText = "Copied!";
                 btnTxt.classList.add('text-green-600');
-
+                
                 setTimeout(() => {
                     btnTxt.innerText = original;
                     btnTxt.classList.remove('text-green-600');
@@ -2326,30 +2392,86 @@
 
         function parseUrlParams() {
             const params = new URLSearchParams(window.location.search);
-            if (params.has('mode') && params.get('mode') === 'rb') {
-                // Switch to Tab
-                setTab('rentbuy');
-                el('tabRentBuy').click();
+            if (!params.has('mode')) return;
 
-                // Populate Fields (Passive - only if present)
-                if (params.has('hp')) el('rbPrice').value = params.get('hp');
-                if (params.has('dp')) el('rbDown').value = params.get('dp');
-                if (params.has('r')) el('rbRate').value = params.get('r');
-                if (params.has('t')) el('rbTerm').value = params.get('t');
-                if (params.has('rent')) el('rbRent').value = params.get('rent');
-                if (params.has('stay')) {
+            const mode = params.get('mode');
+
+            // 1. Switch Tab
+            if (mode === 'mortgage') {
+                setTab('mortgage');
+                // el('tabMortgage').click(); 
+                
+                // Populate
+                if(params.has('hp')) el('homePrice').value = params.get('hp');
+                if(params.has('dp')) el('downPayment').value = params.get('dp');
+                if(params.has('r')) el('interestRate').value = params.get('r');
+                if(params.has('t')) {
+                    el('loanTerm').value = params.get('t');
+                    // Update buttons
+                    document.querySelectorAll('.term-btn').forEach(b => {
+                        b.className = (b.dataset.val === params.get('t'))
+                            ? "term-btn py-2 text-sm font-bold border rounded bg-bk-blue text-white border-bk-blue shadow-sm"
+                            : "term-btn py-2 text-sm font-bold border rounded bg-white text-gray-600 hover:bg-gray-50";
+                    });
+                }
+                if(params.has('tax')) el('propertyTax').value = params.get('tax');
+                if(params.has('ins')) el('homeIns').value = params.get('ins');
+                if(params.has('hoa')) el('hoa').value = params.get('hoa');
+                if(params.has('pmi')) el('pmiRate').value = params.get('pmi');
+                if(params.has('start')) el('startDate').value = params.get('start');
+                
+                // Expand Advanced if necessary
+                if(params.has('tax') || params.has('ins') || params.has('hoa')) {
+                    el('advInputs').classList.remove('hidden');
+                }
+            }
+            else if (mode === 'auto') {
+                setTab('auto');
+                
+                if(params.has('ap')) el('autoPrice').value = params.get('ap');
+                if(params.has('adp')) el('autoDown').value = params.get('adp');
+                if(params.has('arate')) el('autoRate').value = params.get('arate');
+                if(params.has('aterm')) el('autoTerm').value = params.get('aterm');
+                if(params.has('arun')) el('autoRun').value = params.get('arun');
+            }
+            else if (mode === 'rb') {
+                setTab('rentbuy');
+                
+                if(params.has('hp')) el('rbPrice').value = params.get('hp');
+                if(params.has('dp')) el('rbDown').value = params.get('dp');
+                if(params.has('r')) el('rbRate').value = params.get('r');
+                if(params.has('t')) el('rbTerm').value = params.get('t');
+                if(params.has('ccbuy')) el('rbBuyCc').value = params.get('ccbuy');
+                if(params.has('ccsell')) el('rbSellCc').value = params.get('ccsell');
+                if(params.has('tax')) el('rbTaxAmt').value = params.get('tax');
+                if(params.has('ins')) el('rbIns').value = params.get('ins');
+                if(params.has('maint')) el('rbMaint').value = params.get('maint');
+                if(params.has('hoa')) el('rbHoa').value = params.get('hoa');
+                if(params.has('app')) el('rbApprec').value = params.get('app');
+                if(params.has('mtax')) el('rbTax').value = params.get('mtax');
+                
+                if(params.has('rent')) el('rbRent').value = params.get('rent');
+                if(params.has('rinc')) el('rbRentInc').value = params.get('rinc');
+                if(params.has('rins')) el('rbRentIns').value = params.get('rins');
+                if(params.has('dep')) el('rbDeposit').value = params.get('dep');
+                if(params.has('inv')) el('rbInv').value = params.get('inv');
+                
+                if(params.has('stay')) {
                     el('rbStay').value = params.get('stay');
                     el('rbStayVal').innerText = params.get('stay');
                 }
-
+                
                 // Update Meta for Social
                 document.title = "My Rent vs. Buy Analysis - Calcyourlator";
                 const metaDesc = document.querySelector('meta[name="description"]');
                 if (metaDesc) metaDesc.setAttribute('content', `Check out this financial scenario: Buying at $${fmt(params.get('hp'))} vs. Renting at $${fmt(params.get('rent'))}. See who wins.`);
             }
+            
+            // 2. Refresh Calculations
+            update();
         }
 
-        // Add fade-in animation
+// Add fade-in animation
         const style = document.createElement('style');
         style.innerHTML = `
             @keyframes fadeInUp {
