@@ -2404,87 +2404,7 @@
             });
         }
 
-        function parseUrlParams() {
-            const params = new URLSearchParams(window.location.search);
-            // Support 'tab' as primary, fallback to 'mode' if old link
-            let tab = params.get('tab') || params.get('mode');
-            
-            if (!tab) return;
-
-            // 1. Switch Tab logic
-            if (tab === 'mortgage') {
-                setTab('mortgage');
-                // el('tabMortgage').click(); 
-                
-                // Populate
-                if(params.has('hp')) el('homePrice').value = params.get('hp');
-                if(params.has('dp')) el('downPayment').value = params.get('dp');
-                if(params.has('r')) el('interestRate').value = params.get('r');
-                if(params.has('t')) {
-                    el('loanTerm').value = params.get('t');
-                    // Update buttons
-                    document.querySelectorAll('.term-btn').forEach(b => {
-                        b.className = (b.dataset.val === params.get('t'))
-                            ? "term-btn py-2 text-sm font-bold border rounded bg-bk-blue text-white border-bk-blue shadow-sm"
-                            : "term-btn py-2 text-sm font-bold border rounded bg-white text-gray-600 hover:bg-gray-50";
-                    });
-                }
-                if(params.has('tax')) el('propertyTax').value = params.get('tax');
-                if(params.has('ins')) el('homeIns').value = params.get('ins');
-                if(params.has('hoa')) el('hoa').value = params.get('hoa');
-                if(params.has('pmi')) el('pmiRate').value = params.get('pmi');
-                if(params.has('start')) el('startDate').value = params.get('start');
-                
-                // Expand Advanced if necessary
-                if(params.has('tax') || params.has('ins') || params.has('hoa')) {
-                    el('advInputs').classList.remove('hidden');
-                }
-            }
-            else if (tab === 'auto') {
-                setTab('auto');
-                
-                if(params.has('ap')) el('autoPrice').value = params.get('ap');
-                if(params.has('adp')) el('autoDown').value = params.get('adp');
-                if(params.has('arate')) el('autoRate').value = params.get('arate');
-                if(params.has('aterm')) el('autoTerm').value = params.get('aterm');
-                if(params.has('arun')) el('autoRun').value = params.get('arun');
-            }
-            else if (tab === 'rb' || tab === 'rentbuy') {
-                setTab('rentbuy');
-                
-                if(params.has('hp')) el('rbPrice').value = params.get('hp');
-                if(params.has('dp')) el('rbDown').value = params.get('dp');
-                if(params.has('r')) el('rbRate').value = params.get('r');
-                if(params.has('t')) el('rbTerm').value = params.get('t');
-                if(params.has('ccbuy')) el('rbBuyCc').value = params.get('ccbuy');
-                if(params.has('ccsell')) el('rbSellCc').value = params.get('ccsell');
-                if(params.has('tax')) el('rbTaxAmt').value = params.get('tax');
-                if(params.has('ins')) el('rbIns').value = params.get('ins');
-                if(params.has('maint')) el('rbMaint').value = params.get('maint');
-                if(params.has('hoa')) el('rbHoa').value = params.get('hoa');
-                if(params.has('app')) el('rbApprec').value = params.get('app');
-                if(params.has('mtax')) el('rbTax').value = params.get('mtax');
-                
-                if(params.has('rent')) el('rbRent').value = params.get('rent');
-                if(params.has('rinc')) el('rbRentInc').value = params.get('rinc');
-                if(params.has('rins')) el('rbRentIns').value = params.get('rins');
-                if(params.has('dep')) el('rbDeposit').value = params.get('dep');
-                if(params.has('inv')) el('rbInv').value = params.get('inv');
-                
-                if(params.has('stay')) {
-                    el('rbStay').value = params.get('stay');
-                    el('rbStayVal').innerText = params.get('stay');
-                }
-                
-                // Update Meta for Social
-                document.title = "My Rent vs. Buy Analysis - Calcyourlator";
-                const metaDesc = document.querySelector('meta[name="description"]');
-                if (metaDesc) metaDesc.setAttribute('content', `Check out this financial scenario: Buying at $${fmt(params.get('hp'))} vs. Renting at $${fmt(params.get('rent'))}. See who wins.`);
-            }
-            
-            // 2. Refresh Calculations
-            update();
-        }
+        function parseUrlParams() { console.log('Legacy parser disabled.'); }
 
 // Add fade-in animation
         const style = document.createElement('style');
@@ -2499,6 +2419,114 @@
         document.head.appendChild(style);
 
     </script>
+
+    <script>
+    // Fail-Safe Deep Link Parser
+    window.addEventListener('load', () => {
+        console.log("Calcyourlator: Initializing Deep Link Parser...");
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        // Support 'tab' (new) and 'mode' (legacy)
+        let targetTab = urlParams.get('tab') || urlParams.get('mode');
+        
+        if (targetTab) {
+            console.log("Target Tab Detected:", targetTab);
+            
+            // Normalize alias
+            if (targetTab === 'rb') targetTab = 'rentbuy';
+
+            // 1. Force the Tab Switch
+            if (typeof setTab === "function") {
+                setTab(targetTab); 
+                console.log("Tab Switched to:", targetTab);
+            }
+            
+            // 2. Inject Values with Error Checking
+            // We define maps for each mode to ensure we target the right IDs
+            let paramMap = {};
+
+            if (targetTab === 'mortgage') {
+                paramMap = {
+                    'hp': 'homePrice',
+                    'dp': 'downPayment',
+                    'r': 'interestRate',
+                    't': 'loanTerm',
+                    'tax': 'propertyTax',
+                    'ins': 'homeIns',
+                    'hoa': 'hoa',
+                    'pmi': 'pmiRate',
+                    'start': 'startDate'
+                };
+            } else if (targetTab === 'auto') {
+                paramMap = {
+                    'ap': 'autoPrice',
+                    'adp': 'autoDown',
+                    'arate': 'autoRate',
+                    'aterm': 'autoTerm',
+                    'arun': 'autoRun'
+                };
+            } else if (targetTab === 'rentbuy' || targetTab === 'rb') {
+                paramMap = {
+                    'hp': 'rbPrice',
+                    'dp': 'rbDown',
+                    'r': 'rbRate',
+                    't': 'rbTerm',
+                    'rent': 'rbRent',
+                    'rinc': 'rbRentInc',
+                    'rins': 'rbRentIns',
+                    'dep': 'rbDeposit',
+                    'inv': 'rbInv',
+                    'stay': 'rbStay',
+                    'ccbuy': 'rbBuyCc',
+                    'ccsell': 'rbSellCc',
+                    'tax': 'rbTaxAmt',
+                    'ins': 'rbIns',
+                    'maint': 'rbMaint',
+                    'hoa': 'rbHoa',
+                    'app': 'rbApprec',
+                    'mtax': 'rbTax'
+                };
+            }
+
+            for (const [key, id] of Object.entries(paramMap)) {
+                if (urlParams.has(key)) {
+                    const inputElement = document.getElementById(id);
+                    if (inputElement) {
+                        inputElement.value = urlParams.get(key);
+                        console.log(`Injected ${key}: ${urlParams.get(key)} into ${id}`);
+                        
+                        // Handle specific UI updates like sliders/text sync
+                        if (id === 'rbStay') {
+                            const disp = document.getElementById('rbStayVal');
+                            if(disp) disp.innerText = urlParams.get(key);
+                        }
+                        if (id === 'loanTerm') {
+                            document.querySelectorAll('.term-btn').forEach(b => {
+                                if (b.dataset.val === urlParams.get(key)) b.click(); // Click to trigger style
+                            }); 
+                        }
+                    } else {
+                        console.warn(`Target element ${id} not found for key ${key}`);
+                    }
+                }
+            }
+            
+            // Deep Link Protection Logic (from previous step)
+            // If 'r' is present, we ensure FRED logic doesn't overwrite it.
+            // (This is implicitly handled because we set value AFTER load, but FRED fetch is async.
+            // The previous fix added a check in fetchFred to respect URL params.
+            // Here we just set the value. If fetchFred comes later, the check should protect it.)
+
+            // 3. Force the Calculation Update
+            if (typeof update === "function") {
+                update();
+                console.log("Calculations Updated.");
+            }
+            console.log("Deep Link Population Complete.");
+        }
+    });
+    </script>
+
 </body>
 
 </html>
