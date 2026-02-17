@@ -16,6 +16,16 @@
     <meta name="apple-mobile-web-app-title" content="Calcyourlator" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#0056b3" />
+
+    <!-- Social Media Meta Tags (OpenGraph) -->
+    <meta property="og:title" content="Calcyourlator: Institutional-Grade Financial Modeling Engine" />
+    <meta property="og:description"
+        content="Calculate mortgage PITI, Rent vs. Buy wealth gaps, and Auto Loan TCO with live FRED® data. Unbiased financial analysis." />
+    <meta property="og:image" content="https://calcyourlator.com/og-image.jpg" />
+    <meta property="og:url" content="https://calcyourlator.com" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <!-- Tailwind CSS -->
@@ -338,6 +348,65 @@
                 padding-right: 4px !important;
                 font-size: 10px !important;
                 /* Optimizes for data density */
+            }
+        }
+
+        @media print {
+            body {
+                font-size: 11pt;
+            }
+
+            nav,
+            #header-ad-hub,
+            #header-ad-zone,
+            .bk-tab,
+            #mortgageInputs,
+            #autoInputs,
+            #rbInputs,
+            #amortizationSection,
+            aside,
+            #edu-mortgage,
+            #edu-rentbuy,
+            #edu-auto,
+            #lender-marketplace,
+            #lender-marketplace-rb,
+            #auto-lender-marketplace,
+            #edu-auto,
+            footer,
+            #disclosure-modal,
+            .mt-4.border-t.border-gray-100.pt-2,
+            #edu-mortgage,
+            #edu-rentbuy,
+            #edu-auto,
+            .sidebar-card:not(#resultsCard):not(#rbVerdictCard),
+            hr,
+            br {
+                display: none !important;
+            }
+
+            .main-grid-container {
+                display: block !important;
+                width: 100% !important;
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .left-column {
+                width: 100% !important;
+                max-width: none !important;
+            }
+
+            #rbReportContainer {
+                display: block !important;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            @page {
+                margin: 0.5in;
             }
         }
     </style>
@@ -681,9 +750,30 @@
                         <input type="range" id="rbStay"
                             class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" min="1" max="30"
                             value="7" oninput="document.getElementById('rbStayVal').innerText = this.value">
-                        <p class="text-[10px] text-gray-400 mt-2 text-center">
-                            *This tool is optimized for U.S. tax codes and financial standards.
-                        </p>
+                        <div
+                            class="flex flex-col md:flex-row justify-between items-center mt-4 border-t border-gray-100 pt-2">
+                            <p class="text-[10px] text-gray-400 italic">*This tool is optimized for U.S. tax codes and
+                                financial standards.</p>
+                            <a href="javascript:void(0)" onclick="generateRbReport()"
+                                class="text-[11px] font-bold text-bk-blue hover:underline flex items-center">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                    </path>
+                                </svg>
+                                Generate Report
+                            </a>
+                            <button onclick="copyResultsLink()"
+                                class="text-[11px] font-bold text-gray-500 hover:text-bk-blue flex items-center ml-4 transition-colors"
+                                id="copyLinkBtn">
+                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1">
+                                    </path>
+                                </svg>
+                                <span id="copyLinkTxt">Copy Link to Results</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -1347,7 +1437,15 @@
             el('startDate').min = minMonth; // Enforce future-only
             S.mstart = minMonth;
 
+
             setTerm(30); // Default
+
+            // NPS Initialization
+            initNPS();
+
+            // URL Parameter Parsing (Scenario Sharing)
+            parseUrlParams();
+
             update();
         }
 
@@ -1872,6 +1970,70 @@
 
 
 
+        function generateRbReport() {
+            const reportContainer = el('rbReportContainer');
+            const winner = el('rbWinText').innerText;
+            const financialAdvantage = fmt(Math.abs((parseFloat(el('rbBuyNW').innerText.replace(/[^0-9.-]+/g, "")) || 0) - (parseFloat(el('rbRentNW').innerText.replace(/[^0-9.-]+/g, "")) || 0)));
+
+            // Calculate Averages for the report
+            const loan = S.bp - S.rbDown;
+            const r = S.brate / 100 / 12;
+            const n = S.rbTerm * 12;
+            const pi = (loan > 0 && r > 0) ? (loan * r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1) : (loan > 0 ? loan / n : 0);
+            const avgPiti = fmt(pi + (S.rbTaxAmt / 12) + (S.rbIns / 12) + S.rbHoa);
+            const annualApprec = fmt(S.bp * (S.rbApprec / 100));
+            const annualRent = fmt(S.rr * 12);
+
+            let verbiage = "";
+            if (winner.includes("Buying")) {
+                verbiage = `If you buy the home, each year you will spend approximately ${avgPiti} per month while the equity and value of the home is projected to increase by ${annualApprec} annually. By remaining in the home for ${S.stay} years, you achieve a total gain of ${financialAdvantage} compared to renting.`;
+            } else {
+                verbiage = `If you rent the home, each year you will spend ${annualRent} annually, but you retain your initial ${fmt(S.rbDown)} for other investments. Because the costs of buying and selling exceed your equity growth over ${S.stay} years, renting provides a wealth advantage of ${financialAdvantage}.`;
+            }
+
+            const reportHtml = `
+                <div class="p-8 border-2 border-bk-blue rounded-xl bg-white">
+                    <div class="flex justify-between items-start border-b-2 border-gray-100 pb-6 mb-6">
+                        <div>
+                            <h1 class="text-3xl font-black text-bk-blue">Buyer vs. Renter Journey</h1>
+                            <p class="text-gray-500 font-bold uppercase tracking-widest text-sm mt-1">Calcyourlator Institutional Wealth Report</p>
+                        </div>
+                        <div class="text-right">
+                           <p class="text-sm font-bold text-bk-blue">${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+                           <p class="text-[10px] font-bold text-gray-400 mt-1 uppercase">Source: <a href="https://calcyourlator.com" class="text-bk-blue hover:underline">www.calcyourlator.com</a></p>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h2 class="text-xl font-bold text-gray-800 mb-4">Executive Summary</h2>
+                        <p class="text-lg leading-relaxed text-gray-700">${verbiage}</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-8 mb-8">
+                        <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
+                             <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Market Baseline</h3>
+                             <p class="text-sm text-gray-700">Interest rates synchronized with FRED® series MORTGAGE30US/15US.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
+                             <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Institutional Alignment</h3>
+                             <p class="text-sm text-gray-700">Logic aligns with CFPB regulatory standards for financial modeling.</p>
+                        </div>
+                    </div>
+
+                    <div class="pt-6 border-t border-gray-100">
+                        <h3 class="text-xs font-bold text-gray-400 uppercase mb-3">The Proof: Standard Monthly Payment Formula</h3>
+                        <div class="bg-gray-50 p-4 rounded font-mono text-bk-blue text-center text-lg font-bold">
+                            M = P [ i(1 + i)^n ] / [ (1 + i)^n – 1 ]
+                        </div>
+                        <p class="text-[10px] text-gray-400 mt-2 text-center">M = Monthly Payment | P = PrincipalBorrowed | i = Monthly Interest | n = Number of Months</p>
+                    </div>
+                </div>
+            `;
+
+            reportContainer.innerHTML = reportHtml;
+            window.print();
+        }
+
         function renderSchedule(loan, rate, pi, months) {
             let bal = loan;
             let html = '';
@@ -1975,9 +2137,53 @@
         init();
     </script>
 
-    <!-- Institutional E-E-A-T Block -->
+    <!-- Institutional E-E-A-T Block & NPS Survey -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="py-6 border-t border-gray-200 text-center">
+
+            <!-- NPS Engagement Hook -->
+            <div id="nps-container" class="mb-6">
+                <p class="text-[12px] font-bold text-gray-600 mb-3">How helpful was this analysis? (1-10)</p>
+                <div class="flex justify-center space-x-1 mb-4" id="nps-buttons">
+                    <!-- Buttons 1-10 populated by JS -->
+                </div>
+
+                <!-- Viral Share Loop (Hidden by default) -->
+                <div id="viral-share-loop" class="hidden animate-fade-in-up">
+                    <p class="text-[12px] font-bold text-bk-blue mb-2">Thank you! Share this market baseline with your
+                        network:</p>
+                    <div class="flex justify-center space-x-4">
+                        <!-- X (Twitter) -->
+                        <a href="https://twitter.com/intent/tweet?text=Check%20out%20this%20institutional-grade%20Rent%20vs.%20Buy%20analysis%20on%20Calcyourlator%20with%20live%20FRED%20data.&url=https://calcyourlator.com"
+                            target="_blank" rel="noopener noreferrer"
+                            class="text-gray-400 hover:text-black transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                            </svg>
+                        </a>
+                        <!-- LinkedIn -->
+                        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://calcyourlator.com"
+                            target="_blank" rel="noopener noreferrer"
+                            class="text-gray-400 hover:text-[#0077b5] transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                            </svg>
+                        </a>
+                        <!-- WhatsApp -->
+                        <a href="https://api.whatsapp.com/send?text=Check%20out%20this%20institutional-grade%20Rent%20vs.%20Buy%20analysis%20on%20Calcyourlator:%20https://calcyourlator.com"
+                            target="_blank" rel="noopener noreferrer"
+                            class="text-gray-400 hover:text-[#25D366] transition-colors">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                <path
+                                    d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
             <p class="text-[10px] uppercase tracking-widest text-gray-500 font-medium leading-relaxed">
                 Calculations are indexed and reviewed as a substitute for CSA attestation by the Calcyourlator Admin
                 Team.
@@ -2054,6 +2260,107 @@
                 metaDesc.setAttribute('content', `Calculate mortgage PITI and Rent vs. Buy wealth gaps with live ${currentYear} Federal Reserve data. Unbiased, institutional-grade financial modeling.`);
             }
         })();
+    </script>
+    <div id="rbReportContainer" class="hidden"></div>
+
+    <script>
+        // --- Social Sharing & Viral Features ---
+
+        function initNPS() {
+            const container = document.getElementById('nps-buttons');
+            let html = '';
+            for (let i = 1; i <= 10; i++) {
+                html += `<button onclick="handleNPS(${i})" class="w-8 h-8 rounded border border-gray-200 text-xs font-bold text-gray-500 hover:bg-bk-blue hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-bk-blue">${i}</button>`;
+            }
+            container.innerHTML = html;
+        }
+
+        function handleNPS(score) {
+            const container = document.getElementById('nps-container');
+            const loop = document.getElementById('viral-share-loop');
+            const btns = document.getElementById('nps-buttons');
+
+            // Hide buttons to prevent multiple clicks
+            btns.classList.add('hidden');
+
+            if (score >= 9) {
+                // Show Viral Share Loop
+                loop.classList.remove('hidden');
+                loop.classList.add('flex', 'flex-col', 'items-center', 'animate-fade-in-up');
+            } else {
+                // Simple Thank You
+                const thankYou = document.createElement('p');
+                thankYou.className = "text-xs font-bold text-gray-500 mt-2 animate-fade-in";
+                thankYou.innerText = "Thank you for your feedback!";
+                container.appendChild(thankYou);
+            }
+        }
+
+        function copyResultsLink() {
+            // Serialize State
+            const params = new URLSearchParams();
+            // Core Rent vs Buy Inputs (Mapping S-keys to concise params)
+            params.set('mode', 'rb'); // Force Rent vs Buy mode
+            params.set('hp', S.bp);
+            params.set('dp', S.rbDown);
+            params.set('r', S.brate);
+            params.set('t', S.rbTerm);
+            params.set('rent', S.rr);
+            params.set('stay', S.stay);
+            // Add other critical RB params as needed
+
+            const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+
+            navigator.clipboard.writeText(url).then(() => {
+                const btnTxt = document.getElementById('copyLinkTxt');
+                const original = btnTxt.innerText;
+                btnTxt.innerText = "Copied!";
+                btnTxt.classList.add('text-green-600');
+
+                setTimeout(() => {
+                    btnTxt.innerText = original;
+                    btnTxt.classList.remove('text-green-600');
+                }, 2000);
+            });
+        }
+
+        function parseUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('mode') && params.get('mode') === 'rb') {
+                // Switch to Tab
+                setTab('rentbuy');
+                el('tabRentBuy').click();
+
+                // Populate Fields (Passive - only if present)
+                if (params.has('hp')) el('rbPrice').value = params.get('hp');
+                if (params.has('dp')) el('rbDown').value = params.get('dp');
+                if (params.has('r')) el('rbRate').value = params.get('r');
+                if (params.has('t')) el('rbTerm').value = params.get('t');
+                if (params.has('rent')) el('rbRent').value = params.get('rent');
+                if (params.has('stay')) {
+                    el('rbStay').value = params.get('stay');
+                    el('rbStayVal').innerText = params.get('stay');
+                }
+
+                // Update Meta for Social
+                document.title = "My Rent vs. Buy Analysis - Calcyourlator";
+                const metaDesc = document.querySelector('meta[name="description"]');
+                if (metaDesc) metaDesc.setAttribute('content', `Check out this financial scenario: Buying at $${fmt(params.get('hp'))} vs. Renting at $${fmt(params.get('rent'))}. See who wins.`);
+            }
+        }
+
+        // Add fade-in animation
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fadeInUp {
+                from { opacity: 0; transform: translateY(10px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            .animate-fade-in-up { animation: fadeInUp 0.5s ease-out forwards; }
+            .animate-fade-in { animation: fadeInUp 0.5s ease-out forwards; }
+        `;
+        document.head.appendChild(style);
+
     </script>
 </body>
 
