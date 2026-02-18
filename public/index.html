@@ -94,6 +94,13 @@
             flex-grow: 0 !important;
         }
 
+        .sidebar-ad-container {
+            height: 100px !important;
+            max-height: 100px !important;
+            overflow: hidden !important;
+            margin-bottom: 20px;
+        }
+
         /* Custom Inputs */
         .bk-input {
             width: 100%;
@@ -952,12 +959,42 @@
                 </div>
             </div>
 
-            <!-- SPONSORED AD BOX -->
-            <div class="sidebar-card bg-gray-50 flex items-center justify-center text-center min-h-[250px] p-4">
-                <div class="mx-auto">
-                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Sponsored Ad Space</p>
-                    <p class="text-sm font-bold text-bk-blue">Compare Today's Best Rates &rarr;</p>
+            <!-- SIDEBAR MONETIZATION (Tab-Specific) -->
+            <div id="side-ad-mortgage" class="sidebar-card p-4">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 text-center">Sponsored</p>
+                <script async
+                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2949207595448686"
+                    crossorigin="anonymous"></script>
+                <div class="sidebar-ad-container">
+                    <ins class="adsbygoogle" style="display:block; height:100px !important;"
+                        data-ad-client="ca-pub-2949207595448686" data-ad-slot="2628843667" data-ad-format="horizontal"
+                        data-full-width-responsive="false"></ins>
                 </div>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+            <div id="side-ad-rb" class="sidebar-card p-4 hidden">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 text-center">Sponsored</p>
+                <script async
+                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2949207595448686"
+                    crossorigin="anonymous"></script>
+                <div class="sidebar-ad-container">
+                    <ins class="adsbygoogle" style="display:block; height:100px !important;"
+                        data-ad-client="ca-pub-2949207595448686" data-ad-slot="6903130592" data-ad-format="horizontal"
+                        data-full-width-responsive="false"></ins>
+                </div>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
+            <div id="side-ad-auto" class="sidebar-card p-4 hidden">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2 text-center">Sponsored</p>
+                <script async
+                    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2949207595448686"
+                    crossorigin="anonymous"></script>
+                <div class="sidebar-ad-container">
+                    <ins class="adsbygoogle" style="display:block; height:100px !important;"
+                        data-ad-client="ca-pub-2949207595448686" data-ad-slot="4291068255" data-ad-format="horizontal"
+                        data-full-width-responsive="false"></ins>
+                </div>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
             </div>
 
             <!-- METHODOLOGY BLOCK -->
@@ -1043,7 +1080,7 @@
                     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2949207595448686"
                     crossorigin="anonymous"></script>
                 <!-- Calculator_Cell_1 -->
-                <ins class="adsbygoogle" style="display:block; max-height:120px;"
+                <ins class="adsbygoogle" style="display:block; max-height:120px; overflow: hidden;"
                     data-ad-client="ca-pub-2949207595448686" data-ad-slot="2628843667" data-ad-format="horizontal"
                     data-full-width-responsive="true"></ins>
                 <script>
@@ -1139,8 +1176,8 @@
                     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2949207595448686"
                     crossorigin="anonymous"></script>
                 <!-- Rent_v_buy_page -->
-                <ins class="adsbygoogle" style="display:block; max-height:120px;"
-                    data-ad-client="ca-pub-2949207595448686" data-ad-slot="6903130592" data-ad-format="auto"
+                <ins class="adsbygoogle" style="display:block; max-height:120px; overflow: hidden;"
+                    data-ad-client="ca-pub-2949207595448686" data-ad-slot="6903130592" data-ad-format="horizontal"
                     data-full-width-responsive="true"></ins>
                 <script>
                     (adsbygoogle = window.adsbygoogle || []).push({});
@@ -1206,8 +1243,8 @@
                     src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2949207595448686"
                     crossorigin="anonymous"></script>
                 <!-- car_loan_page -->
-                <ins class="adsbygoogle" style="display:block; max-height:120px;"
-                    data-ad-client="ca-pub-2949207595448686" data-ad-slot="4291068255" data-ad-format="auto"
+                <ins class="adsbygoogle" style="display:block; max-height:120px; overflow: hidden;"
+                    data-ad-client="ca-pub-2949207595448686" data-ad-slot="4291068255" data-ad-format="horizontal"
                     data-full-width-responsive="true"></ins>
                 <script>
                     (adsbygoogle = window.adsbygoogle || []).push({});
@@ -1436,21 +1473,29 @@
             el('edu-auto').classList.add('hidden');
             el('edu-rentbuy').classList.add('hidden');
 
+            // Sidebar Ads
+            el('side-ad-mortgage').classList.add('hidden');
+            el('side-ad-rb').classList.add('hidden');
+            el('side-ad-auto').classList.add('hidden');
+
             if (t === 'mortgage') {
                 el('mortgageInputs').classList.remove('hidden');
                 el('amortizationSection').classList.remove('hidden');
                 el('edu-mortgage').classList.remove('hidden');
+                el('side-ad-mortgage').classList.remove('hidden');
             }
             if (t === 'auto') {
                 el('autoInputs').classList.remove('hidden');
                 el('amortizationSection').classList.add('hidden');
                 el('edu-auto').classList.remove('hidden');
+                el('side-ad-auto').classList.remove('hidden');
             }
             if (t === 'rentbuy') {
                 el('rbInputs').classList.remove('hidden');
                 el('amortizationSection').classList.add('hidden');
                 el('inputTitle').innerText = "Comparison Details";
                 el('edu-rentbuy').classList.remove('hidden');
+                el('side-ad-rb').classList.remove('hidden');
             } else {
                 el('inputTitle').innerText = "Loan Details";
             }
