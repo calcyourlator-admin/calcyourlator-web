@@ -1,1 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defining the Total Cost of Ownership (TCO) | Calcyourlator</title>
+    <meta name="description"
+        content="Learn about Total Cost of Ownership (TCO) for homes and vehicles, and the importance of fiscal health.">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { 'bk-blue': '#0056b3', 'bk-text': '#212529', 'bk-sidebar': '#f8f9fa', 'bk-white': '#ffffff' },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            color: #212529;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+
+<body class="font-sans flex flex-col min-h-screen">
+    <!-- HEADER -->
+    <nav class="bg-white border-b border-gray-200">
+        <div class="max-w-[1280px] mx-auto px-5 h-[80px] flex items-center justify-between">
+            <a href="index.html" class="flex items-center" style="text-decoration: none;">
+                <div class="bg-bk-blue text-white font-black text-xl px-2 py-1 rounded mr-2">C</div>
+                <span class="font-extrabold text-xl tracking-tight text-bk-blue">Calcyour<span
+                        class="text-green-600">lator</span></span>
+            </a>
+            <div class="flex items-center space-x-6">
+                <a href="index.html" class="text-sm font-bold text-bk-blue hover:underline">← Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="flex-grow max-w-[1280px] mx-auto px-5 py-12 w-full">
+        <article class="max-w-[800px] mx-auto">
+            <h1 class="text-4xl font-black text-bk-blue mb-8">Defining the Total Cost of Ownership (TCO)</h1>
+
+            <div class="prose prose-lg" style="font-size: 16px; line-height: 1.7; color: #374151;">
+                <p class="mb-6">True fiscal health requires a Total Cost of Ownership (TCO) approach. For a vehicle,
+                    this includes fuel, insurance, and maintenance. For a home, it includes the PITI model (Principal,
+                    Interest, Taxes, and Insurance) plus HOA fees.</p>
+
+                <p class="mb-6">Financial institutions recommend a Debt-to-Income (DTI) ratio below 36%. By calculating
+                    the TCO upfront, borrowers ensure their lifestyle remains sustainable and protected against the
+                    ancillary costs of ownership.</p>
+            </div>
+        </article>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="mt-16" style="background-color: #F9FAFB; padding: 20px 0;">
+        <div class="max-w-[1280px] mx-auto px-5 text-center">
+            <nav class="flex flex-wrap justify-center items-center gap-6 mb-3" style="min-height: 44px;">
+                <a href="index.html" class="text-xs hover:underline"
+                    style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">Home</a>
+                <a href="about.html" class="text-xs hover:underline"
+                    style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">About
+                    Us</a>
+                <a href="privacy.html" class="text-xs hover:underline"
+                    style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">Privacy
+                    Policy</a>
+                <a href="terms.html" class="text-xs hover:underline"
+                    style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">Terms
+                    of Use</a>
+                <a href="javascript:void(0)" class="text-xs hover:underline"
+                    style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;"
+                    onclick="document.getElementById('disclosure-modal').classList.remove('hidden'); document.getElementById('disclosure-modal').classList.add('flex');">Advertiser
+                    Disclosure</a>
+                <a href="cookies.html" class="text-xs hover:underline"
+                    style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">Cookie
+                    Settings</a>
+                <a href="contact.html" class="text-xs hover:underline"
+                    style="color: #6B7280; padding: 12px 8px; min-height: 44px; display: inline-flex; align-items: center;">Contact
+                    Us</a>
+            </nav>
+            <p class="text-[11px] text-gray-400 mt-3 text-center">
+                By using this site, you agree to our Terms of Use and Privacy Policy, including our use of cookies.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Disclosure Modal -->
+    <div id="disclosure-modal"
+        class="fixed inset-0 z-[9999] hidden items-center justify-center bg-black/50 p-4 font-sans">
+        <div class="bg-white rounded-xl shadow-2xl max-w-2xl w-full p-6 relative">
+            <button
+                onclick="document.getElementById('disclosure-modal').classList.add('hidden'); document.getElementById('disclosure-modal').classList.remove('flex');"
+                class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+            <h3 class="text-xl font-bold text-bk-blue mb-4">Advertiser Disclosure</h3>
+            <p class="text-sm text-gray-700 leading-relaxed">
+                calcyourlator.com is an independent, advertising-supported publisher and comparison service. We may
+                receive compensation when you click on links or purchase products from our partners. This compensation
+                may impact how, where, and in what order products appear. We strive to provide a wide range of offers,
+                but we do not include information about every financial product or service available in the market.
+            </p>
+            <div class="mt-6 text-right">
+                <button
+                    onclick="document.getElementById('disclosure-modal').classList.add('hidden'); document.getElementById('disclosure-modal').classList.remove('flex');"
+                    class="bg-bk-blue text-white px-6 py-2 rounded font-bold hover:bg-blue-700 transition-colors">Close</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
