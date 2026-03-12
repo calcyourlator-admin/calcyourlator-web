@@ -3,21 +3,21 @@
   "articles": [
     {
       "source": "Federal Reserve",
-      "title": "On the Economy: The Outlook for US Inflation in 2026",
-      "date": "March 11, 2026",
-      "link": "https://fredblog.stlouisfed.org/"
+      "title": "Financing R&D Spending: The Role of Corporate Cash Holdings",
+      "date": "March 12, 2026",
+      "link": "https://www.stlouisfed.org/on-the-economy/2026/mar/financing-rd-spending-role-corporate-cash-holdings"
     },
     {
       "source": "CFPB",
-      "title": "Consumer Alert: Protecting Your Credit During Economic Shifts",
-      "date": "March 09, 2026",
-      "link": "https://www.consumerfinance.gov/about-us/blog/"
+      "title": "Estimating the Cost of the Consumer Financial Protection Bureau to Consumers",
+      "date": "February 17, 2026",
+      "link": "https://www.consumerfinance.gov/about-us/newsroom/estimating-the-cost-of-the-consumer-financial-protection-bureau-to-consumers/"
     },
     {
       "source": "HUD",
-      "title": "Housing Trends: New Data on US Homeownership Stability",
+      "title": "The Picket Fence: Evaluating Systems-Built Housing Approaches in Pittsburgh",
       "date": "March 05, 2026",
-      "link": "https://www.hud.gov/press"
+      "link": "https://www.huduser.gov/portal/pdredge/pdr-edge-trending-030526.html"
     }
   ]
 }
