@@ -2,6 +2,15 @@
 <html lang="en">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KH3E3YET07"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-KH3E3YET07');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us | Our Mission & Methodology - Calcyourlator</title>
@@ -63,11 +72,19 @@
                     negotiate with confidence. We've built Calcyourlator on the principle that financial literacy
                     shouldn't require a finance degree.
                 </p>
-                <p class="mb-6">
-                    Our calculators provide instant, accurate insights into mortgage payments, auto loan terms, and the
-                    rent vs. buy decision—without the jargon or hidden agendas. We're here to empower you with
-                    knowledge, not to sell you products.
-                </p>
+
+                <h2 class="text-2xl font-black text-bk-blue mt-12 mb-6">Our Institutional Standards</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-left mb-12">
+                    <div class="p-6 bg-gray-50 rounded-xl border border-gray-100">
+                        <h3 class="font-bold text-bk-blue mb-2">Computational Logic</h3>
+                        <p class="text-sm">Our logic is aligned with the regulatory standards utilized by major U.S. financial institutions and the Consumer Financial Protection Bureau (CFPB).</p>
+                    </div>
+                    <div class="p-6 bg-gray-50 rounded-xl border border-gray-100">
+                        <h3 class="font-bold text-bk-blue mb-2">FRED® Data Handshake</h3>
+                        <p class="text-sm">Interest rates are synchronized daily with the Federal Reserve Economic Data (FRED) series MORTGAGE30US and MORTGAGE15US via our market bridge.</p>
+                    </div>
+                </div>
+
                 <p class="mb-6">
                     At Calcyourlator, transparency is our foundation. We believe that when you understand the numbers,
                     you make better decisions. And better decisions lead to better financial outcomes.
@@ -82,7 +99,7 @@
                     <p class="text-gray-700 leading-relaxed mb-4">
                         Calcyourlator is a self-service financial tool. For technical feedback or partnership inquiries,
                         please visit our <a href="contact.html" class="text-bk-blue font-bold hover:underline">Contact
-                            Us</a> page. We do not provide individual financial advice.
+                            Us</a> page. <span class="font-bold">Notice:</span> We do not provide individual financial advice or lending services.
                     </p>
                 </div>
             </section>
