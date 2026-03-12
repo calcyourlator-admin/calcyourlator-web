@@ -1,0 +1,84 @@
+name: Update Institutional Intelligence
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # Runs daily at midnight
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  update-feed:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Dependencies
+        run: |
+          pip install requests
+
+      - name: Fetch Intelligence Data
+        shell: python
+        run: |
+          import json
+          import requests
+          import xml.etree.ElementTree as ET
+          from datetime import datetime
+
+          sources = [
+              {"name": "Federal Reserve", "url": "https://www.stlouisfed.org/rss/page%20resources/publications/blog-entries"},
+              {"name": "CFPB", "url": "https://www.consumerfinance.gov/about-us/newsroom/feed/"},
+              {"name": "HUD", "url": "https://www.huduser.gov/portal/subscribe/rss/pdredge.xml"}
+          ]
+
+          articles = []
+
+          for source in sources:
+              try:
+                  print(f"Fetching from {source['name']}...")
+                  response = requests.get(source['url'], timeout=15)
+                  if response.status_code == 200:
+                      root = ET.fromstring(response.content)
+                      # Find first item
+                      item = root.find(".//item")
+                      if item is not None:
+                          title = item.find("title").text
+                          link = item.find("link").text
+                          date_text = item.find("pubDate").text if item.find("pubDate") is not None else datetime.now().strftime("%b %d, %Y")
+                          
+                          # Simple date cleaning
+                          try:
+                              dt = datetime.strptime(date_text.split(',')[1].strip()[:11], "%d %b %Y")
+                              date_formatted = dt.strftime("%B %d, %Y")
+                          except:
+                              date_formatted = date_text
+
+                          articles.append({
+                              "source": source["name"],
+                              "title": title,
+                              "date": date_formatted,
+                              "link": link
+                          })
+              except Exception as e:
+                  print(f"Error fetching from {source['name']}: {e}")
+
+          # Maintain at most 3 articles
+          feed_data = {
+              "lastUpdated": datetime.now().strftime("%Y-%m-%d"),
+              "articles": articles[:3]
+          }
+
+          with open('public/intelligence-feed.json', 'w') as f:
+              json.dump(feed_data, f, indent=2)
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "Institutional Bot"
+          git config --global user.email "bot@calcyourlator.com"
+          git add public/intelligence-feed.json
+          git commit -m "chore: auto-update institutional intelligence feed [skip ci]" || echo "No changes to commit"
+          git push
