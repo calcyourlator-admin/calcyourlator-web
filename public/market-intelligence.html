@@ -23,7 +23,16 @@
             theme: {
                 extend: {
                     colors: { 'bk-blue': '#0056b3', 'bk-text': '#212529', 'bk-sidebar': '#f8f9fa', 'bk-white': '#ffffff' },
-                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    animation: {
+                        'pulse-subtle': 'pulse-subtle 3s infinite',
+                    },
+                    keyframes: {
+                        'pulse-subtle': {
+                            '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+                            '50%': { transform: 'scale(1.03)', opacity: '0.9' },
+                        }
+                    }
                 }
             }
         }
@@ -77,7 +86,7 @@
                     <p class="text-sm text-green-700 leading-relaxed mb-6">
                         Is the Fed discussing rate stabilization? Use our 2026 forecast models to see how your monthly payment shifts with even a 0.25% move.
                     </p>
-                    <a href="index.html" class="inline-flex items-center text-green-900 font-bold hover:underline">
+                    <a href="index.html" class="inline-flex items-center bg-green-600 text-white px-6 py-3 rounded-xl font-black text-sm shadow-lg hover:bg-green-700 hover:-translate-y-1 transition-all duration-300 animate-pulse-subtle">
                         Launch Loan Forecaster →
                     </a>
                 </div>
