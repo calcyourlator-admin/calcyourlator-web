@@ -2,6 +2,15 @@
 <html lang="en">
 
 <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KH3E3YET07"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-KH3E3YET07');
+    </script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Understanding the Amortization Lifecycle | Calcyourlator</title>
@@ -50,14 +59,30 @@
             <h1 class="text-4xl font-black text-bk-blue mb-8">Understanding the Amortization Lifecycle</h1>
 
             <div class="prose prose-lg" style="font-size: 16px; line-height: 1.7; color: #374151;">
-                <p class="mb-6">Amortization is the structural framework of most modern lending. It represents the
-                    process by which a debt is retired over a fixed term through a series of consistent installments. In
-                    the initial phase of a long-term loan—such as a 30-year mortgage—the mathematical weight of the
-                    payment is heavily skewed toward interest.</p>
+                <p class="mb-6 font-semibold text-bk-text">Amortization is the structural framework of most modern lending. It represents the process by which a debt is retired over a fixed term through a series of consistent installments.</p>
 
-                <p class="mb-6">As the loan matures, a subtle but powerful 'Inflection Point' occurs where principal
-                    payments begin to outpace interest. Understanding this curve is vital for any borrower considering
-                    early payoff strategies.</p>
+                <h2 class="text-2xl font-bold text-bk-blue mt-10 mb-4">The Mathematical Foundation</h2>
+                <p class="mb-6">At its core, amortization is driven by a non-linear relationship between time and interest. In the initial phase of a long-term loan—such as a 30-year mortgage—the mathematical weight of the payment is heavily skewed toward interest. This occurs because the interest is calculated based on the large outstanding principal balance.</p>
+                
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-100 my-8">
+                    <h3 class="text-sm font-bold text-gray-500 uppercase tracking-widest mb-4">The Standard Formula</h3>
+                    <p class="text-sm text-gray-700 mb-4">Our engine utilizes the standard monthly payment formula utilized by major U.S. financial institutions and the CFPB:</p>
+                    <code class="block bg-white p-4 rounded text-bk-blue font-mono font-bold text-lg text-center border border-gray-100">M = P [ i(1 + i)^n ] / [ (1 + i)^n – 1 ]</code>
+                    <p class="text-xs text-center mt-4 text-gray-400">M = Monthly Payment | P = Principal Borrowed | i = Monthly Interest Rate | n = Total Months</p>
+                </div>
+
+                <h2 class="text-2xl font-bold text-bk-blue mt-10 mb-4">The 'Inflection Point'</h2>
+                <p class="mb-6">As the loan matures, a subtle but powerful 'Inflection Point' occurs. This is the moment where your monthly principal payment finally begins to outpace your interest payment. On a standard 30-year fixed-rate mortgage at 7%, this point usually doesn't arrive until Year 18 or 19.</p>
+
+                <h2 class="text-2xl font-bold text-bk-blue mt-10 mb-4">Optimization: The Power of Extra Payments</h2>
+                <p class="mb-6">Understanding the amortization curve is vital for any borrower considering early payoff strategies. Even a single additional payment toward the principal in the first five years of a loan can shave months off the backend and save thousands in total interest. This is because every dollar of principal paid early reduces the base upon which all future interest is calculated.</p>
+
+                <h2 class="text-2xl font-bold text-bk-blue mt-10 mb-4">Why Amortization Matters in 2026</h2>
+                <p class="mb-6">In the current economic climate, where interest rates are synchronized with the <a href="https://fred.stlouisfed.org/" target="_blank" class="text-bk-blue font-bold hover:underline">Federal Reserve Economic Data (FRED®)</a>, the cost of borrowing is a significant factor in total wealth accumulation. By visualizing your amortization lifecycle, you shift from being a "payment shopper" to an "equity builder."</p>
+                
+                <div class="mt-12 p-6 bg-bk-blue/5 rounded-xl border border-bk-blue/10">
+                    <p class="text-sm italic text-gray-600">"An amortization schedule isn't just a list of payments; it's a roadmap to your home's equity. Knowing where you stand on the curve is the first step toward financial freedom."</p>
+                </div>
             </div>
         </article>
     </main>
