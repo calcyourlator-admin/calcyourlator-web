@@ -84,7 +84,7 @@
                         Analyze the Impact
                     </h3>
                     <p class="text-sm text-green-700 leading-relaxed mb-6">
-                        Is the Fed discussing rate stabilization? Use our 2026 forecast models to see how your monthly payment shifts with even a 0.25% move.
+                        Is the Fed discussing rate stabilization? Use our <span class="current-year">2026</span> forecast models to see how your monthly payment shifts with even a 0.25% move.
                     </p>
                     <a href="index.html" class="inline-flex items-center bg-green-600 text-white px-6 py-3 rounded-xl font-black text-sm shadow-lg hover:bg-green-700 hover:-translate-y-1 transition-all duration-300 animate-pulse-subtle">
                         Launch Loan Forecaster →
@@ -98,7 +98,7 @@
                     <p class="text-sm text-blue-700 leading-relaxed mb-6">
                         Bookmark this page. Our Institutional Intelligence feed updates every 24 hours to ensure you have the institutional edge in loan negotiation.
                     </p>
-                    <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">Calculated for 2026 Markets</span>
+                    <span class="text-xs font-bold text-blue-400 uppercase tracking-widest">Calculated for <span class="current-year">2026</span> Markets</span>
                 </div>
             </section>
 
@@ -117,7 +117,7 @@
     <!-- FOOTER -->
     <footer class="mt-auto bg-white border-t border-gray-200 py-10">
         <div class="max-w-[1280px] mx-auto px-5 flex flex-col md:flex-row justify-between items-center text-gray-400 text-xs gap-4">
-            <div>&copy; 2026 Calcyourlator - Institutional Data Handshake</div>
+            <div>&copy; <span class="current-year">2026</span> Calcyourlator - Institutional Data Handshake</div>
             <div class="flex space-x-6">
                 <a href="index.html" class="hover:text-bk-blue">Home</a>
                 <a href="about.html" class="hover:text-bk-blue">Methodology</a>
@@ -170,6 +170,12 @@
             }
         }
         loadIntelligence();
+    </script>
+    <script>
+        (function () {
+            const currentYear = new Date().getFullYear();
+            document.querySelectorAll('.current-year').forEach(el => el.textContent = currentYear);
+        })();
     </script>
 </body>
 </html>

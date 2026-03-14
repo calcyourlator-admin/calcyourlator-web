@@ -141,6 +141,12 @@
             </div>
         </div>
     </div>
+    <script>
+        (function () {
+            const currentYear = new Date().getFullYear();
+            document.querySelectorAll('.current-year').forEach(el => el.textContent = currentYear);
+        })();
+    </script>
 </body>
 
 </html>

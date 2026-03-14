@@ -413,7 +413,19 @@
                 max-width: none !important;
             }
 
+            body * {
+                visibility: hidden;
+            }
+
+            #rbReportContainer, #rbReportContainer * {
+                visibility: visible;
+            }
+
             #rbReportContainer {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
                 display: block !important;
             }
 
@@ -1344,8 +1356,8 @@
         <h2 class="text-3xl font-black text-bk-blue mb-8">Frequently Asked Questions</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
             <div>
-                <h3 class="font-bold text-bk-text mb-2 text-lg">What does the 2026 mortgage market look like?</h3>
-                <p class="text-gray-600 text-sm leading-relaxed">The 2026 interest rate environment is highly dynamic. Our tools help you verify lender quotes against daily-synced institutional market averages from the St. Louis Federal Reserve.</p>
+                <h3 class="font-bold text-bk-text mb-2 text-lg">What does the <span class="current-year">2026</span> mortgage market look like?</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">The <span class="current-year">2026</span> interest rate environment is highly dynamic. Our tools help you verify lender quotes against daily-synced institutional market averages from the St. Louis Federal Reserve.</p>
             </div>
             <div>
                 <h3 class="font-bold text-bk-text mb-2 text-lg">How reliable are these calculations?</h3>
@@ -2007,6 +2019,28 @@
                         <p class="text-lg leading-relaxed text-gray-700">${verbiage}</p>
                     </div>
 
+                    <div class="mb-8 p-6 bg-gray-50 border border-gray-100 rounded-xl">
+                        <h2 class="text-xl font-bold text-bk-blue mb-4">Comparison Details (${S.stay}-Year Projection)</h2>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="bg-white p-4 rounded border border-gray-100 shadow-sm">
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1">Total Upfront Costs</p>
+                                <p class="text-lg font-black text-bk-text">${fmt(S.rbDown + S.rbBuyCc)}</p>
+                            </div>
+                            <div class="bg-white p-4 rounded border border-gray-100 shadow-sm">
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1">Avg Buying PITI</p>
+                                <p class="text-lg font-black text-green-700">${avgPiti}/mo</p>
+                            </div>
+                            <div class="bg-white p-4 rounded border border-gray-100 shadow-sm">
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1">Current Rent</p>
+                                <p class="text-lg font-black text-bk-blue">${fmt(S.rr)}/mo</p>
+                            </div>
+                            <div class="bg-white p-4 rounded border border-gray-100 shadow-sm">
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-1">Financial Advantage</p>
+                                <p class="text-lg font-black text-gray-800">${financialAdvantage} (${winner})</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-2 gap-8 mb-8">
                         <div class="p-4 bg-gray-50 rounded-lg border border-gray-100">
                              <h3 class="text-xs font-bold text-gray-500 uppercase mb-2">Market Baseline</h3>
@@ -2019,8 +2053,8 @@
                     </div>
 
                     <div class="pt-6 border-t border-gray-100">
-                        <h3 class="text-xs font-bold text-gray-400 uppercase mb-3">The Proof: Standard Monthly Payment Formula</h3>
-                        <div class="bg-gray-50 p-4 rounded font-mono text-bk-blue text-center text-lg font-bold">
+                        <h3 class="text-xs font-bold text-gray-400 uppercase mb-3 text-center">The Proof: Standard Monthly Payment Formula</h3>
+                        <div class="bg-gray-50 p-4 rounded font-mono text-bk-blue text-center text-lg font-bold w-full mx-auto" style="max-width: 600px;">
                             M = P [ i(1 + i)^n ] / [ (1 + i)^n – 1 ]
                         </div>
                         <p class="text-[10px] text-gray-400 mt-2 text-center">M = Monthly Payment | P = PrincipalBorrowed | i = Monthly Interest | n = Number of Months</p>
@@ -2287,6 +2321,9 @@
             if (metaDesc) {
                 metaDesc.setAttribute('content', `Calculate mortgage PITI and Rent vs. Buy wealth gaps with live ${currentYear} Federal Reserve data. Unbiased, institutional-grade financial modeling.`);
             }
+            document.querySelectorAll('.current-year').forEach(el => {
+                el.textContent = currentYear;
+            });
         })();
     </script>
     <div id="rbReportContainer" class="hidden"></div>

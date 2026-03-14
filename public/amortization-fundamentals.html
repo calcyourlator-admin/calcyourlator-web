@@ -77,7 +77,7 @@
                 <h2 class="text-2xl font-bold text-bk-blue mt-10 mb-4">Optimization: The Power of Extra Payments</h2>
                 <p class="mb-6">Understanding the amortization curve is vital for any borrower considering early payoff strategies. Even a single additional payment toward the principal in the first five years of a loan can shave months off the backend and save thousands in total interest. This is because every dollar of principal paid early reduces the base upon which all future interest is calculated.</p>
 
-                <h2 class="text-2xl font-bold text-bk-blue mt-10 mb-4">Why Amortization Matters in 2026</h2>
+                <h2 class="text-2xl font-bold text-bk-blue mt-10 mb-4">Why Amortization Matters in <span class="current-year">2026</span></h2>
                 <p class="mb-6">In the current economic climate, where interest rates are synchronized with the <a href="https://fred.stlouisfed.org/" target="_blank" class="text-bk-blue font-bold hover:underline">Federal Reserve Economic Data (FRED®)</a>, the cost of borrowing is a significant factor in total wealth accumulation. By visualizing your amortization lifecycle, you shift from being a "payment shopper" to an "equity builder."</p>
                 
                 <div class="mt-12 p-6 bg-bk-blue/5 rounded-xl border border-bk-blue/10">
@@ -145,6 +145,12 @@
             </div>
         </div>
     </div>
+    <script>
+        (function () {
+            const currentYear = new Date().getFullYear();
+            document.querySelectorAll('.current-year').forEach(el => el.textContent = currentYear);
+        })();
+    </script>
 </body>
 
 </html>
